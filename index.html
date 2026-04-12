@@ -17,6 +17,33 @@
             --success: #27ae60; --warning: #f39c12; --danger: #e74c3c;
         }
 
+        /* --- [إضافة] تنسيق شاشة الدخول المخصصة --- */
+        #custom-splash {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #1a2a3a; /* لون كحلي عميق */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999; /* للتأكد من أنها فوق كل شيء */
+            color: white;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .splash-logo { width: 150px; height: 150px; border-radius: 20%; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .splash-title { font-size: 1.8rem; font-weight: bold; margin: 5px 0; }
+        .splash-subtitle { font-size: 1rem; opacity: 0.7; margin-bottom: 30px; }
+        .splash-loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* -------------------------------------- */
+
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: var(--bg); margin: 0; padding: 20px;
@@ -53,7 +80,6 @@
         .btn-pdf { background: var(--success); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: bold; font-size: 1.1rem; margin-top: 25px; transition: 0.3s; }
         .btn-pdf:hover { background: #219150; transform: scale(1.02); }
 
-        /* تنسيق التقرير للـ PDF - معالجة "الانزلاق" */
         #report-template { display: none; padding: 40px; background: white; color: #333; font-family: Arial, sans-serif; }
         .pdf-header { border-bottom: 4px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; text-align: center; }
         .section-title { background: #f1f4f6; padding: 8px 12px; border-right: 5px solid var(--primary); margin: 25px 0 15px 0; font-weight: bold; color: var(--primary); }
@@ -72,6 +98,13 @@
     </style>
 </head>
 <body>
+
+<div id="custom-splash">
+    <img src="icon.png" class="splash-logo" alt="Research Logo">
+    <div class="splash-title">PSWQ Research Tool</div>
+    <div class="splash-subtitle">Medical Genetics - Master 2 Thesis</div>
+    <div class="splash-loader"></div>
+</div>
 
 <div class="card" id="app-container">
     <div class="lang-switcher">
@@ -150,6 +183,15 @@
 </div>
 
 <script>
+    // [إضافة] كود إخفاء شاشة الدخول بعد وقت محدد
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const splash = document.getElementById('custom-splash');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.visibility = 'hidden', 800);
+        }, 2500); // 2.5 ثانية هي مدة مناسبة للعرض
+    });
+
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyfdap0UDtmqmIF5W80HcDCm1R6ZzsZgcZ_opb396sKbW4_zkqe3sAr9PEJofQZ6HID4w/exec';
     const COOLDOWN_MS = 2 * 60 * 1000;
     
