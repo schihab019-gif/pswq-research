@@ -17,17 +17,17 @@
             --success: #27ae60; --warning: #f39c12; --danger: #e74c3c;
         }
 
-        /* --- [إضافة] تنسيق شاشة الدخول المخصصة --- */
+        /* شاشة الدخول المخصصة */
         #custom-splash {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-color: #1a2a3a; /* لون كحلي عميق */
+            background-color: #1a2a3a;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 99999; /* للتأكد من أنها فوق كل شيء */
+            z-index: 99999;
             color: white;
             transition: opacity 0.8s ease, visibility 0.8s;
         }
@@ -42,7 +42,29 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        /* -------------------------------------- */
+
+        /* تأثير الحركة للأسئلة */
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* زر التثبيت الذكي */
+        #install-btn {
+            display: none;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -113,12 +135,14 @@
         <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
 
+    <button id="install-btn">تثبيت التطبيق على الهاتف 📱</button>
+
     <div id="cooldown-area">
         <h2 id="wait-msg" style="color: var(--danger); margin-top: 50px;"></h2>
         <div id="big-timer" style="font-size: 3.5rem; font-weight: 800; margin: 20px 0; color: var(--primary);">00:00</div>
         <p id="wait-submsg" style="color: #666; margin-bottom: 30px;"></p>
         <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
-        <button class="btn-pdf" id="cooldown-pdf-btn" onclick="downloadOfficialReport()"></button>
+        <button class="btn-pdf" id="cooldown-pdf-btn" onclick="protectedDownload()"></button>
     </div>
 
     <div id="quiz-part">
@@ -140,6 +164,9 @@
 </div>
 
 <div id="report-template">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="icon.png" style="width: 80px; height: 80px; border-radius: 15px;">
+    </div>
     <div class="pdf-header">
         <h1 id="pdf-title-main" style="margin:0 0 10px 0;"></h1>
         <h3 id="pdf-subtitle" style="margin:0;"></h3>
@@ -183,23 +210,47 @@
 </div>
 
 <script>
-    // [إضافة] كود إخفاء شاشة الدخول بعد وقت محدد
+    // 1. تسجيل الـ Service Worker (هام للتثبيت)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+
+    // 2. منطق زر التثبيت
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('install-btn').style.display = 'block';
+    });
+
+    document.getElementById('install-btn').addEventListener('click', () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choice) => {
+                if (choice.outcome === 'accepted') document.getElementById('install-btn').style.display = 'none';
+            });
+        }
+    });
+
+    // 3. شاشة الدخول
     window.addEventListener('load', function() {
         setTimeout(function() {
             const splash = document.getElementById('custom-splash');
             splash.style.opacity = '0';
             setTimeout(() => splash.style.visibility = 'hidden', 800);
-        }, 2500); // 2.5 ثانية هي مدة مناسبة للعرض
+        }, 2500);
+        window.addEventListener('online', syncOfflineData);
     });
 
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyfdap0UDtmqmIF5W80HcDCm1R6ZzsZgcZ_opb396sKbW4_zkqe3sAr9PEJofQZ6HID4w/exec';
     const COOLDOWN_MS = 2 * 60 * 1000;
+    const RESEARCHER_CODE = "1999";
     
     const i18n = {
         ar: {
             dir: "rtl", resTitle: "نتائج الفحص السيكومتري", pdfBtn: "تحميل التقرير المطور PDF 📄",
             waitTitle: "يرجى الانتظار", waitSub: "لا يمكنك إعادة الاختبار قبل مرور دقيقتين لضمان الدقة.",
-            lastResBtn: "تحميل نتيجة الفحص السابق 📄", cooldownMsg: "إعادة الاختبار متاحة بعد: ", 
+            lastResBtn: "تحميل نتيجة الفحص السابق (محمي) 📄", cooldownMsg: "إعادة الاختبار متاحة بعد: ", 
             statusLow: "قلق منخفض - طبيعي", statusMed: "قلق متوسط - درجة حرجة", statusHigh: "قلق حاد - مؤشر TAG",
             pdfMain: "تقرير التحليل السيكومتري التفصيلي", pdfSub: "مذكرة تخرج: علم الوراثة الطبية - ماستر 2",
             pdfDate: "التاريخ:", pdfTime: "الوقت:", pdfAuthor: "الباحث:", pdfAuthorSub: "طالب ماستر 2 - جامعة قسنطينة",
@@ -230,7 +281,7 @@
             recMed: "• Score critique. Pratiquez la relaxation.",
             recHigh: "• Anxiété élevée. Consultation spécialisée recommandée.",
             opts: ["Pas du tout", "Un peu", "Moyen", "Très", "Tout à fait"],
-            questions: ["Si je n'ai pas assez de temps pour tout faire, je ne m'en fais pas.", "Mes soucis m'envahissent.", "Je ne م'en fais pas pour des choses sans importance.", "Beaucoup de situations me rendent inquiet.", "Je sais que je ne بدأت لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "Quand je suis sous pression, je m'en fais beaucoup.", "Je m'en fais tout le temps.", "Je trouve difficile de chasser une inquiétude de mon esprit.", "Dès que j'ai terminé une tâche, je commence à m'en faire pour d'autres choses.", "Je ne م'en fais jamais pour quoi que ce soit.", "Quand il n'y a rien que je puisse faire, je ne م'en fais pas.", "J'ai été une personne qui se fait du souci toute sa vie.", "Je remarque que je م'en fais pour des choses.", "Une fois que je commence à مهارة، لا يمكنني التوقف.", "Je me fais du souci tout le temps.", "Je م'en fais pour mes projets jusqu'à ce qu'ils soient terminés."]
+            questions: ["Si je n'ai pas assez de temps pour tout faire, je ne m'en fais pas.", "Mes soucis m'envahissent.", "Je ne م'en fais pas pour des choses sans importance.", "Beaucoup de situations me rendent inquiet.", "Je sais que je ne بدأت لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "Quand je suis sous pression, je m'en fais beaucoup.", "Je m'en fais tout le temps.", "Je trouve difficile de chasser une inquiétude de mon esprit.", "Dès que j'ai terminé une tâche, je commence à m'en faire pour d'autres choses.", "Je ne م'en fais jamais pour quoi que ce soit.", "Quand il n'y a rien que je puisse faire, je ne م'en fais pas.", "J'ايت été une personne qui se fait du souci toute sa vie.", "Je remarque que je م'en fais pour des choses.", "Une fois que je commence à مهارة، لا يمكنني التوقف.", "Je me fais du souci tout le temps.", "Je م'en fais pour mes projets jusqu'à ce qu'ils soient terminés."]
         },
         en: {
             dir: "ltr", resTitle: "Results", pdfBtn: "Download PDF 📄",
@@ -288,6 +339,11 @@
     function render() {
         if (checkGlobalCooldown()) return;
         const d = i18n[currentLang];
+        const quizPart = document.getElementById('quiz-part');
+        quizPart.classList.remove('fade-in');
+        void quizPart.offsetWidth;
+        quizPart.classList.add('fade-in');
+
         document.getElementById('q-text').innerText = d.questions[idx];
         document.getElementById('fill').style.width = `${((idx + 1) / 16) * 100}%`;
         const container = document.getElementById('options-container');
@@ -319,6 +375,29 @@
         drawChart();
     }
 
+    function syncWithSheets(s, st, ans) {
+        const now = new Date();
+        const payload = { 
+            date: now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear(),
+            time: now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0'),
+            score: s, status: st, answers: JSON.stringify(ans)
+        };
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+        .catch(() => {
+            let queue = JSON.parse(localStorage.getItem('sync_queue') || "[]");
+            queue.push(payload);
+            localStorage.setItem('sync_queue', JSON.stringify(queue));
+        });
+    }
+
+    function syncOfflineData() {
+        let queue = JSON.parse(localStorage.getItem('sync_queue') || "[]");
+        if (queue.length > 0) {
+            queue.forEach(p => fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(p) }));
+            localStorage.removeItem('sync_queue');
+        }
+    }
+
     function updateResultScreen() {
         const d = i18n[currentLang];
         document.getElementById('res-title').innerText = d.resTitle;
@@ -345,16 +424,6 @@
         });
     }
 
-    function syncWithSheets(s, st, ans) {
-        const now = new Date();
-        const payload = { 
-            date: now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear(),
-            time: now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0'),
-            score: s, status: st, answers: JSON.stringify(ans)
-        };
-        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-    }
-
     setInterval(() => {
         const lastTaken = localStorage.getItem('pswq_last_taken');
         if (lastTaken) {
@@ -369,6 +438,15 @@
             }
         }
     }, 1000);
+
+    function protectedDownload() {
+        let code = prompt(currentLang === 'ar' ? "أدخل كود الباحث للوصول للأرشيف:" : "Enter Researcher Code:");
+        if (code === RESEARCHER_CODE) {
+            downloadOfficialReport();
+        } else {
+            alert(currentLang === 'ar' ? "كود خاطئ!" : "Wrong Code!");
+        }
+    }
 
     function downloadOfficialReport() {
         if (answers.length === 0) {
