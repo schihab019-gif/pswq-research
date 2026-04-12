@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" id="html-tag">
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js');
-    });
-  }
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PSWQ - International Research Tool Pro</title>
     
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -41,7 +33,7 @@
         [dir="ltr"] .lang-switcher { left: auto; right: 20px; }
         .lang-btn {
             background: #eee; border: none; padding: 6px 12px; border-radius: 6px;
-            cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.3s;
+            cursor: pointer; font-size: 0.75rem; font-weight: bold;
         }
         .lang-btn.active { background: var(--primary); color: white; }
 
@@ -57,15 +49,24 @@
         }
         .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; transform: translateY(-2px); }
 
-        #result-area { display: none; }
-        .btn-pdf { background: var(--success); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: bold; font-size: 1.1rem; margin-top: 25px; }
+        #result-area, #cooldown-area { display: none; }
+        .btn-pdf { background: var(--success); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: bold; font-size: 1.1rem; margin-top: 25px; transition: 0.3s; }
+        .btn-pdf:hover { background: #219150; transform: scale(1.02); }
 
+        /* تنسيق التقرير للـ PDF - معالجة "الانزلاق" */
         #report-template { display: none; padding: 40px; background: white; color: #333; font-family: Arial, sans-serif; }
         .pdf-header { border-bottom: 4px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; text-align: center; }
         .section-title { background: #f1f4f6; padding: 8px 12px; border-right: 5px solid var(--primary); margin: 25px 0 15px 0; font-weight: bold; color: var(--primary); }
         [dir="ltr"] .section-title { border-right: none; border-left: 5px solid var(--primary); }
         
-        .force-ltr { direction: ltr !important; unicode-bidi: bidi-override !important; display: inline-block; }
+        .score-box-container { 
+            background: #f8f9fa; padding: 20px; border-radius: 15px; 
+            text-align: center; border: 1px solid #dee2e6; margin-bottom: 30px; 
+        }
+        .score-line { margin: 0; padding: 0; font-size: 1.8rem; color: var(--primary); }
+        .status-line { margin: 5px 0 0 0; padding: 0; font-size: 1.4rem; font-weight: bold; }
+
+        .force-ltr { direction: ltr !important; display: inline-block !important; }
         .stats-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         .stats-table td, .stats-table th { border: 1px solid #ddd; padding: 12px; text-align: inherit; }
     </style>
@@ -77,6 +78,14 @@
         <button class="lang-btn active" id="btn-ar" onclick="setLanguage('ar')">AR</button>
         <button class="lang-btn" id="btn-fr" onclick="setLanguage('fr')">FR</button>
         <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+    </div>
+
+    <div id="cooldown-area">
+        <h2 id="wait-msg" style="color: var(--danger); margin-top: 50px;"></h2>
+        <div id="big-timer" style="font-size: 3.5rem; font-weight: 800; margin: 20px 0; color: var(--primary);">00:00</div>
+        <p id="wait-submsg" style="color: #666; margin-bottom: 30px;"></p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+        <button class="btn-pdf" id="cooldown-pdf-btn" onclick="downloadOfficialReport()"></button>
     </div>
 
     <div id="quiz-part">
@@ -93,32 +102,34 @@
         </div>
         <div id="status-text" style="font-weight: bold; font-size: 1.4rem; margin: 20px 0;"></div>
         <button class="btn-pdf" id="pdf-btn" onclick="downloadOfficialReport()"></button>
-        <div id="cooldown-msg" style="margin-top: 20px; font-size: 0.9rem; color: #7f8c8d;"></div>
+        <div id="footer-cooldown" style="margin-top: 20px; font-size: 0.9rem; color: #7f8c8d;"></div>
     </div>
 </div>
 
 <div id="report-template">
     <div class="pdf-header">
-        <h1 id="pdf-title-main"></h1>
-        <h3 id="pdf-subtitle"></h3>
+        <h1 id="pdf-title-main" style="margin:0 0 10px 0;"></h1>
+        <h3 id="pdf-subtitle" style="margin:0;"></h3>
     </div>
 
-    <div style="display: flex; justify-content: space-between; margin-bottom: 30px; font-size: 0.95rem;">
-        <div>
-            <p><strong><span id="pdf-date-lbl"></span></strong> <span class="force-ltr" id="pdf-date"></span></p>
-            <p><strong><span id="pdf-time-lbl"></span></strong> <span class="force-ltr" id="pdf-time"></span></p>
-        </div>
-        <div style="text-align: inherit;">
-            <p><strong><span id="pdf-author-lbl"></span></strong></p>
-            <p id="pdf-author-sub"></p>
-        </div>
-    </div>
+    <table style="width: 100%; margin-bottom: 20px; font-size: 0.95rem;">
+        <tr>
+            <td>
+                <p style="margin:5px 0;"><strong><span id="pdf-date-lbl"></span></strong> <span class="force-ltr" id="pdf-date"></span></p>
+                <p style="margin:5px 0;"><strong><span id="pdf-time-lbl"></span></strong> <span class="force-ltr" id="pdf-time"></span></p>
+            </td>
+            <td style="text-align: inherit;">
+                <p style="margin:5px 0;"><strong><span id="pdf-author-lbl"></span></strong></p>
+                <p style="margin:5px 0;" id="pdf-author-sub"></p>
+            </td>
+        </tr>
+    </table>
 
-    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; text-align: center; border: 1px solid #dee2e6; margin-bottom: 30px;">
-        <h2 style="margin: 0; color: var(--primary);">
+    <div class="score-box-container">
+        <div class="score-line">
             <span id="pdf-res-lbl"></span> <span class="force-ltr" id="pdf-score-val-total"></span>
-        </h2>
-        <h3 id="pdf-status-val" style="margin: 15px 0; font-weight: bold; display: block;"></h3>
+        </div>
+        <div id="pdf-status-val" class="status-line"></div>
     </div>
 
     <div class="section-title" id="pdf-sec1-title"></div>
@@ -131,65 +142,69 @@
     </table>
 
     <div class="section-title" id="pdf-sec2-title"></div>
-    <div id="pdf-recs-box" style="padding: 20px; border: 1px dashed var(--primary); border-radius: 12px; background: #fffdf9; line-height: 1.6;"></div>
+    <div id="pdf-recs-box" style="padding: 15px; border: 1px dashed var(--primary); border-radius: 12px; background: #fffdf9; line-height: 1.5;"></div>
 
-    <div style="margin-top: 60px; text-align: center; font-size: 0.8rem; color: #95a5a6; border-top: 1px solid #eee; padding-top: 15px;">
-        <p id="pdf-footer"></p>
+    <div style="margin-top: 40px; text-align: center; font-size: 0.8rem; color: #95a5a6; border-top: 1px solid #eee; padding-top: 10px;">
+        <p id="pdf-footer" style="margin:0;"></p>
     </div>
 </div>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyfdap0UDtmqmIF5W80HcDCm1R6ZzsZgcZ_opb396sKbW4_zkqe3sAr9PEJofQZ6HID4w/exec';
+    const COOLDOWN_MS = 2 * 60 * 1000;
     
     const i18n = {
         ar: {
-            dir: "rtl", resTitle: "نتائج الفحص السيكومتري", pdfBtn: "تحميل التقرير التحليلي المطور PDF 📄",
-            cooldown: "إعادة الاختبار متاحة بعد: ", 
-            statusLow: "قلق منخفض - طبيعي", 
-            statusMed: "قلق متوسط - درجة حرجة", 
-            statusHigh: "قلق حاد - مؤشر TAG",
+            dir: "rtl", resTitle: "نتائج الفحص السيكومتري", pdfBtn: "تحميل التقرير المطور PDF 📄",
+            waitTitle: "يرجى الانتظار", waitSub: "لا يمكنك إعادة الاختبار قبل مرور دقيقتين لضمان الدقة.",
+            lastResBtn: "تحميل نتيجة الفحص السابق 📄", cooldownMsg: "إعادة الاختبار متاحة بعد: ", 
+            statusLow: "قلق منخفض - طبيعي", statusMed: "قلق متوسط - درجة حرجة", statusHigh: "قلق حاد - مؤشر TAG",
             pdfMain: "تقرير التحليل السيكومتري التفصيلي", pdfSub: "مذكرة تخرج: علم الوراثة الطبية - ماستر 2",
             pdfDate: "التاريخ:", pdfTime: "الوقت:", pdfAuthor: "الباحث:", pdfAuthorSub: "طالب ماستر 2 - جامعة قسنطينة",
-            pdfRes: "النتيجة الكلية:", sec1: "1. تحليل الأبعاد الفرعية", sec2: "2. التوصيات العلمية المخصصة",
+            pdfRes: "النتيجة الكلية:", sec1: "1. تحليل الأبعاد الفرعية", sec2: "2. التوصيات المخصصة",
             thDim: "البعد المقاس", thScore: "الدرجة", thInterp: "التفسير",
             dimW: "الانخراط في القلق", dimC: "القدرة على ضبط النفس",
-            intW: "يقيس شدة وتواتر الأفكار المقلقة الاقتحامية.", intC: "يقيس الكفاءة في وقف تيار القلق عند بدايته.",
-            footer: "تم استخراج هذا التقرير آلياً لدعم البحث العلمي الميداني.",
+            intW: "يقيس شدة وتواتر الأفكار المقلقة.", intC: "يقيس الكفاءة في ضبط القلق.",
+            footer: "تم استخراج التقرير آلياً لدعم البحث العلمي الميداني.",
             recLow: "• حالتك طبيعية. استمر في الحفاظ على نمط حياة متوازن.",
-            recMed: "• نتيجتك في منطقة حرجة. ينصح بممارسة تمارين الاسترخاء يومياً.",
-            recHigh: "• مستوى قلق مرتفع جداً. ينصح بشدة بمراجعة أخصائي نفساني.",
+            recMed: "• نتيجتك في منطقة حرجة. ينصح بممارسة تمارين الاسترخاء.",
+            recHigh: "• مستوى قلق مرتفع جداً. ينصح بمراجعة أخصائي نفساني.",
             opts: ["لا ينطبق إطلاقاً", "ينطبق قليلاً", "متوسط", "ينطبق كثيراً", "ينطبق تماماً"],
             questions: ["إذا لم يكن لدي الوقت الكافي لإنهاء كل شيء، فأنا لا أقلق بشأن ذلك.", "قلقي يطغى عليّ ويغلبني.", "لا أميل للقلق بشأن الأشياء.", "الكثير من المواقف تجعلني أقلق.", "أعلم أنه لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "عندما أكون تحت ضغط، أقلق كثيراً.", "أنا دائماً قلق بشأن شيء ما.", "أجد من السهل طرد الأفكار المقلقة من ذهني.", "بمجرد انتهائي من مهمة، أبدأ بالقلق بشأن المهام الأخرى.", "أنا لا أقلق أبداً بشأن أي شيء.", "عندما لا يكون هناك شيء يمكنني فعله حيال أمر ما، فإنني لا أقلق.", "لقد كنت شخصاً قلقاً طوال حياتي.", "ألاحظ أنني أقلق باستمرار بشأن الأشياء.", "بمجرد أن أبدأ في القلق، لا أستطيع التوقف.", "أنا أقلق طوال الوقت.", "أظل قلقاً بشأن مشاريعي حتى يتم الانتهاء منها."]
         },
         fr: {
-            dir: "ltr", resTitle: "Résultats de l'Évaluation", pdfBtn: "Télécharger le Rapport PDF 📄",
-            cooldown: "Réessai disponible dans : ", statusLow: "Anxiété Faible (Normal)", statusMed: "Anxiété Modérée (Critique)", statusHigh: "Anxiété Sévère (Indicateur TAG)",
-            pdfMain: "Rapport d'Analyse Psychométrique Détaillé", pdfSub: "Thèse de Master : Génétique Médicale - M2",
-            pdfDate: "Date :", pdfTime: "Heure :", pdfAuthor: "Chercheur :", pdfAuthorSub: "Étudiant M2 - Univ. Constantine",
-            pdfRes: "Score Total :", sec1: "1. Analyse des Dimensions", sec2: "2. Recommandations Scientifiques",
+            dir: "ltr", resTitle: "Résultats", pdfBtn: "Télécharger le PDF 📄",
+            waitTitle: "Veuillez patienter", waitSub: "Veuillez attendre 2 minutes pour la précision scientifique.",
+            lastResBtn: "Télécharger le résultat précédent 📄", cooldownMsg: "Réessai dans : ",
+            statusLow: "Anxiété Faible - Normal", statusMed: "Anxiété Modérée - Critique", statusHigh: "Anxiété Sévère - Risque TAG",
+            pdfMain: "Rapport Psychométrique Détaillé", pdfSub: "Master : Génétique Médicale - M2",
+            pdfDate: "Date :", pdfTime: "Heure :", pdfAuthor: "Chercheur :", pdfAuthorSub: "M2 - Univ. Constantine",
+            pdfRes: "Score Total :", sec1: "1. Analyse des Dimensions", sec2: "2. Recommandations",
             thDim: "Dimension", thScore: "Score", thInterp: "Interprétation",
             dimW: "Engagement", dimC: "Contrôle",
             intW: "Mesure l'intensité des pensées intrusives.", intC: "Capacité à stopper le flux d'anxiété.",
-            footer: "Ce rapport a été généré pour la recherche scientifique.",
-            recLow: "• Niveau normal. Continuez votre équilibre actuel.",
+            footer: "Document généré pour la recherche scientifique.",
+            recLow: "• Niveau normal. Maintenez votre équilibre actuel.",
             recMed: "• Score critique. Pratiquez la relaxation.",
-            recHigh: "• Anxiété élevée. Consultation recommandée.",
+            recHigh: "• Anxiété élevée. Consultation spécialisée recommandée.",
             opts: ["Pas du tout", "Un peu", "Moyen", "Très", "Tout à fait"],
-            questions: ["Si je n'ai pas assez de temps pour tout faire, je ne m'en fais pas.", "Mes soucis m'envahissent.", "Je ne m'en fais pas pour des choses sans importance.", "Beaucoup de situations me rendent inquiet.", "Je sais que je ne بدأت لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "Quand je suis sous pression, je m'en fais beaucoup.", "Je m'en fais tout le temps.", "Je trouve difficile de chasser une inquiétude de mon esprit.", "Dès que j'ai terminé une tâche, je commence à m'en faire pour d'autres choses.", "Je ne m'en fais jamais pour quoi que ce soit.", "Quand il n'y a rien que je puisse faire, je ne m'en fais pas.", "J'ايت été une personne qui se fait du souci toute sa vie.", "Je remarque que je m'en fais pour des choses.", "Une fois que je commence à مهارة، لا يمكنني التوقف.", "Je me fais du souci tout le temps.", "Je m'en fais pour mes projets jusqu'à ce qu'ils soient terminés."]
+            questions: ["Si je n'ai pas assez de temps pour tout faire, je ne m'en fais pas.", "Mes soucis m'envahissent.", "Je ne م'en fais pas pour des choses sans importance.", "Beaucoup de situations me rendent inquiet.", "Je sais que je ne بدأت لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "Quand je suis sous pression, je m'en fais beaucoup.", "Je m'en fais tout le temps.", "Je trouve difficile de chasser une inquiétude de mon esprit.", "Dès que j'ai terminé une tâche, je commence à m'en faire pour d'autres choses.", "Je ne م'en fais jamais pour quoi que ce soit.", "Quand il n'y a rien que je puisse faire, je ne م'en fais pas.", "J'ai été une personne qui se fait du souci toute sa vie.", "Je remarque que je م'en fais pour des choses.", "Une fois que je commence à مهارة، لا يمكنني التوقف.", "Je me fais du souci tout le temps.", "Je م'en fais pour mes projets jusqu'à ce qu'ils soient terminés."]
         },
         en: {
-            dir: "ltr", resTitle: "Assessment Results", pdfBtn: "Download Detailed Report PDF 📄",
-            cooldown: "Retry available in: ", statusLow: "Low Anxiety (Normal)", statusMed: "Moderate Anxiety (Critical)", statusHigh: "Severe Anxiety (GAD Indicator)",
-            pdfMain: "Detailed Psychometric Analysis Report", pdfSub: "Master Thesis: Medical Genetics - M2",
-            pdfDate: "Date:", pdfTime: "Time:", pdfAuthor: "Researcher:", pdfAuthorSub: "Master 2 Student - Constantine University",
-            pdfRes: "Total Score:", sec1: "1. Sub-dimensional Analysis", sec2: "2. Scientific Recommendations",
+            dir: "ltr", resTitle: "Results", pdfBtn: "Download PDF 📄",
+            waitTitle: "Please Wait", waitSub: "Wait 2 minutes to ensure scientific accuracy.",
+            lastResBtn: "Download previous result 📄", cooldownMsg: "Retry in: ",
+            statusLow: "Low Anxiety - Normal", statusMed: "Moderate Anxiety - Critical", statusHigh: "Severe Anxiety - GAD Risk",
+            pdfMain: "Detailed Psychometric Report", pdfSub: "Master Thesis: Medical Genetics - M2",
+            pdfDate: "Date:", pdfTime: "Time:", pdfAuthor: "Researcher:", pdfAuthorSub: "M2 Student - Constantine University",
+            pdfRes: "Total Score:", sec1: "1. Dimensional Analysis", sec2: "2. Recommendations",
             thDim: "Dimension", thScore: "Score", thInterp: "Interpretation",
-            dimW: "Engagement", dimC: "Control",
+            dimW: "Worry Engagement", dimC: "Worry Control",
             intW: "Frequency of intrusive thoughts.", intC: "Efficiency in stopping worry flow.",
-            footer: "Auto-generated report for clinical research.",
+            footer: "Auto-generated report for research.",
             recLow: "• Level within normal range.",
-            recMed: "• Score in critical zone. Relaxation is advised.",
-            recHigh: "• High anxiety level. Consultation is recommended.",
+            recMed: "• Score in critical zone. Relaxation advised.",
+            recHigh: "• High anxiety level. Consult a professional.",
             opts: ["Not at all", "Somewhat", "Moderately", "Very", "Entirely"],
             questions: ["If I don't have enough time to do everything, I don't worry about it.", "My worries overwhelm me.", "I don't tend to worry about things.", "Many situations make me worry.", "I know I shouldn't worry, but I just can't help it.", "When I am under pressure, I worry a lot.", "I am always worrying about something.", "I find it easy to dismiss worrisome thoughts.", "As soon as I finish one task, I start to worry about others.", "I never worry about anything.", "When there is nothing I can do about a situation, I don't worry.", "I have been a worrier all my life.", "I notice that I have been worrying about things.", "Once I start worrying, I can't stop.", "I worry all the time.", "I worry about projects until they are all done."]
         }
@@ -201,12 +216,35 @@
     function setLanguage(lang) {
         currentLang = lang;
         document.getElementById('html-tag').dir = i18n[lang].dir;
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('btn-' + lang).classList.add('active');
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.id === 'btn-' + lang));
+        if (document.getElementById('cooldown-area').style.display === 'block') {
+            const d = i18n[lang];
+            document.getElementById('wait-msg').innerText = d.waitTitle;
+            document.getElementById('wait-submsg').innerText = d.waitSub;
+            document.getElementById('cooldown-pdf-btn').innerText = d.lastResBtn;
+        }
         if (!isFinished) render(); else updateResultScreen();
     }
 
+    function checkGlobalCooldown() {
+        const lastTaken = localStorage.getItem('pswq_last_taken');
+        if (lastTaken) {
+            const diff = Date.now() - parseInt(lastTaken);
+            if (diff < COOLDOWN_MS) {
+                document.getElementById('quiz-part').style.display = 'none';
+                document.getElementById('cooldown-area').style.display = 'block';
+                const d = i18n[currentLang];
+                document.getElementById('wait-msg').innerText = d.waitTitle;
+                document.getElementById('wait-submsg').innerText = d.waitSub;
+                document.getElementById('cooldown-pdf-btn').innerText = d.lastResBtn;
+                return true;
+            }
+        }
+        return false;
+    }
+
     function render() {
+        if (checkGlobalCooldown()) return;
         const d = i18n[currentLang];
         document.getElementById('q-text').innerText = d.questions[idx];
         document.getElementById('fill').style.width = `${((idx + 1) / 16) * 100}%`;
@@ -230,12 +268,13 @@
         isFinished = true;
         finalScore = answers.reduce((acc, v, i) => acc + (rev.includes(i + 1) ? (6 - v) : v), 0);
         localStorage.setItem('pswq_last_taken', Date.now());
+        localStorage.setItem('pswq_answers', JSON.stringify(answers));
+        localStorage.setItem('pswq_score', finalScore);
         document.getElementById('quiz-part').style.display = 'none';
         document.getElementById('result-area').style.display = 'block';
         updateResultScreen();
         syncWithSheets(finalScore, document.getElementById('status-text').innerText, [...answers]); 
         drawChart();
-        startCooldown();
     }
 
     function updateResultScreen() {
@@ -267,32 +306,42 @@
     function syncWithSheets(s, st, ans) {
         const now = new Date();
         const payload = { 
-            date: now.getDate() + " / " + (now.getMonth() + 1) + " / " + now.getFullYear(),
+            date: now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear(),
             time: now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0'),
             score: s, status: st, answers: JSON.stringify(ans)
         };
         fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
     }
 
-    function startCooldown() {
-        const msg = document.getElementById('cooldown-msg');
-        setInterval(() => {
-            const diff = (10 * 60 * 1000) - (Date.now() - parseInt(localStorage.getItem('pswq_last_taken')));
+    setInterval(() => {
+        const lastTaken = localStorage.getItem('pswq_last_taken');
+        if (lastTaken) {
+            const diff = COOLDOWN_MS - (Date.now() - parseInt(lastTaken));
             if (diff > 0) {
                 const mins = Math.floor(diff / 60000), secs = Math.floor((diff % 60000) / 1000);
-                msg.innerText = i18n[currentLang].cooldown + `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                const timeStr = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                document.getElementById('big-timer').innerText = timeStr;
+                document.getElementById('footer-cooldown').innerText = i18n[currentLang].cooldownMsg + timeStr;
+            } else {
+                if (document.getElementById('cooldown-area').style.display === 'block') location.reload();
             }
-        }, 1000);
-    }
+        }
+    }, 1000);
 
     function downloadOfficialReport() {
+        if (answers.length === 0) {
+            answers = JSON.parse(localStorage.getItem('pswq_answers')) || [];
+            finalScore = parseInt(localStorage.getItem('pswq_score')) || 0;
+        }
+        if (answers.length === 0) return alert("لا توجد نتائج سابقة.");
+
         const d = i18n[currentLang];
         const now = new Date();
         let wScore = 0, cScore = 0;
         answers.forEach((v, i) => { if (rev.includes(i+1)) cScore += (6-v); else wScore += v; });
+
         const report = document.getElementById('report-template');
         report.dir = d.dir;
-        
         document.getElementById('pdf-title-main').innerText = d.pdfMain;
         document.getElementById('pdf-subtitle').innerText = d.pdfSub;
         document.getElementById('pdf-date-lbl').innerText = d.pdfDate;
@@ -305,13 +354,13 @@
         document.getElementById('pdf-date').innerText = now.getDate() + " / " + (now.getMonth()+1) + " / " + now.getFullYear();
         document.getElementById('pdf-time').innerText = now.getHours() + " : " + now.getMinutes().toString().padStart(2, '0');
         
-        const statusValEl = document.getElementById('pdf-status-val');
-        statusValEl.innerText = document.getElementById('status-text').innerText;
-        statusValEl.style.color = document.getElementById('status-text').style.color;
+        let status = d.statusLow, col = "var(--success)";
+        if (finalScore >= 45) { status = d.statusMed; col = "var(--warning)"; }
+        if (finalScore >= 60) { status = d.statusHigh; col = "var(--danger)"; }
         
-        // تبسيط العرض: لا توجد أقواس، لا توجد كلاسات عزل خاصة للتشخيص
-        statusValEl.className = "";
-        statusValEl.style.direction = (currentLang === 'ar') ? "rtl" : "ltr";
+        const statusValEl = document.getElementById('pdf-status-val');
+        statusValEl.innerText = status;
+        statusValEl.style.color = col;
 
         document.getElementById('pdf-sec1-title').innerText = d.sec1;
         document.getElementById('th-dim').innerText = d.thDim;
@@ -332,7 +381,7 @@
             margin: 0.5, 
             filename: `PSWQ_Final_Report.pdf`, 
             html2canvas: { scale: 3, useCORS: true }, 
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } 
+            jsPDF: { unit: 'in', format: 'a4' } 
         })
         .from(report).save().then(() => report.style.display = 'none');
     }
