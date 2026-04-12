@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="html-tag">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js');
+    });
+  }
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSWQ - International Research Tool Pro</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #2c3e50; --accent: #3498db; --bg: #f0f4f8;
+            --success: #27ae60; --warning: #f39c12; --danger: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg); margin: 0; padding: 20px;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+
+        .card {
+            background: white; width: 100%; max-width: 600px; padding: 40px;
+            border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); text-align: center;
+            position: relative;
+        }
+
+        .lang-switcher { position: absolute; top: 20px; left: 20px; display: flex; gap: 5px; z-index: 10; }
+        [dir="ltr"] .lang-switcher { left: auto; right: 20px; }
+        .lang-btn {
+            background: #eee; border: none; padding: 6px 12px; border-radius: 6px;
+            cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.3s;
+        }
+        .lang-btn.active { background: var(--primary); color: white; }
+
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-top: 30px; margin-bottom: 25px; overflow: hidden; }
+        #fill { height: 100%; background: var(--accent); width: 0%; transition: 0.4s; }
+
+        .question-box { min-height: 110px; font-size: 1.35rem; margin-bottom: 30px; font-weight: 600; color: var(--primary); line-height: 1.5; }
+        .options-grid { display: grid; gap: 12px; }
+        .opt-btn {
+            background: #fff; border: 2px solid #edf2f7; padding: 16px;
+            border-radius: 15px; cursor: pointer; font-size: 1.1rem; transition: 0.2s;
+            text-align: inherit; font-weight: 500;
+        }
+        .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; transform: translateY(-2px); }
+
+        #result-area { display: none; }
+        .btn-pdf { background: var(--success); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: bold; font-size: 1.1rem; margin-top: 25px; }
+
+        #report-template { display: none; padding: 40px; background: white; color: #333; font-family: Arial, sans-serif; }
+        .pdf-header { border-bottom: 4px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; text-align: center; }
+        .section-title { background: #f1f4f6; padding: 8px 12px; border-right: 5px solid var(--primary); margin: 25px 0 15px 0; font-weight: bold; color: var(--primary); }
+        [dir="ltr"] .section-title { border-right: none; border-left: 5px solid var(--primary); }
+        
+        .force-ltr { direction: ltr !important; unicode-bidi: bidi-override !important; display: inline-block; }
+        .stats-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .stats-table td, .stats-table th { border: 1px solid #ddd; padding: 12px; text-align: inherit; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="app-container">
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-ar" onclick="setLanguage('ar')">AR</button>
+        <button class="lang-btn" id="btn-fr" onclick="setLanguage('fr')">FR</button>
+        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+    </div>
+
+    <div id="quiz-part">
+        <div class="progress-bar"><div id="fill"></div></div>
+        <div id="q-text" class="question-box"></div>
+        <div class="options-grid" id="options-container"></div>
+    </div>
+
+    <div id="result-area">
+        <h2 id="res-title" style="color: var(--primary);"></h2>
+        <div style="width: 220px; margin: 0 auto; position: relative;">
+            <canvas id="myChart"></canvas>
+            <div id="score-num" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 800;">0</div>
+        </div>
+        <div id="status-text" style="font-weight: bold; font-size: 1.4rem; margin: 20px 0;"></div>
+        <button class="btn-pdf" id="pdf-btn" onclick="downloadOfficialReport()"></button>
+        <div id="cooldown-msg" style="margin-top: 20px; font-size: 0.9rem; color: #7f8c8d;"></div>
+    </div>
+</div>
+
+<div id="report-template">
+    <div class="pdf-header">
+        <h1 id="pdf-title-main"></h1>
+        <h3 id="pdf-subtitle"></h3>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; margin-bottom: 30px; font-size: 0.95rem;">
+        <div>
+            <p><strong><span id="pdf-date-lbl"></span></strong> <span class="force-ltr" id="pdf-date"></span></p>
+            <p><strong><span id="pdf-time-lbl"></span></strong> <span class="force-ltr" id="pdf-time"></span></p>
+        </div>
+        <div style="text-align: inherit;">
+            <p><strong><span id="pdf-author-lbl"></span></strong></p>
+            <p id="pdf-author-sub"></p>
+        </div>
+    </div>
+
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; text-align: center; border: 1px solid #dee2e6; margin-bottom: 30px;">
+        <h2 style="margin: 0; color: var(--primary);">
+            <span id="pdf-res-lbl"></span> <span class="force-ltr" id="pdf-score-val-total"></span>
+        </h2>
+        <h3 id="pdf-status-val" style="margin: 15px 0; font-weight: bold; display: block;"></h3>
+    </div>
+
+    <div class="section-title" id="pdf-sec1-title"></div>
+    <table class="stats-table">
+        <thead><tr style="background: #f1f1f1;"><th id="th-dim"></th><th id="th-score"></th><th id="th-interp"></th></tr></thead>
+        <tbody>
+            <tr><td id="dim-worry"></td><td style="text-align: center;"><span class="force-ltr" id="score-worry"></span></td><td id="interp-worry" style="font-size: 0.85rem;"></td></tr>
+            <tr><td id="dim-control"></td><td style="text-align: center;"><span class="force-ltr" id="score-control"></span></td><td id="interp-control" style="font-size: 0.85rem;"></td></tr>
+        </tbody>
+    </table>
+
+    <div class="section-title" id="pdf-sec2-title"></div>
+    <div id="pdf-recs-box" style="padding: 20px; border: 1px dashed var(--primary); border-radius: 12px; background: #fffdf9; line-height: 1.6;"></div>
+
+    <div style="margin-top: 60px; text-align: center; font-size: 0.8rem; color: #95a5a6; border-top: 1px solid #eee; padding-top: 15px;">
+        <p id="pdf-footer"></p>
+    </div>
+</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyfdap0UDtmqmIF5W80HcDCm1R6ZzsZgcZ_opb396sKbW4_zkqe3sAr9PEJofQZ6HID4w/exec';
+    
+    const i18n = {
+        ar: {
+            dir: "rtl", resTitle: "نتائج الفحص السيكومتري", pdfBtn: "تحميل التقرير التحليلي المطور PDF 📄",
+            cooldown: "إعادة الاختبار متاحة بعد: ", 
+            statusLow: "قلق منخفض - طبيعي", 
+            statusMed: "قلق متوسط - درجة حرجة", 
+            statusHigh: "قلق حاد - مؤشر TAG",
+            pdfMain: "تقرير التحليل السيكومتري التفصيلي", pdfSub: "مذكرة تخرج: علم الوراثة الطبية - ماستر 2",
+            pdfDate: "التاريخ:", pdfTime: "الوقت:", pdfAuthor: "الباحث:", pdfAuthorSub: "طالب ماستر 2 - جامعة قسنطينة",
+            pdfRes: "النتيجة الكلية:", sec1: "1. تحليل الأبعاد الفرعية", sec2: "2. التوصيات العلمية المخصصة",
+            thDim: "البعد المقاس", thScore: "الدرجة", thInterp: "التفسير",
+            dimW: "الانخراط في القلق", dimC: "القدرة على ضبط النفس",
+            intW: "يقيس شدة وتواتر الأفكار المقلقة الاقتحامية.", intC: "يقيس الكفاءة في وقف تيار القلق عند بدايته.",
+            footer: "تم استخراج هذا التقرير آلياً لدعم البحث العلمي الميداني.",
+            recLow: "• حالتك طبيعية. استمر في الحفاظ على نمط حياة متوازن.",
+            recMed: "• نتيجتك في منطقة حرجة. ينصح بممارسة تمارين الاسترخاء يومياً.",
+            recHigh: "• مستوى قلق مرتفع جداً. ينصح بشدة بمراجعة أخصائي نفساني.",
+            opts: ["لا ينطبق إطلاقاً", "ينطبق قليلاً", "متوسط", "ينطبق كثيراً", "ينطبق تماماً"],
+            questions: ["إذا لم يكن لدي الوقت الكافي لإنهاء كل شيء، فأنا لا أقلق بشأن ذلك.", "قلقي يطغى عليّ ويغلبني.", "لا أميل للقلق بشأن الأشياء.", "الكثير من المواقف تجعلني أقلق.", "أعلم أنه لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "عندما أكون تحت ضغط، أقلق كثيراً.", "أنا دائماً قلق بشأن شيء ما.", "أجد من السهل طرد الأفكار المقلقة من ذهني.", "بمجرد انتهائي من مهمة، أبدأ بالقلق بشأن المهام الأخرى.", "أنا لا أقلق أبداً بشأن أي شيء.", "عندما لا يكون هناك شيء يمكنني فعله حيال أمر ما، فإنني لا أقلق.", "لقد كنت شخصاً قلقاً طوال حياتي.", "ألاحظ أنني أقلق باستمرار بشأن الأشياء.", "بمجرد أن أبدأ في القلق، لا أستطيع التوقف.", "أنا أقلق طوال الوقت.", "أظل قلقاً بشأن مشاريعي حتى يتم الانتهاء منها."]
+        },
+        fr: {
+            dir: "ltr", resTitle: "Résultats de l'Évaluation", pdfBtn: "Télécharger le Rapport PDF 📄",
+            cooldown: "Réessai disponible dans : ", statusLow: "Anxiété Faible (Normal)", statusMed: "Anxiété Modérée (Critique)", statusHigh: "Anxiété Sévère (Indicateur TAG)",
+            pdfMain: "Rapport d'Analyse Psychométrique Détaillé", pdfSub: "Thèse de Master : Génétique Médicale - M2",
+            pdfDate: "Date :", pdfTime: "Heure :", pdfAuthor: "Chercheur :", pdfAuthorSub: "Étudiant M2 - Univ. Constantine",
+            pdfRes: "Score Total :", sec1: "1. Analyse des Dimensions", sec2: "2. Recommandations Scientifiques",
+            thDim: "Dimension", thScore: "Score", thInterp: "Interprétation",
+            dimW: "Engagement", dimC: "Contrôle",
+            intW: "Mesure l'intensité des pensées intrusives.", intC: "Capacité à stopper le flux d'anxiété.",
+            footer: "Ce rapport a été généré pour la recherche scientifique.",
+            recLow: "• Niveau normal. Continuez votre équilibre actuel.",
+            recMed: "• Score critique. Pratiquez la relaxation.",
+            recHigh: "• Anxiété élevée. Consultation recommandée.",
+            opts: ["Pas du tout", "Un peu", "Moyen", "Très", "Tout à fait"],
+            questions: ["Si je n'ai pas assez de temps pour tout faire, je ne m'en fais pas.", "Mes soucis m'envahissent.", "Je ne m'en fais pas pour des choses sans importance.", "Beaucoup de situations me rendent inquiet.", "Je sais que je ne بدأت لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "Quand je suis sous pression, je m'en fais beaucoup.", "Je m'en fais tout le temps.", "Je trouve difficile de chasser une inquiétude de mon esprit.", "Dès que j'ai terminé une tâche, je commence à m'en faire pour d'autres choses.", "Je ne m'en fais jamais pour quoi que ce soit.", "Quand il n'y a rien que je puisse faire, je ne m'en fais pas.", "J'ايت été une personne qui se fait du souci toute sa vie.", "Je remarque que je m'en fais pour des choses.", "Une fois que je commence à مهارة، لا يمكنني التوقف.", "Je me fais du souci tout le temps.", "Je m'en fais pour mes projets jusqu'à ce qu'ils soient terminés."]
+        },
+        en: {
+            dir: "ltr", resTitle: "Assessment Results", pdfBtn: "Download Detailed Report PDF 📄",
+            cooldown: "Retry available in: ", statusLow: "Low Anxiety (Normal)", statusMed: "Moderate Anxiety (Critical)", statusHigh: "Severe Anxiety (GAD Indicator)",
+            pdfMain: "Detailed Psychometric Analysis Report", pdfSub: "Master Thesis: Medical Genetics - M2",
+            pdfDate: "Date:", pdfTime: "Time:", pdfAuthor: "Researcher:", pdfAuthorSub: "Master 2 Student - Constantine University",
+            pdfRes: "Total Score:", sec1: "1. Sub-dimensional Analysis", sec2: "2. Scientific Recommendations",
+            thDim: "Dimension", thScore: "Score", thInterp: "Interpretation",
+            dimW: "Engagement", dimC: "Control",
+            intW: "Frequency of intrusive thoughts.", intC: "Efficiency in stopping worry flow.",
+            footer: "Auto-generated report for clinical research.",
+            recLow: "• Level within normal range.",
+            recMed: "• Score in critical zone. Relaxation is advised.",
+            recHigh: "• High anxiety level. Consultation is recommended.",
+            opts: ["Not at all", "Somewhat", "Moderately", "Very", "Entirely"],
+            questions: ["If I don't have enough time to do everything, I don't worry about it.", "My worries overwhelm me.", "I don't tend to worry about things.", "Many situations make me worry.", "I know I shouldn't worry, but I just can't help it.", "When I am under pressure, I worry a lot.", "I am always worrying about something.", "I find it easy to dismiss worrisome thoughts.", "As soon as I finish one task, I start to worry about others.", "I never worry about anything.", "When there is nothing I can do about a situation, I don't worry.", "I have been a worrier all my life.", "I notice that I have been worrying about things.", "Once I start worrying, I can't stop.", "I worry all the time.", "I worry about projects until they are all done."]
+        }
+    };
+
+    const rev = [1, 3, 8, 10, 11];
+    let currentLang = 'ar', idx = 0, answers = [], finalScore = 0, isFinished = false;
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        document.getElementById('html-tag').dir = i18n[lang].dir;
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + lang).classList.add('active');
+        if (!isFinished) render(); else updateResultScreen();
+    }
+
+    function render() {
+        const d = i18n[currentLang];
+        document.getElementById('q-text').innerText = d.questions[idx];
+        document.getElementById('fill').style.width = `${((idx + 1) / 16) * 100}%`;
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        d.opts.forEach((txt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = `${i+1} - ${txt}`;
+            btn.onclick = () => handle(i + 1);
+            container.appendChild(btn);
+        });
+    }
+
+    function handle(val) {
+        answers.push(val);
+        if (++idx < 16) render(); else finish();
+    }
+
+    function finish() {
+        isFinished = true;
+        finalScore = answers.reduce((acc, v, i) => acc + (rev.includes(i + 1) ? (6 - v) : v), 0);
+        localStorage.setItem('pswq_last_taken', Date.now());
+        document.getElementById('quiz-part').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        updateResultScreen();
+        syncWithSheets(finalScore, document.getElementById('status-text').innerText, [...answers]); 
+        drawChart();
+        startCooldown();
+    }
+
+    function updateResultScreen() {
+        const d = i18n[currentLang];
+        document.getElementById('res-title').innerText = d.resTitle;
+        document.getElementById('pdf-btn').innerText = d.pdfBtn;
+        document.getElementById('score-num').innerText = finalScore;
+        let status = d.statusLow, col = "var(--success)";
+        if (finalScore >= 45) { status = d.statusMed; col = "var(--warning)"; }
+        if (finalScore >= 60) { status = d.statusHigh; col = "var(--danger)"; }
+        const statusEl = document.getElementById('status-text');
+        statusEl.innerText = status;
+        statusEl.style.color = col;
+        document.getElementById('score-num').style.color = col;
+        if (window.myDoughnut) {
+            window.myDoughnut.data.datasets[0].backgroundColor = [col, '#eee'];
+            window.myDoughnut.update();
+        }
+    }
+
+    function drawChart() {
+        let col = finalScore < 45 ? "var(--success)" : finalScore < 60 ? "var(--warning)" : "var(--danger)";
+        window.myDoughnut = new Chart(document.getElementById('myChart'), {
+            type: 'doughnut', data: { datasets: [{ data: [finalScore, 80-finalScore], backgroundColor: [col, '#eee'], circumference: 180, rotation: 270, borderWidth:0 }] },
+            options: { cutout: '80%', plugins: { tooltip: {enabled: false} } }
+        });
+    }
+
+    function syncWithSheets(s, st, ans) {
+        const now = new Date();
+        const payload = { 
+            date: now.getDate() + " / " + (now.getMonth() + 1) + " / " + now.getFullYear(),
+            time: now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0'),
+            score: s, status: st, answers: JSON.stringify(ans)
+        };
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+    }
+
+    function startCooldown() {
+        const msg = document.getElementById('cooldown-msg');
+        setInterval(() => {
+            const diff = (10 * 60 * 1000) - (Date.now() - parseInt(localStorage.getItem('pswq_last_taken')));
+            if (diff > 0) {
+                const mins = Math.floor(diff / 60000), secs = Math.floor((diff % 60000) / 1000);
+                msg.innerText = i18n[currentLang].cooldown + `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+        }, 1000);
+    }
+
+    function downloadOfficialReport() {
+        const d = i18n[currentLang];
+        const now = new Date();
+        let wScore = 0, cScore = 0;
+        answers.forEach((v, i) => { if (rev.includes(i+1)) cScore += (6-v); else wScore += v; });
+        const report = document.getElementById('report-template');
+        report.dir = d.dir;
+        
+        document.getElementById('pdf-title-main').innerText = d.pdfMain;
+        document.getElementById('pdf-subtitle').innerText = d.pdfSub;
+        document.getElementById('pdf-date-lbl').innerText = d.pdfDate;
+        document.getElementById('pdf-time-lbl').innerText = d.pdfTime;
+        document.getElementById('pdf-author-lbl').innerText = d.pdfAuthor;
+        document.getElementById('pdf-author-sub').innerText = d.pdfAuthorSub;
+        
+        document.getElementById('pdf-res-lbl').innerText = d.pdfRes;
+        document.getElementById('pdf-score-val-total').innerText = finalScore + " / 80";
+        document.getElementById('pdf-date').innerText = now.getDate() + " / " + (now.getMonth()+1) + " / " + now.getFullYear();
+        document.getElementById('pdf-time').innerText = now.getHours() + " : " + now.getMinutes().toString().padStart(2, '0');
+        
+        const statusValEl = document.getElementById('pdf-status-val');
+        statusValEl.innerText = document.getElementById('status-text').innerText;
+        statusValEl.style.color = document.getElementById('status-text').style.color;
+        
+        // تبسيط العرض: لا توجد أقواس، لا توجد كلاسات عزل خاصة للتشخيص
+        statusValEl.className = "";
+        statusValEl.style.direction = (currentLang === 'ar') ? "rtl" : "ltr";
+
+        document.getElementById('pdf-sec1-title').innerText = d.sec1;
+        document.getElementById('th-dim').innerText = d.thDim;
+        document.getElementById('th-score').innerText = d.thScore;
+        document.getElementById('th-interp').innerText = d.thInterp;
+        document.getElementById('dim-worry').innerText = d.dimW;
+        document.getElementById('score-worry').innerText = wScore;
+        document.getElementById('interp-worry').innerText = d.intW;
+        document.getElementById('dim-control').innerText = d.dimC;
+        document.getElementById('score-control').innerText = cScore;
+        document.getElementById('interp-control').innerText = d.intC;
+        document.getElementById('pdf-sec2-title').innerText = d.sec2;
+        document.getElementById('pdf-recs-box').innerHTML = (finalScore < 45) ? d.recLow : (finalScore < 60) ? d.recMed : d.recHigh;
+        document.getElementById('pdf-footer').innerText = d.footer;
+        
+        report.style.display = 'block';
+        html2pdf().set({ 
+            margin: 0.5, 
+            filename: `PSWQ_Final_Report.pdf`, 
+            html2canvas: { scale: 3, useCORS: true }, 
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } 
+        })
+        .from(report).save().then(() => report.style.display = 'none');
+    }
+    setLanguage('ar');
+</script>
+</body>
+</html>
