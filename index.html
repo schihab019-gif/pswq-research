@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PSWQ - International Research Tool Pro</title>
+    <title>TAG Research Tool - Constantine 1</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,495 +17,239 @@
             --success: #27ae60; --warning: #f39c12; --danger: #e74c3c;
         }
 
-        /* شاشة الدخول المخصصة */
+        /* شاشة الدخول */
         #custom-splash {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: #1a2a3a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            color: white;
-            transition: opacity 0.8s ease, visibility 0.8s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #1a2a3a; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 99999;
+            color: white; transition: opacity 0.8s ease, visibility 0.8s;
         }
         .splash-logo { width: 150px; height: 150px; border-radius: 20%; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .splash-title { font-size: 1.8rem; font-weight: bold; margin: 5px 0; }
-        .splash-subtitle { font-size: 1rem; opacity: 0.7; margin-bottom: 30px; }
-        .splash-loader {
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            width: 40px; height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* تأثير الحركة للأسئلة */
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* زر التثبيت الذكي */
-        #install-btn {
-            display: none;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            width: 100%;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: inherit;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg); margin: 0; padding: 20px;
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
-        }
-
-        .card {
-            background: white; width: 100%; max-width: 600px; padding: 40px;
-            border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); text-align: center;
-            position: relative;
-        }
-
-        .lang-switcher { position: absolute; top: 20px; left: 20px; display: flex; gap: 5px; z-index: 10; }
-        [dir="ltr"] .lang-switcher { left: auto; right: 20px; }
-        .lang-btn {
-            background: #eee; border: none; padding: 6px 12px; border-radius: 6px;
-            cursor: pointer; font-size: 0.75rem; font-weight: bold;
-        }
-        .lang-btn.active { background: var(--primary); color: white; }
-
-        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-top: 30px; margin-bottom: 25px; overflow: hidden; }
-        #fill { height: 100%; background: var(--accent); width: 0%; transition: 0.4s; }
-
-        .question-box { min-height: 110px; font-size: 1.35rem; margin-bottom: 30px; font-weight: 600; color: var(--primary); line-height: 1.5; }
-        .options-grid { display: grid; gap: 12px; }
-        .opt-btn {
-            background: #fff; border: 2px solid #edf2f7; padding: 16px;
-            border-radius: 15px; cursor: pointer; font-size: 1.1rem; transition: 0.2s;
-            text-align: inherit; font-weight: 500;
-        }
-        .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; transform: translateY(-2px); }
-
-        #result-area, #cooldown-area { display: none; }
-        .btn-pdf { background: var(--success); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: bold; font-size: 1.1rem; margin-top: 25px; transition: 0.3s; }
-        .btn-pdf:hover { background: #219150; transform: scale(1.02); }
-
-        #report-template { display: none; padding: 40px; background: white; color: #333; font-family: Arial, sans-serif; }
-        .pdf-header { border-bottom: 4px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; text-align: center; }
-        .section-title { background: #f1f4f6; padding: 8px 12px; border-right: 5px solid var(--primary); margin: 25px 0 15px 0; font-weight: bold; color: var(--primary); }
-        [dir="ltr"] .section-title { border-right: none; border-left: 5px solid var(--primary); }
         
-        .score-box-container { 
-            background: #f8f9fa; padding: 20px; border-radius: 15px; 
-            text-align: center; border: 1px solid #dee2e6; margin-bottom: 30px; 
-        }
-        .score-line { margin: 0; padding: 0; font-size: 1.8rem; color: var(--primary); }
-        .status-line { margin: 5px 0 0 0; padding: 0; font-size: 1.4rem; font-weight: bold; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .force-ltr { direction: ltr !important; display: inline-block !important; }
-        .stats-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .stats-table td, .stats-table th { border: 1px solid #ddd; padding: 12px; text-align: inherit; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .card { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); text-align: center; position: relative; }
+        
+        .section-ui { display: none; }
+        .active-section { display: block; }
+
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #edf2f7; border-radius: 12px; font-family: inherit; font-size: 1rem; }
+        .opt-btn { background: #fff; border: 2px solid #edf2f7; padding: 15px; border-radius: 15px; cursor: pointer; font-size: 1.1rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 10px; font-weight: 500; }
+        .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; }
+
+        .btn-next { background: var(--accent); color: white; border: none; padding: 15px 30px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px; }
+        .progress-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        #fill { height: 100%; background: var(--accent); width: 0%; transition: 0.4s; }
+        
+        .consent-box { text-align: justify; background: #f9f9f9; padding: 20px; border-radius: 15px; border-right: 5px solid var(--accent); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6; }
     </style>
 </head>
 <body>
 
 <div id="custom-splash">
-    <img src="icon.png" class="splash-logo" alt="Research Logo">
-    <div class="splash-title">PSWQ Research Tool</div>
-    <div class="splash-subtitle">Medical Genetics - Master 2 Thesis</div>
-    <div class="splash-loader"></div>
+    <img src="icon.png" class="splash-logo">
+    <div style="font-size: 1.5rem; font-weight: bold;">جامعة الإخوة منتوري - قسنطينة 1</div>
+    <div style="opacity: 0.7;">كلية علوم الطبيعة والحياة</div>
 </div>
 
-<div class="card" id="app-container">
-    <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-ar" onclick="setLanguage('ar')">AR</button>
-        <button class="lang-btn" id="btn-fr" onclick="setLanguage('fr')">FR</button>
-        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+<div class="card fade-in">
+    <div id="step-consent" class="section-ui active-section">
+        <h2 style="color: var(--primary);">استمارة جمع البيانات</h2>
+        <p style="font-weight: bold; color: var(--accent);">دراسة وبائية حول اضطراب القلق العام (TAG)</p>
+        <div class="consent-box">
+            سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على الإجابة على أسئلتنا؟
+        </div>
+        <button class="opt-btn" onclick="startSurvey()">✅ نعم، أوافق على المشاركة</button>
+        <button class="opt-btn" onclick="location.reload()" style="color: var(--danger);">❌ لا، اعتذار</button>
     </div>
 
-    <button id="install-btn">تثبيت التطبيق على الهاتف 📱</button>
-
-    <div id="cooldown-area">
-        <h2 id="wait-msg" style="color: var(--danger); margin-top: 50px;"></h2>
-        <div id="big-timer" style="font-size: 3.5rem; font-weight: 800; margin: 20px 0; color: var(--primary);">00:00</div>
-        <p id="wait-submsg" style="color: #666; margin-bottom: 30px;"></p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
-        <button class="btn-pdf" id="cooldown-pdf-btn" onclick="protectedDownload()"></button>
+    <div id="step-bio" class="section-ui">
+        <div class="progress-bar"><div style="width: 25%;" id="fill"></div></div>
+        <h3 style="color: var(--primary);">القسم الأول: الخصائص السوسيوديموغرافية</h3>
+        <input type="number" id="in-age" placeholder="السن (سنة)">
+        <select id="in-gender">
+            <option value="">الجنس</option>
+            <option value="ذكر">ذكر</option>
+            <option value="أنثى">أنثى</option>
+        </select>
+        <select id="in-status">
+            <option value="">الحالة العائلية</option>
+            <option value="أعزب/عزباء">أعزب/عزباء</option>
+            <option value="متزوج(ة)">متزوج(ة)</option>
+            <option value="مطلق(ة)">مطلق(ة)</option>
+            <option value="أرمل(ة)">أرمل(ة)</option>
+        </select>
+        <select id="in-edu">
+            <option value="">المستوى التعليمي</option>
+            <option value="أمي">أمي</option>
+            <option value="ابتدائي/متوسط">ابتدائي/متوسط</option>
+            <option value="ثانوي">ثانوي</option>
+            <option value="جامعي">جامعي</option>
+        </select>
+        <button class="btn-next" onclick="goToStep('step-health')">التالي</button>
     </div>
 
-    <div id="quiz-part">
-        <div class="progress-bar"><div id="fill"></div></div>
-        <div id="q-text" class="question-box"></div>
-        <div class="options-grid" id="options-container"></div>
+    <div id="step-health" class="section-ui">
+        <div class="progress-bar"><div style="width: 50%;" id="fill"></div></div>
+        <h3 style="color: var(--primary);">القسم الثاني والثالث: نمط الحياة والهشاشة</h3>
+        <select id="in-sleep">
+            <option value="">تقييم جودة النوم</option>
+            <option value="جيدة">جيدة</option>
+            <option value="متوسطة">متوسطة</option>
+            <option value="رديئة">رديئة</option>
+        </select>
+        <select id="in-chronic">
+            <option value="">هل تعاني من مرض مزمن؟</option>
+            <option value="لا">لا</option>
+            <option value="نعم">نعم</option>
+        </select>
+        <select id="in-family">
+            <option value="">سوابق عائلية لاضطراب القلق؟</option>
+            <option value="لا">لا</option>
+            <option value="نعم (درجة أولى)">نعم (درجة أولى)</option>
+            <option value="نعم (درجة ثانية)">نعم (درجة ثانية)</option>
+        </select>
+        <button class="btn-next" onclick="goToStep('step-gad')">بدء تقييم GAD-7</button>
     </div>
 
-    <div id="result-area">
-        <h2 id="res-title" style="color: var(--primary);"></h2>
+    <div id="step-gad" class="section-ui">
+        <div class="progress-bar"><div id="gad-fill" style="width: 0%;"></div></div>
+        <div id="q-text" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; color: var(--primary);"></div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="step-results" class="section-ui">
+        <h2 style="color: var(--primary);">نتائج الفحص السيكومتري</h2>
         <div style="width: 220px; margin: 0 auto; position: relative;">
             <canvas id="myChart"></canvas>
-            <div id="score-num" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 800;">0</div>
+            <div id="score-num" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; font-weight: 800;">0</div>
         </div>
         <div id="status-text" style="font-weight: bold; font-size: 1.4rem; margin: 20px 0;"></div>
-        <button class="btn-pdf" id="pdf-btn" onclick="downloadOfficialReport()"></button>
-        <div id="footer-cooldown" style="margin-top: 20px; font-size: 0.9rem; color: #7f8c8d;"></div>
+        <button class="btn-next" style="background: var(--success);" onclick="downloadReport()">تحميل التقرير PDF 📄</button>
     </div>
 </div>
 
-<div id="report-template">
-    <div style="text-align: center; margin-bottom: 20px;">
-        <img src="icon.png" style="width: 80px; height: 80px; border-radius: 15px;">
+<div id="report-template" style="display:none; padding: 40px; font-family: Arial;">
+    <div style="text-align: center; border-bottom: 3px solid #2c3e50; padding-bottom: 10px;">
+        <h2>الجمهورية الجزائرية الديمقراطية الشعبية</h2>
+        <h3>جامعة قسنطينة 1 - كلية علوم الطبيعة والحياة</h3>
+        <img src="icon.png" style="width: 60px;">
     </div>
-    <div class="pdf-header">
-        <h1 id="pdf-title-main" style="margin:0 0 10px 0;"></h1>
-        <h3 id="pdf-subtitle" style="margin:0;"></h3>
+    <div style="margin-top: 20px;">
+        <p><strong>الموضوع:</strong> انتشار العوامل المرتبطة باضطراب القلق العام (TAG)</p>
+        <p><strong>بيانات المشارك:</strong> <span id="pdf-info"></span></p>
+        <hr>
+        <h2 style="text-align: center;">النتيجة الكلية (GAD-7): <span id="pdf-score"></span> / 21</h2>
+        <h3 style="text-align: center; color: #e74c3c;" id="pdf-status"></h3>
     </div>
-
-    <table style="width: 100%; margin-bottom: 20px; font-size: 0.95rem;">
-        <tr>
-            <td>
-                <p style="margin:5px 0;"><strong><span id="pdf-date-lbl"></span></strong> <span class="force-ltr" id="pdf-date"></span></p>
-                <p style="margin:5px 0;"><strong><span id="pdf-time-lbl"></span></strong> <span class="force-ltr" id="pdf-time"></span></p>
-            </td>
-            <td style="text-align: inherit;">
-                <p style="margin:5px 0;"><strong><span id="pdf-author-lbl"></span></strong></p>
-                <p style="margin:5px 0;" id="pdf-author-sub"></p>
-            </td>
-        </tr>
-    </table>
-
-    <div class="score-box-container">
-        <div class="score-line">
-            <span id="pdf-res-lbl"></span> <span class="force-ltr" id="pdf-score-val-total"></span>
-        </div>
-        <div id="pdf-status-val" class="status-line"></div>
-    </div>
-
-    <div class="section-title" id="pdf-sec1-title"></div>
-    <table class="stats-table">
-        <thead><tr style="background: #f1f1f1;"><th id="th-dim"></th><th id="th-score"></th><th id="th-interp"></th></tr></thead>
-        <tbody>
-            <tr><td id="dim-worry"></td><td style="text-align: center;"><span class="force-ltr" id="score-worry"></span></td><td id="interp-worry" style="font-size: 0.85rem;"></td></tr>
-            <tr><td id="dim-control"></td><td style="text-align: center;"><span class="force-ltr" id="score-control"></span></td><td id="interp-control" style="font-size: 0.85rem;"></td></tr>
-        </tbody>
-    </table>
-
-    <div class="section-title" id="pdf-sec2-title"></div>
-    <div id="pdf-recs-box" style="padding: 15px; border: 1px dashed var(--primary); border-radius: 12px; background: #fffdf9; line-height: 1.5;"></div>
-
-    <div style="margin-top: 40px; text-align: center; font-size: 0.8rem; color: #95a5a6; border-top: 1px solid #eee; padding-top: 10px;">
-        <p id="pdf-footer" style="margin:0;"></p>
+    <div style="margin-top: 30px; font-size: 0.9rem;">
+        <p><strong>ملاحظة للباحث:</strong></p>
+        <ul>
+            <li>0-4: لا يوجد قلق</li>
+            <li>5-9: قلق خفيف</li>
+            <li>10-14: قلق متوسط (حالة محتملة)</li>
+            <li>15-21: قلق حاد (حالة محتملة)</li>
+        </ul>
     </div>
 </div>
 
 <script>
-    // 1. تسجيل الـ Service Worker (هام للتثبيت)
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
-    }
+    const GAD_QUESTIONS = [
+        "الشعور بالعصبية أو التوتر أو الانفعال الشديد",
+        "عدم القدرة على التوقف عن القلق أو السيطرة عليه",
+        "القلق المفرط بشأن أشياء مختلفة",
+        "صعوبة في الاسترخاء",
+        "اضطراب حركي يمنع الهدوء (عدم القدرة على الجلوس ساكناً)",
+        "سرعة الغضب أو الانفعال",
+        "الشعور بالخوف كأن مكروهاً سيحدث"
+    ];
 
-    // 2. منطق زر التثبيت
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        document.getElementById('install-btn').style.display = 'block';
-    });
-
-    document.getElementById('install-btn').addEventListener('click', () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choice) => {
-                if (choice.outcome === 'accepted') document.getElementById('install-btn').style.display = 'none';
-            });
-        }
-    });
-
-    // 3. شاشة الدخول
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            const splash = document.getElementById('custom-splash');
-            splash.style.opacity = '0';
-            setTimeout(() => splash.style.visibility = 'hidden', 800);
-        }, 2500);
-        window.addEventListener('online', syncOfflineData);
-    });
-
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyfdap0UDtmqmIF5W80HcDCm1R6ZzsZgcZ_opb396sKbW4_zkqe3sAr9PEJofQZ6HID4w/exec';
-    const COOLDOWN_MS = 2 * 60 * 1000;
-    const RESEARCHER_CODE = "1999";
+    const GAD_OPTS = ["أبداً (0)", "عدة أيام (1)", "أكثر من نصف الوقت (2)", "كل يوم تقريباً (3)"];
     
-    const i18n = {
-        ar: {
-            dir: "rtl", resTitle: "نتائج الفحص السيكومتري", pdfBtn: "تحميل التقرير المطور PDF 📄",
-            waitTitle: "يرجى الانتظار", waitSub: "لا يمكنك إعادة الاختبار قبل مرور دقيقتين لضمان الدقة.",
-            lastResBtn: "تحميل نتيجة الفحص السابق (محمي) 📄", cooldownMsg: "إعادة الاختبار متاحة بعد: ", 
-            statusLow: "قلق منخفض - طبيعي", statusMed: "قلق متوسط - درجة حرجة", statusHigh: "قلق حاد - مؤشر TAG",
-            pdfMain: "تقرير التحليل السيكومتري التفصيلي", pdfSub: "مذكرة تخرج: علم الوراثة الطبية - ماستر 2",
-            pdfDate: "التاريخ:", pdfTime: "الوقت:", pdfAuthor: "الباحث:", pdfAuthorSub: "طالب ماستر 2 - جامعة قسنطينة",
-            pdfRes: "النتيجة الكلية:", sec1: "1. تحليل الأبعاد الفرعية", sec2: "2. التوصيات المخصصة",
-            thDim: "البعد المقاس", thScore: "الدرجة", thInterp: "التفسير",
-            dimW: "الانخراط في القلق", dimC: "القدرة على ضبط النفس",
-            intW: "يقيس شدة وتواتر الأفكار المقلقة.", intC: "يقيس الكفاءة في ضبط القلق.",
-            footer: "تم استخراج التقرير آلياً لدعم البحث العلمي الميداني.",
-            recLow: "• حالتك طبيعية. استمر في الحفاظ على نمط حياة متوازن.",
-            recMed: "• نتيجتك في منطقة حرجة. ينصح بممارسة تمارين الاسترخاء.",
-            recHigh: "• مستوى قلق مرتفع جداً. ينصح بمراجعة أخصائي نفساني.",
-            opts: ["لا ينطبق إطلاقاً", "ينطبق قليلاً", "متوسط", "ينطبق كثيراً", "ينطبق تماماً"],
-            questions: ["إذا لم يكن لدي الوقت الكافي لإنهاء كل شيء، فأنا لا أقلق بشأن ذلك.", "قلقي يطغى عليّ ويغلبني.", "لا أميل للقلق بشأن الأشياء.", "الكثير من المواقف تجعلني أقلق.", "أعلم أنه لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "عندما أكون تحت ضغط، أقلق كثيراً.", "أنا دائماً قلق بشأن شيء ما.", "أجد من السهل طرد الأفكار المقلقة من ذهني.", "بمجرد انتهائي من مهمة، أبدأ بالقلق بشأن المهام الأخرى.", "أنا لا أقلق أبداً بشأن أي شيء.", "عندما لا يكون هناك شيء يمكنني فعله حيال أمر ما، فإنني لا أقلق.", "لقد كنت شخصاً قلقاً طوال حياتي.", "ألاحظ أنني أقلق باستمرار بشأن الأشياء.", "بمجرد أن أبدأ في القلق، لا أستطيع التوقف.", "أنا أقلق طوال الوقت.", "أظل قلقاً بشأن مشاريعي حتى يتم الانتهاء منها."]
-        },
-        fr: {
-            dir: "ltr", resTitle: "Résultats", pdfBtn: "Télécharger le PDF 📄",
-            waitTitle: "Veuillez patienter", waitSub: "Veuillez attendre 2 minutes pour la précision scientifique.",
-            lastResBtn: "Télécharger le résultat précédent 📄", cooldownMsg: "Réessai dans : ",
-            statusLow: "Anxiété Faible - Normal", statusMed: "Anxiété Modérée - Critique", statusHigh: "Anxiété Sévère - Risque TAG",
-            pdfMain: "Rapport Psychométrique Détaillé", pdfSub: "Master : Génétique Médicale - M2",
-            pdfDate: "Date :", pdfTime: "Heure :", pdfAuthor: "Chercheur :", pdfAuthorSub: "M2 - Univ. Constantine",
-            pdfRes: "Score Total :", sec1: "1. Analyse des Dimensions", sec2: "2. Recommandations",
-            thDim: "Dimension", thScore: "Score", thInterp: "Interprétation",
-            dimW: "Engagement", dimC: "Contrôle",
-            intW: "Mesure l'intensité des pensées intrusives.", intC: "Capacité à stopper le flux d'anxiété.",
-            footer: "Document généré pour la recherche scientifique.",
-            recLow: "• Niveau normal. Maintenez votre équilibre actuel.",
-            recMed: "• Score critique. Pratiquez la relaxation.",
-            recHigh: "• Anxiété élevée. Consultation spécialisée recommandée.",
-            opts: ["Pas du tout", "Un peu", "Moyen", "Très", "Tout à fait"],
-            questions: ["Si je n'ai pas assez de temps pour tout faire, je ne m'en fais pas.", "Mes soucis m'envahissent.", "Je ne م'en fais pas pour des choses sans importance.", "Beaucoup de situations me rendent inquiet.", "Je sais que je ne بدأت لا ينبغي عليّ القلق، لكنني لا أستطيع منع نفسي.", "Quand je suis sous pression, je m'en fais beaucoup.", "Je m'en fais tout le temps.", "Je trouve difficile de chasser une inquiétude de mon esprit.", "Dès que j'ai terminé une tâche, je commence à m'en faire pour d'autres choses.", "Je ne م'en fais jamais pour quoi que ce soit.", "Quand il n'y a rien que je puisse faire, je ne م'en fais pas.", "J'ايت été une personne qui se fait du souci toute sa vie.", "Je remarque que je م'en fais pour des choses.", "Une fois que je commence à مهارة، لا يمكنني التوقف.", "Je me fais du souci tout le temps.", "Je م'en fais pour mes projets jusqu'à ce qu'ils soient terminés."]
-        },
-        en: {
-            dir: "ltr", resTitle: "Results", pdfBtn: "Download PDF 📄",
-            waitTitle: "Please Wait", waitSub: "Wait 2 minutes to ensure scientific accuracy.",
-            lastResBtn: "Download previous result 📄", cooldownMsg: "Retry in: ",
-            statusLow: "Low Anxiety - Normal", statusMed: "Moderate Anxiety - Critical", statusHigh: "Severe Anxiety - GAD Risk",
-            pdfMain: "Detailed Psychometric Report", pdfSub: "Master Thesis: Medical Genetics - M2",
-            pdfDate: "Date:", pdfTime: "Time:", pdfAuthor: "Researcher:", pdfAuthorSub: "M2 Student - Constantine University",
-            pdfRes: "Total Score:", sec1: "1. Dimensional Analysis", sec2: "2. Recommendations",
-            thDim: "Dimension", thScore: "Score", thInterp: "Interpretation",
-            dimW: "Worry Engagement", dimC: "Worry Control",
-            intW: "Frequency of intrusive thoughts.", intC: "Efficiency in stopping worry flow.",
-            footer: "Auto-generated report for research.",
-            recLow: "• Level within normal range.",
-            recMed: "• Score in critical zone. Relaxation advised.",
-            recHigh: "• High anxiety level. Consult a professional.",
-            opts: ["Not at all", "Somewhat", "Moderately", "Very", "Entirely"],
-            questions: ["If I don't have enough time to do everything, I don't worry about it.", "My worries overwhelm me.", "I don't tend to worry about things.", "Many situations make me worry.", "I know I shouldn't worry, but I just can't help it.", "When I am under pressure, I worry a lot.", "I am always worrying about something.", "I find it easy to dismiss worrisome thoughts.", "As soon as I finish one task, I start to worry about others.", "I never worry about anything.", "When there is nothing I can do about a situation, I don't worry.", "I have been a worrier all my life.", "I notice that I have been worrying about things.", "Once I start worrying, I can't stop.", "I worry all the time.", "I worry about projects until they are all done."]
-        }
-    };
+    let currentQ = 0, totalScore = 0, bioData = {};
 
-    const rev = [1, 3, 8, 10, 11];
-    let currentLang = 'ar', idx = 0, answers = [], finalScore = 0, isFinished = false;
+    function startSurvey() { goToStep('step-bio'); }
 
-    function setLanguage(lang) {
-        currentLang = lang;
-        document.getElementById('html-tag').dir = i18n[lang].dir;
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.id === 'btn-' + lang));
-        if (document.getElementById('cooldown-area').style.display === 'block') {
-            const d = i18n[lang];
-            document.getElementById('wait-msg').innerText = d.waitTitle;
-            document.getElementById('wait-submsg').innerText = d.waitSub;
-            document.getElementById('cooldown-pdf-btn').innerText = d.lastResBtn;
-        }
-        if (!isFinished) render(); else updateResultScreen();
+    function goToStep(stepId) {
+        document.querySelectorAll('.section-ui').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(stepId).classList.add('active-section');
+        if(stepId === 'step-gad') renderQuestion();
     }
 
-    function checkGlobalCooldown() {
-        const lastTaken = localStorage.getItem('pswq_last_taken');
-        if (lastTaken) {
-            const diff = Date.now() - parseInt(lastTaken);
-            if (diff < COOLDOWN_MS) {
-                document.getElementById('quiz-part').style.display = 'none';
-                document.getElementById('cooldown-area').style.display = 'block';
-                const d = i18n[currentLang];
-                document.getElementById('wait-msg').innerText = d.waitTitle;
-                document.getElementById('wait-submsg').innerText = d.waitSub;
-                document.getElementById('cooldown-pdf-btn').innerText = d.lastResBtn;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function render() {
-        if (checkGlobalCooldown()) return;
-        const d = i18n[currentLang];
-        const quizPart = document.getElementById('quiz-part');
-        quizPart.classList.remove('fade-in');
-        void quizPart.offsetWidth;
-        quizPart.classList.add('fade-in');
-
-        document.getElementById('q-text').innerText = d.questions[idx];
-        document.getElementById('fill').style.width = `${((idx + 1) / 16) * 100}%`;
+    function renderQuestion() {
+        document.getElementById('q-text').innerText = GAD_QUESTIONS[currentQ];
+        document.getElementById('gad-fill').style.width = `${((currentQ + 1) / 7) * 100}%`;
         const container = document.getElementById('options-container');
         container.innerHTML = '';
-        d.opts.forEach((txt, i) => {
+        GAD_OPTS.forEach((txt, i) => {
             const btn = document.createElement('button');
             btn.className = 'opt-btn';
-            btn.innerText = `${i+1} - ${txt}`;
-            btn.onclick = () => handle(i + 1);
+            btn.innerText = txt;
+            btn.onclick = () => handleAnswer(i);
             container.appendChild(btn);
         });
     }
 
-    function handle(val) {
-        answers.push(val);
-        if (++idx < 16) render(); else finish();
+    function handleAnswer(val) {
+        totalScore += val;
+        if(++currentQ < 7) renderQuestion(); 
+        else finishSurvey();
     }
 
-    function finish() {
-        isFinished = true;
-        finalScore = answers.reduce((acc, v, i) => acc + (rev.includes(i + 1) ? (6 - v) : v), 0);
-        localStorage.setItem('pswq_last_taken', Date.now());
-        localStorage.setItem('pswq_answers', JSON.stringify(answers));
-        localStorage.setItem('pswq_score', finalScore);
-        document.getElementById('quiz-part').style.display = 'none';
-        document.getElementById('result-area').style.display = 'block';
-        updateResultScreen();
-        syncWithSheets(finalScore, document.getElementById('status-text').innerText, [...answers]); 
-        drawChart();
-    }
-
-    function syncWithSheets(s, st, ans) {
-        const now = new Date();
-        const payload = { 
-            date: now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear(),
-            time: now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0'),
-            score: s, status: st, answers: JSON.stringify(ans)
+    function finishSurvey() {
+        bioData = {
+            age: document.getElementById('in-age').value,
+            gender: document.getElementById('in-gender').value,
+            status: document.getElementById('in-status').value,
+            edu: document.getElementById('in-edu').value,
+            sleep: document.getElementById('in-sleep').value,
+            chronic: document.getElementById('in-chronic').value,
+            family: document.getElementById('in-family').value
         };
-        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-        .catch(() => {
-            let queue = JSON.parse(localStorage.getItem('sync_queue') || "[]");
-            queue.push(payload);
-            localStorage.setItem('sync_queue', JSON.stringify(queue));
-        });
+        goToStep('step-results');
+        showResults();
     }
 
-    function syncOfflineData() {
-        let queue = JSON.parse(localStorage.getItem('sync_queue') || "[]");
-        if (queue.length > 0) {
-            queue.forEach(p => fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(p) }));
-            localStorage.removeItem('sync_queue');
-        }
-    }
-
-    function updateResultScreen() {
-        const d = i18n[currentLang];
-        document.getElementById('res-title').innerText = d.resTitle;
-        document.getElementById('pdf-btn').innerText = d.pdfBtn;
-        document.getElementById('score-num').innerText = finalScore;
-        let status = d.statusLow, col = "var(--success)";
-        if (finalScore >= 45) { status = d.statusMed; col = "var(--warning)"; }
-        if (finalScore >= 60) { status = d.statusHigh; col = "var(--danger)"; }
-        const statusEl = document.getElementById('status-text');
-        statusEl.innerText = status;
-        statusEl.style.color = col;
+    function showResults() {
+        document.getElementById('score-num').innerText = totalScore;
+        let status = "لا يوجد قلق", col = "var(--success)";
+        if(totalScore >= 5) { status = "قلق خفيف"; col = "#f39c12"; }
+        if(totalScore >= 10) { status = "قلق متوسط (حالة محتملة)"; col = "#e67e22"; }
+        if(totalScore >= 15) { status = "قلق حاد (حالة محتملة)"; col = "var(--danger)"; }
+        
+        const el = document.getElementById('status-text');
+        el.innerText = status; el.style.color = col;
         document.getElementById('score-num').style.color = col;
-        if (window.myDoughnut) {
-            window.myDoughnut.data.datasets[0].backgroundColor = [col, '#eee'];
-            window.myDoughnut.update();
-        }
+        drawChart(col);
     }
 
-    function drawChart() {
-        let col = finalScore < 45 ? "var(--success)" : finalScore < 60 ? "var(--warning)" : "var(--danger)";
-        window.myDoughnut = new Chart(document.getElementById('myChart'), {
-            type: 'doughnut', data: { datasets: [{ data: [finalScore, 80-finalScore], backgroundColor: [col, '#eee'], circumference: 180, rotation: 270, borderWidth:0 }] },
+    function drawChart(col) {
+        new Chart(document.getElementById('myChart'), {
+            type: 'doughnut', data: { datasets: [{ data: [totalScore, 21-totalScore], backgroundColor: [col, '#eee'], circumference: 180, rotation: 270 }] },
             options: { cutout: '80%', plugins: { tooltip: {enabled: false} } }
         });
     }
 
-    setInterval(() => {
-        const lastTaken = localStorage.getItem('pswq_last_taken');
-        if (lastTaken) {
-            const diff = COOLDOWN_MS - (Date.now() - parseInt(lastTaken));
-            if (diff > 0) {
-                const mins = Math.floor(diff / 60000), secs = Math.floor((diff % 60000) / 1000);
-                const timeStr = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                document.getElementById('big-timer').innerText = timeStr;
-                document.getElementById('footer-cooldown').innerText = i18n[currentLang].cooldownMsg + timeStr;
-            } else {
-                if (document.getElementById('cooldown-area').style.display === 'block') location.reload();
-            }
-        }
-    }, 1000);
-
-    function protectedDownload() {
-        let code = prompt(currentLang === 'ar' ? "أدخل كود الباحث للوصول للأرشيف:" : "Enter Researcher Code:");
-        if (code === RESEARCHER_CODE) {
-            downloadOfficialReport();
-        } else {
-            alert(currentLang === 'ar' ? "كود خاطئ!" : "Wrong Code!");
-        }
-    }
-
-    function downloadOfficialReport() {
-        if (answers.length === 0) {
-            answers = JSON.parse(localStorage.getItem('pswq_answers')) || [];
-            finalScore = parseInt(localStorage.getItem('pswq_score')) || 0;
-        }
-        if (answers.length === 0) return alert("لا توجد نتائج سابقة.");
-
-        const d = i18n[currentLang];
-        const now = new Date();
-        let wScore = 0, cScore = 0;
-        answers.forEach((v, i) => { if (rev.includes(i+1)) cScore += (6-v); else wScore += v; });
-
+    function downloadReport() {
+        document.getElementById('pdf-info').innerText = `${bioData.age} سنة | ${bioData.gender} | ${bioData.status} | تعليم: ${bioData.edu} | نوم: ${bioData.sleep} | مرض مزمن: ${bioData.chronic}`;
+        document.getElementById('pdf-score').innerText = totalScore;
+        document.getElementById('pdf-status').innerText = document.getElementById('status-text').innerText;
+        
         const report = document.getElementById('report-template');
-        report.dir = d.dir;
-        document.getElementById('pdf-title-main').innerText = d.pdfMain;
-        document.getElementById('pdf-subtitle').innerText = d.pdfSub;
-        document.getElementById('pdf-date-lbl').innerText = d.pdfDate;
-        document.getElementById('pdf-time-lbl').innerText = d.pdfTime;
-        document.getElementById('pdf-author-lbl').innerText = d.pdfAuthor;
-        document.getElementById('pdf-author-sub').innerText = d.pdfAuthorSub;
-        
-        document.getElementById('pdf-res-lbl').innerText = d.pdfRes;
-        document.getElementById('pdf-score-val-total').innerText = finalScore + " / 80";
-        document.getElementById('pdf-date').innerText = now.getDate() + " / " + (now.getMonth()+1) + " / " + now.getFullYear();
-        document.getElementById('pdf-time').innerText = now.getHours() + " : " + now.getMinutes().toString().padStart(2, '0');
-        
-        let status = d.statusLow, col = "var(--success)";
-        if (finalScore >= 45) { status = d.statusMed; col = "var(--warning)"; }
-        if (finalScore >= 60) { status = d.statusHigh; col = "var(--danger)"; }
-        
-        const statusValEl = document.getElementById('pdf-status-val');
-        statusValEl.innerText = status;
-        statusValEl.style.color = col;
-
-        document.getElementById('pdf-sec1-title').innerText = d.sec1;
-        document.getElementById('th-dim').innerText = d.thDim;
-        document.getElementById('th-score').innerText = d.thScore;
-        document.getElementById('th-interp').innerText = d.thInterp;
-        document.getElementById('dim-worry').innerText = d.dimW;
-        document.getElementById('score-worry').innerText = wScore;
-        document.getElementById('interp-worry').innerText = d.intW;
-        document.getElementById('dim-control').innerText = d.dimC;
-        document.getElementById('score-control').innerText = cScore;
-        document.getElementById('interp-control').innerText = d.intC;
-        document.getElementById('pdf-sec2-title').innerText = d.sec2;
-        document.getElementById('pdf-recs-box').innerHTML = (finalScore < 45) ? d.recLow : (finalScore < 60) ? d.recMed : d.recHigh;
-        document.getElementById('pdf-footer').innerText = d.footer;
-        
         report.style.display = 'block';
-        html2pdf().set({ 
-            margin: 0.5, 
-            filename: `PSWQ_Final_Report.pdf`, 
-            html2canvas: { scale: 3, useCORS: true }, 
-            jsPDF: { unit: 'in', format: 'a4' } 
-        })
-        .from(report).save().then(() => report.style.display = 'none');
+        html2pdf().from(report).save('TAG_Study_Report.pdf').then(() => report.style.display = 'none');
     }
-    setLanguage('ar');
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('custom-splash');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.visibility = 'hidden', 800);
+        }, 2000);
+    });
 </script>
 </body>
 </html>
