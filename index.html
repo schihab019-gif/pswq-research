@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAD-7 Clinical Research Tool</title>
+    <title>GAD-7 Clinical Research - Constantine 1</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,22 +17,18 @@
             --success: #27ae60; --warning: #f39c12; --danger: #e74c3c;
         }
 
-        /* شاشة الدخول */
         #custom-splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--primary); display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 99999;
             color: white; transition: opacity 0.8s ease, visibility 0.8s;
         }
-        .splash-logo { width: 140px; height: 140px; border-radius: 30px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        .splash-loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .splash-logo { width: 130px; height: 130px; border-radius: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .splash-loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .fade-in { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; position: relative; border: 1px solid #eee; overflow-y: auto; max-height: 95vh; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; width: 100%; max-width: 650px; padding: 30px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; position: relative; overflow-y: auto; max-height: 95vh; border: 1px solid #eee; }
         
         .lang-switcher { position: absolute; top: 15px; left: 15px; display: flex; gap: 5px; z-index: 10; }
         .lang-btn { background: #f0f0f0; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
@@ -41,35 +37,34 @@
         .section-ui { display: none; }
         .active-section { display: block; }
 
-        .form-group { text-align: right; margin-bottom: 15px; }
+        .form-group { text-align: right; margin-bottom: 12px; }
         [dir="ltr"] .form-group { text-align: left; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.95rem; }
+        label { display: block; font-weight: bold; margin-bottom: 6px; color: var(--primary); font-size: 0.9rem; }
 
-        input, select { width: 100%; padding: 12px; border: 2px solid #edf2f7; border-radius: 12px; font-family: inherit; font-size: 1rem; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #edf2f7; border-radius: 14px; font-family: inherit; font-size: 1rem; box-sizing: border-box; outline: none; background: #fcfdfe; transition: 0.3s; }
         input:focus, select:focus { border-color: var(--accent); background: white; }
         
-        .opt-btn { background: #fff; border: 2px solid #edf2f7; padding: 16px; border-radius: 18px; cursor: pointer; font-size: 1.05rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 10px; font-weight: 500; display: block; }
+        .opt-btn { background: #fff; border: 2px solid #edf2f7; padding: 16px; border-radius: 18px; cursor: pointer; font-size: 1.1rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 10px; font-weight: 500; display: block; }
         .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; transform: translateY(-2px); }
 
         .btn-next { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 18px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); }
-        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-bottom: 25px; overflow: hidden; }
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
         .fill-inner { height: 100%; background: var(--accent); width: 0%; transition: 0.5s; }
 
-        /* نتائج احترافية */
-        .score-circle { width: 150px; height: 150px; border-radius: 50%; border: 10px solid #eee; margin: 0 auto 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #fcfdfe; }
-        .score-val { font-size: 3.5rem; font-weight: 800; line-height: 1; }
         .result-box { background: #f8f9fb; border-radius: 25px; padding: 25px; border: 1px solid #edf2f7; margin-top: 20px; }
+        .score-circle { width: 140px; height: 140px; border-radius: 50%; border: 10px solid #eee; margin: 0 auto 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; }
+        .score-val { font-size: 3.5rem; font-weight: 800; line-height: 1; }
 
-        #report-template { display:none; padding: 40px; background: white; }
+        #report-template { display:none; padding: 40px; background: white; border: 1px solid #ccc; }
     </style>
 </head>
 <body>
 
 <div id="custom-splash">
     <img src="icon.png" class="splash-logo">
-    <div style="font-size: 1.4rem; font-weight: bold; text-align: center; padding:0 20px;" id="sp-uni">جامعة الإخوة منتوري - قسنطينة 1</div>
-    <div style="opacity: 0.8; margin-top: 5px;" id="sp-fac">كلية علوم الطبيعة والحياة</div>
-    <div class="splash-loader" style="margin-top: 35px;"></div>
+    <div id="sp-uni" style="font-size: 1.3rem; font-weight: bold; text-align: center; padding:0 20px;">جامعة الإخوة منتوري - قسنطينة 1</div>
+    <div id="sp-fac" style="opacity: 0.8; margin-top: 5px;">كلية علوم الطبيعة والحياة</div>
+    <div class="splash-loader" style="margin-top: 30px;"></div>
 </div>
 
 <div class="card fade-in">
@@ -78,65 +73,78 @@
         <button class="lang-btn" id="btn-fr" onclick="setLanguage('fr')">FR</button>
     </div>
 
+    <!-- القسم 0: الموافقة -->
     <div id="step-consent" class="section-ui active-section">
         <h2 id="t-consent-head">استمارة جمع البيانات</h2>
         <p style="font-weight: bold; color: var(--accent);" id="t-consent-sub">دراسة وبائية حول اضطراب القلق العام (TAG)</p>
-        <div style="text-align: justify; background: #f9f9f9; padding: 20px; border-radius: 15px; border-right: 5px solid var(--accent); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6;" id="t-consent-body">
-            سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على المشاركة؟
+        <div style="text-align: justify; background: #f9f9f9; padding: 15px; border-radius: 15px; border-right: 5px solid var(--accent); margin-bottom: 20px; font-size: 0.9rem; line-height: 1.6;" id="t-consent-body">
+            سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على المشاركة؟[cite: 2]
         </div>
         <button class="opt-btn" onclick="goToStep('step-bio')">✅ <span id="t-consent-yes">نعم، أوافق على المشاركة</span></button>
         <button class="opt-btn" onclick="location.reload()" style="color: var(--danger);">❌ <span id="t-consent-no">لا، اعتذار</span></button>
     </div>
 
+    <!-- القسم 1: سوسيوديموغرافي -->
     <div id="step-bio" class="section-ui">
-        <div class="progress-bar"><div class="fill-inner" style="width: 25%;"></div></div>
+        <div class="progress-bar"><div class="fill-inner" style="width: 20%;"></div></div>
         <h3 id="t-sec1-head">القسم الأول: الخصائص السوسيوديموغرافية</h3>
         <div class="form-group"><label id="l-age">1. السن:</label><input type="number" id="in-age" placeholder="25"></div>
         <div class="form-group"><label id="l-gender">2. الجنس:</label><select id="in-gender"><option value="ذكر" id="o-m">ذكر</option><option value="أنثى" id="o-f">أنثى</option></select></div>
         <div class="form-group"><label id="l-status">3. الحالة العائلية:</label><select id="in-status"><option value="أعزب" id="o-s">أعزب/عزباء</option><option value="متزوج" id="o-mr">متزوج(ة)</option><option value="مطلق" id="o-d">مطلق(ة)</option><option value="أرمل" id="o-w">أرمل(ة)</option></select></div>
-        <div class="form-group"><label id="l-edu">4. المستوى التعليمي:</label><select id="in-edu"><option value="أمي" id="o-e1">أمي</option><option value="ابتدائي" id="o-e2">ابتدائي/متوسط</option><option value="ثانوي" id="o-e3">ثانوي</option><option value="جامعي" id="o-e4">جامعي</option></select></div>
+        <div class="form-group"><label id="l-edu">4. المستوى التعليمي:</label><select id="in-edu"><option value="أمي" id="o-e1">أمي</option><option value="ابتدائي/متوسط" id="o-e2">ابتدائي/متوسط</option><option value="ثانوي" id="o-e3">ثانوي</option><option value="جامعي" id="o-e4">جامعي</option></select></div>
         <div class="form-group"><label id="l-job">5. الوضعية المهنية:</label><select id="in-job"><option value="عامل" id="o-j1">عامل</option><option value="بطال" id="o-j2">بطال</option><option value="طالب" id="o-j3">طالب</option><option value="متقاعد" id="o-j4">متقاعد</option><option value="بدون عمل" id="o-j5">بدون عمل</option></select></div>
-        <div class="form-group"><label id="l-eco">6. المستوى الاقتصادي:</label><select id="in-eco"><option value="منخفض" id="o-ec1">منخفض</option><option value="متوسط" id="o-ec2">متوسط</option><option value="مرتفع" id="o-ec3">مرتفع</option></select></div>
-        <button class="btn-next" onclick="goToStep('step-lifestyle')" id="t-next">التالي</button>
+        <div class="form-group"><label id="l-eco">6. المستوى الاقتصادي المدرك:</label><select id="in-eco"><option value="منخفض" id="o-ec1">منخفض</option><option value="متوسط" id="o-ec2">متوسط</option><option value="مرتفع" id="o-ec3">مرتفع</option></select></div>
+        <button class="btn-next" onclick="goToStep('step-health')" id="t-next">التالي</button>
     </div>
 
-    <div id="step-lifestyle" class="section-ui">
-        <div class="progress-bar"><div class="fill-inner" style="width: 50%;"></div></div>
+    <!-- القسم 2: نمط الحياة -->
+    <div id="step-health" class="section-ui">
+        <div class="progress-bar"><div class="fill-inner" style="width: 40%;"></div></div>
         <h3 id="t-sec2-head">القسم الثاني: نمط الحياة والسوابق</h3>
         <div class="form-group"><label id="l-sleep">7. جودة النوم:</label><select id="in-sleep"><option value="جيدة" id="o-sl1">جيدة</option><option value="متوسطة" id="o-sl2">متوسطة</option><option value="رديئة" id="o-sl3">رديئة</option></select></div>
-        <div class="form-group"><label id="l-sub">8. استهلاك المواد:</label><select id="in-sub"><option value="لا يوجد" id="o-sb1">لا يوجد</option><option value="تبغ" id="o-sb2">تبغ/شيشة</option><option value="كافيين" id="o-sb3">كافيين مفرط</option><option value="مهدئات" id="o-sb4">تداوي ذاتي</option></select></div>
-        <div class="form-group"><label id="l-chr">9. مرض مزمن؟</label><select id="in-chr"><option value="لا" id="o-n1">لا</option><option value="نعم" id="o-y1">نعم</option></select></div>
-        <div class="form-group"><label id="l-str">10. أحداث ضاغطة:</label><select id="in-str"><option value="لا توجد" id="o-st1">لا توجد</option><option value="فقدان قريب" id="o-st2">فقدان قريب</option><option value="فقدان عمل" id="o-st3">فقدان عمل</option><option value="نزاعات" id="o-st4">نزاعات</option><option value="مالية" id="o-st5">مشاكل مالية</option></select></div>
-        <button class="btn-next" onclick="goToStep('step-family')" id="t-next2">التالي</button>
+        <div class="form-group"><label id="l-sub">8. استهلاك المواد:</label><select id="in-sub"><option value="لا يوجد" id="o-sb1">لا يوجد</option><option value="تبغ/شيشة" id="o-sb2">التبغ/الشيشة</option><option value="كافيين" id="o-sb3">كافيين مفرط</option><option value="مهدئات" id="o-sb4">تداوي ذاتي</option></select></div>
+        <div class="form-group"><label id="l-chr">9. هل تعاني من مرض مزمن؟</label><select id="in-chr"><option value="لا" id="o-n1">لا</option><option value="نعم" id="o-y1">نعم</option></select></div>
+        <div class="form-group"><label id="l-str">10. أحداث ضاغطة (12 شهر):</label><select id="in-str"><option value="لا توجد" id="o-st1">لا توجد</option><option value="فقدان قريب" id="o-st2">فقدان قريب</option><option value="فقدان عمل" id="o-st3">فقدان عمل</option><option value="نزاعات" id="o-st4">نزاعات عائلية</option><option value="مالية" id="o-st5">مشاكل مالية</option></select></div>
+        <button class="btn-next" onclick="goToStep('step-vulnerability')" id="t-next2">التالي</button>
     </div>
 
-    <div id="step-family" class="section-ui">
-        <div class="progress-bar"><div class="fill-inner" style="width: 75%;"></div></div>
+    <!-- القسم 3: الهشاشة -->
+    <div id="step-vulnerability" class="section-ui">
+        <div class="progress-bar"><div class="fill-inner" style="width: 60%;"></div></div>
         <h3 id="t-sec3-head">القسم الثالث: السوابق العائلية</h3>
-        <div class="form-group"><label id="l-fa">11. سوابق قلق عائلية:</label><select id="in-fa"><option value="لا" id="o-fa0">لا</option><option value="درجة 1" id="o-fa1">درجة أولى</option><option value="درجة 2" id="o-fa2">درجة ثانية</option></select></div>
-        <div class="form-group"><label id="l-fd">12. سوابق اكتئاب عائلية:</label><select id="in-fd"><option value="لا" id="o-fd0">لا</option><option value="درجة 1" id="o-fd1">درجة أولى</option><option value="درجة 2" id="o-fd2">درجة ثانية</option></select></div>
+        <div class="form-group"><label id="l-fa">11. سوابق قلق عائلية:</label><select id="in-fa"><option value="لا" id="o-fa0">لا</option><option value="درجة 1" id="o-fa1">نعم (درجة أولى)</option><option value="درجة 2" id="o-fa2">نعم (درجة ثانية)</option></select></div>
+        <div class="form-group"><label id="l-fd">12. سوابق اكتئاب عائلية:</label><select id="in-fd"><option value="لا" id="o-fd0">لا</option><option value="درجة 1" id="o-fd1">نعم (درجة أولى)</option><option value="درجة 2" id="o-fd2">نعم (درجة ثانية)</option></select></div>
         <div class="form-group"><label id="l-ps">13. متابعة عقلية؟</label><select id="in-ps"><option value="لا" id="o-ps0">لا</option><option value="نعم" id="o-ps1">نعم</option></select></div>
         <button class="btn-next" onclick="goToStep('step-gad')" id="t-start-gad">بدء تقييم GAD-7</button>
     </div>
 
+    <!-- القسم 4: GAD-7 -->
     <div id="step-gad" class="section-ui">
         <div class="progress-bar"><div id="gad-fill" class="fill-inner"></div></div>
         <div id="q-text" style="font-size: 1.25rem; font-weight: bold; margin-bottom: 25px; line-height: 1.5; color: var(--primary);"></div>
         <div id="options-container"></div>
     </div>
 
+    <!-- القسم 5: النتائج -->
     <div id="step-results" class="section-ui">
         <h2 id="t-res-head">نتائج التقييم العيادي</h2>
         <div class="result-box">
-            <div class="score-circle" id="circle-box"><span class="score-val" id="score-num">0</span><span id="t-of-21">من 21</span></div>
+            <div class="score-circle" id="circle-box"><span class="score-val" id="score-num">0</span><span id="t-of-21" style="font-weight:bold;">/ 21</span></div>
             <div id="status-text" style="font-weight: 800; font-size: 1.6rem;"></div>
         </div>
-        <button class="btn-next" style="background: var(--success);" onclick="downloadReport()" id="t-pdf">تحميل التقرير الطبي PDF 📄</button>
+        <button class="btn-next" style="background: var(--success);" onclick="downloadReport()" id="t-pdf">تحميل التقرير المطور PDF 📄</button>
     </div>
 </div>
 
+<div id="report-template">
+    <h2 style="text-align:center">جامعة الإخوة منتوري - قسنطينة 1</h2>
+    <h3 style="text-align:center">تقرير دراسة اضطراب القلق العام (TAG)</h3>
+    <hr>
+    <div id="pdf-content" style="line-height:1.6"></div>
+</div>
+
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxnhz3rMA_1uo4DuPcaZbcdn9WfHD5I730CDhT0kbX2_UUlJgoPxnuZ48AMqg3S67fDvA/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbvxVZ1s9Jdu6v2cYhJe-_Y8ydIWSUi-lx40kC9lWHobS9yWTDiRSsYnZ9l8USSMWKy/exec';
     
     const i18n = {
         ar: {
@@ -145,10 +153,10 @@
             opts: ["أبداً (0)", "عدة أيام (1)", "أكثر من نصف الوقت (2)", "كل يوم تقريباً (3)"],
             status: ["لا يوجد قلق عيادي", "قلق خفيف", "قلق متوسط (حالة محتملة)", "قلق حاد (حالة محتملة)"],
             ui: {
-                "t-consent-head": "استمارة جمع البيانات", "t-consent-sub": "دراسة وبائية حول اضطراب القلق العام (TAG)", "t-consent-yes": "نعم، أوافق", "t-consent-no": "لا، اعتذار", "t-consent-body": "سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط.",
+                "t-consent-head": "استمارة جمع البيانات", "t-consent-sub": "دراسة وبائية حول اضطراب القلق العام (TAG)", "t-consent-yes": "نعم، أوافق", "t-consent-no": "لا، اعتذار", "t-consent-body": "سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على المشاركة؟[cite: 2]",
                 "t-sec1-head": "القسم الأول: الخصائص السوسيوديموغرافية", "l-age": "1. السن:", "l-gender": "2. الجنس:", "o-m": "ذكر", "o-f": "أنثى", "l-status": "3. الحالة العائلية:", "o-s": "أعزب/عزباء", "o-mr": "متزوج(ة)", "o-d": "مطلق(ة)", "o-w": "أرمل(ة)", "l-edu": "4. المستوى التعليمي:", "o-e1": "أمي", "o-e2": "ابتدائي/متوسط", "o-e3": "ثانوي", "o-e4": "جامعي", "l-job": "5. الوضعية المهنية:", "o-j1": "عامل", "o-j2": "بطال", "o-j3": "طالب", "o-j4": "متقاعد", "o-j5": "بدون عمل", "l-eco": "6. المستوى الاقتصادي:", "o-ec1": "منخفض", "o-ec2": "متوسط", "o-ec3": "مرتفع", "t-next": "التالي",
                 "t-sec2-head": "القسم الثاني: نمط الحياة والسوابق", "l-sleep": "7. جودة النوم:", "o-sl1": "جيدة", "o-sl2": "متوسطة", "o-sl3": "رديئة", "l-sub": "8. استهلاك المواد:", "o-sb1": "لا يوجد", "o-sb2": "تبغ/شيشة", "o-sb3": "كافيين مفرط", "o-sb4": "تداوي ذاتي", "l-chr": "9. مرض مزمن؟", "o-n1": "لا", "o-y1": "نعم", "l-str": "10. أحداث ضاغطة:", "o-st1": "لا توجد", "o-st2": "فقدان قريب", "o-st3": "فقدان عمل", "o-st4": "نزاعات", "o-st5": "مالية", "t-next2": "التالي",
-                "t-sec3-head": "القسم الثالث: السوابق العائلية", "l-fa": "11. سوابق قلق عائلية:", "o-fa0": "لا", "o-fa1": "درجة أولى", "o-fa2": "درجة ثانية", "l-fd": "12. سوابق اكتئاب عائلية:", "o-fd0": "لا", "o-fd1": "درجة أولى", "o-fd2": "درجة ثانية", "l-ps": "13. متابعة عقلية؟", "o-ps0": "لا", "o-ps1": "نعم", "t-start-gad": "بدء تقييم GAD-7", "t-res-head": "نتائج التقييم العيادي", "t-of-21": "من 21", "t-pdf": "تحميل التقرير الطبي الكامل PDF 📄", "sp-uni": "جامعة الإخوة منتوري - قسنطينة 1", "sp-fac": "كلية علوم الطبيعة والحياة"
+                "t-sec3-head": "القسم الثالث: السوابق العائلية", "l-fa": "11. سوابق قلق عائلية:", "o-fa0": "لا", "o-fa1": "درجة أولى", "o-fa2": "درجة ثانية", "l-fd": "12. سوابق اكتئاب عائلية:", "o-fd0": "لا", "o-fd1": "درجة أولى", "o-fd2": "درجة ثانية", "l-ps": "13. متابعة عقلية؟", "o-ps0": "لا", "o-ps1": "نعم", "t-start-gad": "بدء تقييم GAD-7", "t-res-head": "نتائج التقييم العيادي", "t-of-21": "من 21", "t-pdf": "تحميل التقرير المطور PDF 📄", "sp-uni": "جامعة الإخوة منتوري - قسنطينة 1", "sp-fac": "كلية علوم الطبيعة والحياة"
             }
         },
         fr: {
@@ -157,7 +165,7 @@
             opts: ["Jamais (0)", "Plusieurs jours (1)", "Plus de la moitié (2)", "Presque tous les jours (3)"],
             status: ["Pas d'anxiété clinique", "Anxiété légère", "Anxiété modérée", "Anxiété sévère"],
             ui: {
-                "t-consent-head": "Formulaire de Recherche", "t-consent-sub": "Étude épidémiologique sur le TAG", "t-consent-yes": "Oui, j'accepte", "t-consent-no": "Non, merci", "t-consent-body": "Madame/Monsieur, ce questionnaire s'inscrit dans le cadre d'une recherche universitaire sur la santé. Vos réponses resteront confidentielles.",
+                "t-consent-head": "Formulaire de Recherche", "t-consent-sub": "Étude épidémiologique sur le TAG", "t-consent-yes": "Oui, j'accepte", "t-consent-no": "Non, merci", "t-consent-body": "Madame/Monsieur, ce questionnaire s'inscrit dans le cadre d'une recherche universitaire sur la santé. Vos réponses resteront confidentielles.[cite: 2]",
                 "t-sec1-head": "Section 1: Données Sociodémographiques", "l-age": "1. Âge:", "l-gender": "2. Sexe:", "o-m": "Homme", "o-f": "Femme", "l-status": "3. État civil:", "o-s": "Célibataire", "o-mr": "Marié(e)", "o-d": "Divorcé(e)", "o-w": "Veuf/Veuve", "l-edu": "4. Éducation:", "o-e1": "Analphabète", "o-e2": "Primaire", "o-e3": "Secondaire", "o-e4": "Universitaire", "l-job": "5. Profession:", "o-j1": "Employé", "o-j2": "Chômeur", "o-j3": "Étudiant", "o-j4": "Retraité", "o-j5": "Sans emploi", "l-eco": "6. Niveau Eco:", "o-ec1": "Bas", "o-ec2": "Moyen", "o-ec3": "Élevé", "t-next": "Suivant",
                 "t-sec2-head": "Section 2: Mode de vie", "l-sleep": "7. Sommeil:", "o-sl1": "Bon", "o-sl2": "Moyen", "o-sl3": "Mauvais", "l-sub": "8. Substances:", "o-sb1": "Aucun", "o-sb2": "Tabac", "o-sb3": "Caféine", "o-sb4": "Autre", "l-chr": "9. Maladie chronique?", "o-n1": "Non", "o-y1": "Oui", "l-str": "10. Stress:", "o-st1": "Aucun", "o-st2": "Perte proche", "o-st3": "Perte travail", "o-st4": "Conflits", "o-st5": "Financier", "t-next2": "Suivant",
                 "t-sec3-head": "Section 3: Antécédents Famille", "l-fa": "11. Anxiété Famille:", "o-fa0": "Non", "o-fa1": "1er degré", "o-fa2": "2ème degré", "l-fd": "12. Dépression Famille:", "o-fd0": "Non", "o-fd1": "1er degré", "o-fd2": "2ème degré", "l-ps": "13. Suivi Psy?", "o-ps0": "Non", "o-ps1": "Oui", "t-start-gad": "Démarrer GAD-7", "t-res-head": "Résultats Cliniques", "t-of-21": "sur 21", "t-pdf": "Télécharger le PDF 📄", "sp-uni": "Université Constantine 1", "sp-fac": "Faculté SNV"
@@ -196,12 +204,11 @@
 
     function finish() {
         bio = {
-            a: document.getElementById('in-age').value, g: document.getElementById('in-gender').value,
-            s: document.getElementById('in-status').value, e: document.getElementById('in-edu').value,
-            j: document.getElementById('in-job').value, ec: document.getElementById('in-eco').value,
-            sl: document.getElementById('in-sleep').value, sub: document.getElementById('in-sub').value,
-            chr: document.getElementById('in-chr').value, str: document.getElementById('in-str').value,
-            fa: document.getElementById('in-fa').value, fd: document.getElementById('in-fd').value, ps: document.getElementById('in-ps').value
+            date: new Date().toLocaleDateString(), age: document.getElementById('in-age').value, gender: document.getElementById('in-gender').value,
+            status: document.getElementById('in-status').value, edu: document.getElementById('in-edu').value, job: document.getElementById('in-job').value, eco: document.getElementById('in-eco').value,
+            sleep: document.getElementById('in-sleep').value, substance: document.getElementById('in-sub').value, chronic: document.getElementById('in-chr').value, stress: document.getElementById('in-str').value,
+            fam_anx: document.getElementById('in-fa').value, fam_dep: document.getElementById('in-fd').value, psych: document.getElementById('in-ps').value,
+            score: tot, severity: ""
         };
         goToStep('step-results'); showRes(); sync();
     }
@@ -212,6 +219,7 @@
         if(tot >= 5) { st = d.status[1]; col = "#f39c12"; }
         if(tot >= 10) { st = d.status[2]; col = "#e67e22"; }
         if(tot >= 15) { st = d.status[3]; col = "var(--danger)"; }
+        bio.severity = st;
         document.getElementById('status-text').innerText = st;
         document.getElementById('status-text').style.color = col;
         document.getElementById('circle-box').style.borderColor = col;
@@ -219,19 +227,15 @@
     }
 
     function sync() {
-        const p = { 
-            date: new Date().toLocaleDateString(), age: bio.a, gender: bio.g, status: bio.s, edu: bio.e, job: bio.j, eco: bio.ec,
-            sleep: bio.sl, substance: bio.sub, chronic: bio.chr, stress: bio.str, fam_anx: bio.fa, fam_dep: bio.fd, psych: bio.ps,
-            score: tot, severity: document.getElementById('status-text').innerText, answers: JSON.stringify(ans)
-        };
-        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(p) });
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({...bio, answers: JSON.stringify(ans)}) });
     }
 
     function downloadReport() {
-        alert("جاري إنشاء التقرير...");
-        const report = document.createElement('div');
-        report.innerHTML = `<h2 style='text-align:center'>TAG Report - GAD-7</h2><p>Score: ${tot}</p><p>Status: ${document.getElementById('status-text').innerText}</p>`;
-        html2pdf().from(report).save('GAD7_Report.pdf');
+        const c = document.getElementById('pdf-content');
+        c.innerHTML = `<h3>البيانات:</h3><p>السن: ${bio.age} | الجنس: ${bio.gender} | الحالة: ${bio.status}</p><p>التعليم: ${bio.edu} | العمل: ${bio.job} | الاقتصاد: ${bio.eco}</p><h3>النتائج العيادية:</h3><p>النتيجة: ${tot} / 21</p><p>التصنيف: ${bio.severity}</p>`;
+        const report = document.getElementById('report-template');
+        report.style.display = 'block';
+        html2pdf().from(report).save('GAD7_Report_Constantine.pdf').then(() => report.style.display = 'none');
     }
 
     window.addEventListener('load', () => { setTimeout(() => { const s = document.getElementById('custom-splash'); s.style.opacity = '0'; setTimeout(() => s.style.visibility = 'hidden', 800); }, 2500); });
