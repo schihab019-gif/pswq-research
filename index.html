@@ -13,14 +13,14 @@
     
     <style>
         :root {
-            --primary: #2c3e50; --accent: #3498db; --bg: #f0f4f8;
+            --primary: #1a2a3a; --accent: #3498db; --bg: #f4f7f9;
             --success: #27ae60; --warning: #f39c12; --danger: #e74c3c;
         }
 
-        /* شاشة الدخول الاحترافية */
+        /* شاشة الدخول */
         #custom-splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #1a2a3a; display: flex; flex-direction: column;
+            background-color: var(--primary); display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 99999;
             color: white; transition: opacity 0.8s ease, visibility 0.8s;
         }
@@ -28,7 +28,6 @@
         .splash-loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* تأثيرات الحركة */
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -49,24 +48,31 @@
 
         .btn-next { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1rem; }
         
-        #install-btn { display: none; background: #2980b9; color: white; border: none; padding: 10px; border-radius: 10px; width: 100%; margin-bottom: 15px; cursor: pointer; font-weight: bold; }
-
         .progress-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
         .fill-inner { height: 100%; background: var(--accent); width: 0%; transition: 0.4s; }
         
         .consent-box { text-align: justify; background: #f9f9f9; padding: 20px; border-radius: 15px; border-right: 5px solid var(--accent); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6; }
-        [dir="ltr"] .consent-box { border-right: none; border-left: 5px solid var(--accent); }
 
-        /* تنسيق الـ PDF */
-        #report-template { display:none; padding: 40px; background: white; color: #333; }
-        .pdf-header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; }
+        /* تنسيق قالب الـ PDF المطور */
+        #report-template { 
+            display: none; width: 800px; padding: 50px; background: white; color: #333; 
+            border: 10px solid #f8f9fa; box-sizing: border-box;
+        }
+        .pdf-row { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .pdf-table th, .pdf-table td { border: 1px solid #dee2e6; padding: 10px; text-align: right; }
+        .pdf-table th { background-color: #f1f4f6; color: var(--primary); }
+        .pdf-section-title { 
+            background: var(--primary); color: white; padding: 8px 15px; 
+            border-radius: 5px; margin-top: 25px; font-size: 1.1rem; font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <div id="custom-splash">
     <img src="icon.png" class="splash-logo">
-    <div style="font-size: 1.4rem; font-weight: bold; text-align: center; padding: 0 20px;">جامعة الإخوة منتوري - قسنطينة 1</div>
+    <div style="font-size: 1.4rem; font-weight: bold; text-align: center;">جامعة الإخوة منتوري - قسنطينة 1</div>
     <div style="opacity: 0.8; margin-top: 5px;">كلية علوم الطبيعة والحياة</div>
     <div class="splash-loader" style="margin-top: 30px;"></div>
 </div>
@@ -78,11 +84,9 @@
         <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
 
-    <button id="install-btn">تثبيت التطبيق على الهاتف 📱</button>
-
     <div id="step-consent" class="section-ui active-section">
-        <h2 id="txt-consent-title" style="color: var(--primary);">استمارة جمع البيانات</h2>
-        <p id="txt-consent-sub" style="font-weight: bold; color: var(--accent);">دراسة وبائية حول اضطراب القلق العام (TAG)</p>
+        <h2 id="txt-consent-title">استمارة جمع البيانات</h2>
+        <p style="font-weight: bold; color: var(--accent);">دراسة وبائية حول اضطراب القلق العام (TAG)</p>
         <div class="consent-box" id="txt-consent-body">
             سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على الإجابة على أسئلتنا؟
         </div>
@@ -92,7 +96,7 @@
 
     <div id="step-bio" class="section-ui">
         <div class="progress-bar"><div class="fill-inner" style="width: 25%;"></div></div>
-        <h3 id="txt-sec1-title" style="color: var(--primary);">القسم الأول: الخصائص السوسيوديموغرافية</h3>
+        <h3 id="txt-sec1-title">القسم الأول: الخصائص السوسيوديموغرافية</h3>
         <input type="number" id="in-age" placeholder="السن (سنة)">
         <select id="in-gender">
             <option value="" id="opt-gender-label">الجنس</option>
@@ -118,7 +122,7 @@
 
     <div id="step-health" class="section-ui">
         <div class="progress-bar"><div class="fill-inner" style="width: 50%;"></div></div>
-        <h3 id="txt-sec2-title" style="color: var(--primary);">القسم الثاني والثالث: نمط الحياة والهشاشة</h3>
+        <h3 id="txt-sec2-title">القسم الثاني: نمط الحياة والهشاشة</h3>
         <select id="in-sleep">
             <option value="" id="opt-sleep-label">تقييم جودة النوم</option>
             <option value="جيدة" id="opt-s1">جيدة</option>
@@ -146,177 +150,160 @@
     </div>
 
     <div id="step-results" class="section-ui">
-        <h2 id="txt-res-title" style="color: var(--primary);">نتائج الفحص السيكومتري</h2>
+        <h2 id="txt-res-title">نتائج الفحص</h2>
         <div style="width: 220px; margin: 0 auto; position: relative;">
             <canvas id="myChart"></canvas>
             <div id="score-num" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 800;">0</div>
         </div>
         <div id="status-text" style="font-weight: bold; font-size: 1.4rem; margin: 20px 0;"></div>
-        <button class="btn-next" style="background: var(--success);" onclick="downloadReport()" id="btn-pdf">تحميل التقرير PDF 📄</button>
-    </div>
-
-    <div id="step-cooldown" class="section-ui">
-        <h2 id="txt-wait-title" style="color: var(--danger); margin-top: 30px;">يرجى الانتظار</h2>
-        <div id="big-timer" style="font-size: 3.5rem; font-weight: 800; margin: 20px 0; color: var(--primary);">00:00</div>
-        <p id="txt-wait-sub" style="color: #666; margin-bottom: 30px;">لضمان دقة البحث، يرجى الانتظار دقيقتين قبل إعادة الاختبار.</p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
-        <button class="opt-btn" onclick="protectedDownload()" id="btn-last-res">تحميل نتيجة الفحص السابق (محمي) 📄</button>
+        <button class="btn-next" style="background: var(--success);" onclick="downloadReport()" id="btn-pdf">تحميل التقرير المطور PDF 📄</button>
     </div>
 </div>
 
 <div id="report-template">
-    <div class="pdf-header">
+    <div style="text-align: center; border-bottom: 4px solid #1a2a3a; padding-bottom: 15px;">
         <h2 style="margin: 0;">الجمهورية الجزائرية الديمقراطية الشعبية</h2>
-        <h3 style="margin: 5px 0;">جامعة قسنطينة 1 - كلية علوم الطبيعة والحياة</h3>
-        <img src="icon.png" style="width: 70px; margin-top: 10px; border-radius: 10px;">
-    </div>
-    <div style="margin-top: 20px; line-height: 1.6;">
-        <p><strong>الموضوع:</strong> دراسة وبائية حول انتشار اضطراب القلق العام (TAG)</p>
-        <p><strong>بيانات المشارك:</strong> <span id="pdf-info"></span></p>
-        <hr style="border: 1px solid #eee;">
-        <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 15px; margin: 20px 0;">
-            <h2 style="margin: 0;">النتيجة الكلية (GAD-7): <span id="pdf-score"></span> / 21</h2>
-            <h3 style="color: #e74c3c; margin: 10px 0;" id="pdf-status"></h3>
+        <h3 style="margin: 5px 0;">وزارة التعليم العالي والبحث العلمي</h3>
+        <h3 style="margin: 0;">جامعة الإخوة منتوري - قسنطينة 1</h3>
+        <div style="margin-top: 15px;">
+            <img src="icon.png" style="width: 80px; height: 80px; border-radius: 15px;">
         </div>
-        <p><strong>التاريخ والوقت:</strong> <span id="pdf-time"></span></p>
+        <h2 style="color: #1a2a3a; margin-top: 15px; text-decoration: underline;">تقرير التحليل السيكومتري للدراسة الوبائية (TAG)</h2>
     </div>
-    <div style="margin-top: 40px; font-size: 0.85rem; color: #7f8c8d; border-top: 1px solid #eee; padding-top: 10px;">
-        تم استخراج هذا التقرير آلياً لدعم البحث العلمي الميداني - طالب ماستر 2 وراثة طبية.
+
+    <div class="pdf-section-title">أولاً: المعلومات السوسيوديموغرافية</div>
+    <table class="pdf-table">
+        <tr><th>السن</th><td id="pdf-age"></td><th>الجنس</th><td id="pdf-gender"></td></tr>
+        <tr><th>الحالة العائلية</th><td id="pdf-status-fam"></td><th>المستوى التعليمي</th><td id="pdf-edu"></td></tr>
+    </table>
+
+    <div class="pdf-section-title">ثانياً: نمط الحياة والهشاشة المرضية</div>
+    <table class="pdf-table">
+        <tr><th>جودة النوم</th><td id="pdf-sleep"></td><th>مرض مزمن</th><td id="pdf-chronic"></td></tr>
+        <tr><th>سوابق عائلية للقلق</th><td colspan="3" id="pdf-family"></td></tr>
+    </table>
+
+    <div class="pdf-section-title">ثالثاً: التقييم العيادي بمقياس GAD-7</div>
+    <div style="display: flex; align-items: center; justify-content: space-around; padding: 20px; background: #f8f9fa; border-radius: 10px; margin-top: 15px;">
+        <div style="text-align: center;">
+            <div style="font-size: 0.9rem; color: #666;">الدرجة الكلية</div>
+            <div style="font-size: 3rem; font-weight: 800; color: #1a2a3a;" id="pdf-score-val">0</div>
+            <div style="font-size: 1.1rem;">من أصل 21</div>
+        </div>
+        <div style="text-align: center; border-right: 2px solid #dee2e6; padding-right: 40px;">
+            <div style="font-size: 0.9rem; color: #666;">التصنيف العيادي</div>
+            <div style="font-size: 1.5rem; font-weight: bold;" id="pdf-status-val"></div>
+        </div>
+    </div>
+
+    <div class="pdf-section-title">رابعاً: سلم التفسير الأكاديمي</div>
+    <table class="pdf-table" style="font-size: 0.9rem;">
+        <tr style="background: #eee;"><th>نطاق الدرجات</th><th>التفسير العيادي</th></tr>
+        <tr><td>0 - 4 نقاط</td><td>لا يوجد قلق (Normal)</td></tr>
+        <tr><td>5 - 9 نقاط</td><td>قلق خفيف (Mild)</td></tr>
+        <tr><td>10 - 14 نقطة</td><td>قلق متوسط - حالة محتملة (Moderate)</td></tr>
+        <tr><td>15 - 21 نقطة</td><td>قلق حاد - حالة محتملة (Severe)</td></tr>
+    </table>
+
+    <div style="margin-top: 50px; display: flex; justify-content: space-between; font-size: 0.85rem;">
+        <div><strong>تاريخ الاستخراج:</strong> <span id="pdf-date-now"></span></div>
+        <div style="text-align: center; border-top: 1px solid #333; padding-top: 5px; width: 150px;">خاتم/توقيع الباحث</div>
+    </div>
+    
+    <div style="text-align: center; font-size: 0.75rem; color: #999; margin-top: 30px;">
+        تم تطوير هذه الأداة الرقمية لدعم مشروع التخرج - ماستر 2 علم الوراثة الطبية - جامعة قسنطينة 1.
     </div>
 </div>
 
 <script>
-    // الإعدادات الأساسية
-    const scriptURL = 'ضع_رابط_السكريبت_هنا'; // <--- ضع رابط Google Apps Script الخاص بك هنا
-    const COOLDOWN_MS = 2 * 60 * 1000;
-    const RESEARCHER_CODE = "1999";
+    const scriptURL = 'رابط_السكريبت_الخاص_بك_هنا';
     
-    // بيانات اللغات
     const i18n = {
         ar: {
             dir: "rtl",
-            gad_questions: [
-                "الشعور بالعصبية أو التوتر أو الانفعال الشديد",
-                "عدم القدرة على التوقف عن القلق أو السيطرة عليه",
-                "القلق المفرط بشأن أشياء مختلفة",
-                "صعوبة في الاسترخاء",
-                "اضطراب حركي يمنع الهدوء (عدم القدرة على الجلوس ساكناً)",
-                "سرعة الغضب أو الانفعال",
-                "الشعور بالخوف كأن مكروهاً سيحدث"
-            ],
+            gad_questions: ["الشعور بالعصبية أو التوتر أو الانفعال الشديد", "عدم القدرة على التوقف عن القلق أو السيطرة عليه", "القلق المفرط بشأن أشياء مختلفة", "صعوبة في الاسترخاء", "اضطراب حركي يمنع الهدوء (عدم القدرة على الجلوس ساكناً)", "سرعة الغضب أو الانفعال", "الشعور بالخوف كأن مكروهاً سيحدث"],
             gad_opts: ["أبداً", "عدة أيام", "أكثر من نصف الوقت", "كل يوم تقريباً"],
             status: ["لا يوجد قلق", "قلق خفيف", "قلق متوسط (حالة محتملة)", "قلق حاد (حالة محتملة)"],
             ui: {
-                consent_title: "استمارة جمع البيانات", consent_body: "سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على الإجابة على أسئلتنا؟",
-                consent_yes: "نعم، أوافق على المشاركة", wait_title: "يرجى الانتظار", last_res: "تحميل النتيجة السابقة (محمي) 📄"
+                "txt-consent-title": "استمارة جمع البيانات", "txt-consent-body": "سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على الإجابة على أسئلتنا؟",
+                "txt-consent-yes": "نعم، أوافق على المشاركة", "txt-consent-no": "لا، اعتذار", "txt-sec1-title": "القسم الأول: الخصائص السوسيوديموغرافية",
+                "in-age": "السن (سنة)", "opt-gender-label": "الجنس", "opt-m": "ذكر", "opt-f": "أنثى",
+                "opt-status-label": "الحالة العائلية", "opt-single": "أعزب/عزباء", "opt-married": "متزوج(ة)", "opt-divorced": "مطلق(ة)", "opt-widowed": "أرمل(ة)",
+                "opt-edu-label": "المستوى التعليمي", "opt-edu1": "أمي", "opt-edu2": "ابتدائي/متوسط", "opt-edu3": "ثانوي", "opt-edu4": "جامعي",
+                "btn-next1": "التالي", "txt-sec2-title": "القسم الثاني: نمط الحياة والهشاشة",
+                "opt-sleep-label": "تقييم جودة النوم", "opt-s1": "جيدة", "opt-s2": "متوسطة", "opt-s3": "رديئة",
+                "opt-chronic-label": "هل تعاني من مرض مزمن؟", "opt-n1": "لا", "opt-y1": "نعم",
+                "opt-family-label": "سوابق عائلية لاضطراب القلق؟", "opt-n2": "لا", "opt-y2": "نعم (درجة أولى)", "opt-y3": "نعم (درجة ثانية)",
+                "btn-start-gad": "بدء تقييم GAD-7", "txt-res-title": "نتائج الفحص", "btn-pdf": "تحميل التقرير المطور PDF 📄"
             }
         },
         fr: {
             dir: "ltr",
-            gad_questions: [
-                "Sentiment de nervosité, d'anxiété ou de tension",
-                "Ne pas pouvoir s'empêcher de s'inquiéter ou contrôler ses soucis",
-                "S'inquiéter trop pour différentes choses",
-                "Difficultés à se détendre",
-                "Être si agité qu'il est difficile de rester en place",
-                "Devenir facilement irrité ou agacé",
-                "Avoir peur comme si quelque chose de terrible allait arriver"
-            ],
+            gad_questions: ["Sentiment de nervosité, d'anxiété ou de tension", "Ne pas pouvoir s'empêcher de s'inquiéter", "S'inquiéter trop pour différentes choses", "Difficulté à se détendre", "Être si agité qu'il est difficile de rester en place", "Devenir facilement irrité ou agacé", "Avoir peur comme si quelque chose de terrible allait arriver"],
             gad_opts: ["Jamais", "Plusieurs jours", "Plus de la moitié du temps", "Presque tous les jours"],
-            status: ["Pas d'anxiété", "Anxiété légère", "Anxiété modérée (Cas probable)", "Anxiété sévère (Cas probable)"],
+            status: ["Pas d'anxiété", "Anxiété légère", "Anxiété modérée", "Anxiété sévère"],
             ui: {
-                consent_title: "Fiche de Recueil", consent_body: "Madame/Monsieur, ce questionnaire s'inscrit dans le cadre d'une recherche universitaire sur la santé mentale. Vos réponses resteront confidentielles. Acceptez-vous de participer ?",
-                consent_yes: "Oui, j'accepte", wait_title: "Veuillez patienter", last_res: "Résultat précédent (Protégé) 📄"
+                "txt-consent-title": "Recueil de Données", "txt-consent-body": "Madame/Monsieur, ce questionnaire s'inscrit dans le cadre d'une recherche universitaire sur la santé. Vos réponses resteront confidentielles. Acceptez-vous de participer ?",
+                "txt-consent-yes": "Oui, j'accepte", "txt-consent-no": "Non, merci", "txt-sec1-title": "Section 1: Données Sociodémographiques",
+                "in-age": "Âge (ans)", "opt-gender-label": "Sexe", "opt-m": "Homme", "opt-f": "Femme",
+                "opt-status-label": "État Civil", "opt-single": "Célibataire", "opt-married": "Marié(e)", "opt-divorced": "Divorcé(e)", "opt-widowed": "Veuf/Veuve",
+                "opt-edu-label": "Niveau d'instruction", "opt-edu1": "Analphabète", "opt-edu2": "Primaire/Moyen", "opt-edu3": "Secondaire", "opt-edu4": "Universitaire",
+                "btn-next1": "Suivant", "txt-sec2-title": "Section 2: Mode de vie",
+                "opt-sleep-label": "Qualité du sommeil", "opt-s1": "Bonne", "opt-s2": "Moyenne", "opt-s3": "Mauvaise",
+                "opt-chronic-label": "Maladie chronique ?", "opt-n1": "Non", "opt-y1": "Oui",
+                "opt-family-label": "Antécédents familiaux ?", "opt-n2": "Non", "opt-y2": "Oui (1er degré)", "opt-y3": "Oui (2ème degré)",
+                "btn-start-gad": "Démarrer GAD-7", "txt-res-title": "Résultats", "btn-pdf": "Télécharger le PDF 📄"
             }
         },
         en: {
             dir: "ltr",
-            gad_questions: [
-                "Feeling nervous, anxious or on edge",
-                "Not being able to stop or control worrying",
-                "Worrying too much about different things",
-                "Trouble relaxing",
-                "Being so restless that it is hard to sit still",
-                "Becoming easily annoyed or irritable",
-                "Feeling afraid as if something awful might happen"
-            ],
+            gad_questions: ["Feeling nervous, anxious or on edge", "Not being able to stop or control worrying", "Worrying too much about different things", "Trouble relaxing", "Being so restless that it is hard to sit still", "Becoming easily annoyed or irritable", "Feeling afraid as if something awful might happen"],
             gad_opts: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
-            status: ["Minimal anxiety", "Mild anxiety", "Moderate anxiety (Probable case)", "Severe anxiety (Probable case)"],
+            status: ["No anxiety", "Mild anxiety", "Moderate anxiety", "Severe anxiety"],
             ui: {
-                consent_title: "Data Collection Form", consent_body: "This questionnaire is part of a university research on mental health. Your answers will remain confidential. Do you agree to participate?",
-                consent_yes: "Yes, I agree", wait_title: "Please Wait", last_res: "Previous Result (Protected) 📄"
+                "txt-consent-title": "Data Collection Form", "txt-consent-body": "This questionnaire is part of a university research. Your answers will remain strictly confidential. Do you agree to participate?",
+                "txt-consent-yes": "Yes, I agree", "txt-consent-no": "No, thanks", "txt-sec1-title": "Section 1: Sociodemographic Data",
+                "in-age": "Age (years)", "opt-gender-label": "Gender", "opt-m": "Male", "opt-f": "Female",
+                "opt-status-label": "Marital Status", "opt-single": "Single", "opt-married": "Married", "opt-divorced": "Divorced", "opt-widowed": "Widowed",
+                "opt-edu-label": "Education Level", "opt-edu1": "Illiterate", "opt-edu2": "Primary/Middle", "opt-edu3": "High School", "opt-edu4": "University",
+                "btn-next1": "Next", "txt-sec2-title": "Section 2: Lifestyle",
+                "opt-sleep-label": "Sleep Quality", "opt-s1": "Good", "opt-s2": "Average", "opt-s3": "Poor",
+                "opt-chronic-label": "Chronic Disease?", "opt-n1": "No", "opt-y1": "Yes",
+                "opt-family-label": "Family History?", "opt-n2": "No", "opt-y2": "Yes (1st degree)", "opt-y3": "Yes (2nd degree)",
+                "btn-start-gad": "Start GAD-7", "txt-res-title": "Results", "btn-pdf": "Download PDF 📄"
             }
         }
     };
 
     let currentLang = 'ar', currentQ = 0, totalScore = 0, bioData = {}, answers = [];
 
-    // 1. تسجيل الـ Service Worker
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-
-    // 2. منطق التثبيت
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); deferredPrompt = e;
-        document.getElementById('install-btn').style.display = 'block';
-    });
-    document.getElementById('install-btn').addEventListener('click', () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choice) => { if (choice.outcome === 'accepted') document.getElementById('install-btn').style.display = 'none'; });
-        }
-    });
-
-    // 3. التحكم باللغة
     function setLanguage(lang) {
         currentLang = lang;
         const d = i18n[lang];
         document.getElementById('html-tag').dir = d.dir;
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.id === 'btn-' + lang));
-        
-        // تحديث النصوص الأساسية (مثال للأرابة)
-        document.getElementById('txt-consent-title').innerText = d.ui.consent_title;
-        document.getElementById('txt-consent-body').innerText = d.ui.consent_body;
-        document.getElementById('txt-consent-yes').innerText = d.ui.consent_yes;
-        document.getElementById('txt-wait-title').innerText = d.ui.wait_title;
-        document.getElementById('btn-last-res').innerText = d.ui.last_res;
-
-        if(document.getElementById('step-gad').classList.contains('active-section')) renderQuestion();
+        for (const id in d.ui) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el.tagName === "INPUT") el.placeholder = d.ui[id];
+                else el.innerText = d.ui[id];
+            }
+        }
+        if (document.getElementById('step-gad').classList.contains('active-section')) renderQuestion();
     }
 
-    // 4. التنقل بين المراحل
     function goToStep(stepId) {
-        if (stepId === 'step-bio' && checkCooldown()) return;
-        
         document.querySelectorAll('.section-ui').forEach(s => s.classList.remove('active-section'));
         document.getElementById(stepId).classList.add('active-section');
-        
         if(stepId === 'step-gad') renderQuestion();
     }
 
-    function checkCooldown() {
-        const last = localStorage.getItem('tag_last_taken');
-        if (last && (Date.now() - parseInt(last) < COOLDOWN_MS)) {
-            goToStep('step-cooldown');
-            return true;
-        }
-        return false;
-    }
-
-    // 5. إدارة الأسئلة
     function renderQuestion() {
         const d = i18n[currentLang];
         document.getElementById('q-text').innerText = d.gad_questions[currentQ];
         document.getElementById('gad-fill').style.width = `${((currentQ + 1) / 7) * 100}%`;
-        
         const container = document.getElementById('options-container');
         container.innerHTML = '';
-        
-        // إضافة تأثير الحركة
-        container.classList.remove('fade-in');
-        void container.offsetWidth;
-        container.classList.add('fade-in');
-
         d.gad_opts.forEach((txt, i) => {
             const btn = document.createElement('button');
             btn.className = 'opt-btn';
@@ -333,7 +320,6 @@
         else finishSurvey();
     }
 
-    // 6. إنهاء الاستبيان والمزامنة
     function finishSurvey() {
         bioData = {
             age: document.getElementById('in-age').value,
@@ -344,11 +330,6 @@
             chronic: document.getElementById('in-chronic').value,
             family: document.getElementById('in-family').value
         };
-        
-        localStorage.setItem('tag_last_taken', Date.now());
-        localStorage.setItem('tag_last_score', totalScore);
-        localStorage.setItem('tag_last_bio', JSON.stringify(bioData));
-        
         goToStep('step-results');
         showResults();
         syncWithSheets();
@@ -357,7 +338,6 @@
     function showResults() {
         const d = i18n[currentLang];
         document.getElementById('score-num').innerText = totalScore;
-        
         let status = d.status[0], col = "var(--success)";
         if(totalScore >= 5) { status = d.status[1]; col = "#f39c12"; }
         if(totalScore >= 10) { status = d.status[2]; col = "#e67e22"; }
@@ -371,79 +351,55 @@
 
     function drawChart(col) {
         new Chart(document.getElementById('myChart'), {
-            type: 'doughnut', 
-            data: { datasets: [{ data: [totalScore, 21-totalScore], backgroundColor: [col, '#eee'], circumference: 180, rotation: 270, borderWidth: 0 }] },
+            type: 'doughnut', data: { datasets: [{ data: [totalScore, 21-totalScore], backgroundColor: [col, '#eee'], circumference: 180, rotation: 270, borderWidth: 0 }] },
             options: { cutout: '80%', plugins: { tooltip: {enabled: false} } }
         });
     }
 
-    // 7. المزامنة مع Google Sheets
     function syncWithSheets() {
         const now = new Date();
         const payload = { 
-            date: now.toLocaleDateString(),
-            time: now.toLocaleTimeString(),
-            age: bioData.age,
-            gender: bioData.gender,
-            status_family: bioData.status,
-            edu: bioData.edu,
-            sleep: bioData.sleep,
-            chronic: bioData.chronic,
-            family_history: bioData.family,
-            score: totalScore,
+            date: now.toLocaleDateString(), time: now.toLocaleTimeString(),
+            age: bioData.age, gender: bioData.gender, status_family: bioData.status,
+            edu: bioData.edu, sleep: bioData.sleep, chronic: bioData.chronic,
+            family_history: bioData.family, score: totalScore,
             status_severity: document.getElementById('status-text').innerText,
             answers: JSON.stringify(answers)
         };
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+    }
+
+    function downloadReport() {
+        const now = new Date();
+        // ملء بيانات القالب
+        document.getElementById('pdf-age').innerText = bioData.age;
+        document.getElementById('pdf-gender').innerText = bioData.gender;
+        document.getElementById('pdf-status-fam').innerText = bioData.status;
+        document.getElementById('pdf-edu').innerText = bioData.edu;
+        document.getElementById('pdf-sleep').innerText = bioData.sleep;
+        document.getElementById('pdf-chronic').innerText = bioData.chronic;
+        document.getElementById('pdf-family').innerText = bioData.family;
+        document.getElementById('pdf-score-val').innerText = totalScore;
+        document.getElementById('pdf-status-val').innerText = document.getElementById('status-text').innerText;
+        document.getElementById('pdf-status-val').style.color = document.getElementById('status-text').style.color;
+        document.getElementById('pdf-date-now').innerText = now.toLocaleString('ar-DZ');
+
+        const report = document.getElementById('report-template');
+        report.style.display = 'block';
         
-        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-        .catch(() => {
-            let queue = JSON.parse(localStorage.getItem('sync_queue') || "[]");
-            queue.push(payload);
-            localStorage.setItem('sync_queue', JSON.stringify(queue));
+        const opt = {
+            margin: 0,
+            filename: 'Rapport_GAD7_Constantine1.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().from(report).set(opt).save().then(() => {
+            report.style.display = 'none';
         });
     }
 
-    // 8. تحميل الـ PDF
-    function downloadReport() {
-        const now = new Date();
-        document.getElementById('pdf-info').innerText = `${bioData.age} سنة | ${bioData.gender} | ${bioData.status} | تعليم: ${bioData.edu} | نوم: ${bioData.sleep}`;
-        document.getElementById('pdf-score').innerText = totalScore;
-        document.getElementById('pdf-status').innerText = document.getElementById('status-text').innerText;
-        document.getElementById('pdf-time').innerText = now.toLocaleString();
-        
-        const report = document.getElementById('report-template');
-        report.style.display = 'block';
-        html2pdf().set({ margin: 0.5, filename: 'TAG_Report.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } })
-        .from(report).save().then(() => report.style.display = 'none');
-    }
-
-    // 9. الحماية بكود
-    function protectedDownload() {
-        let code = prompt(currentLang === 'ar' ? "أدخل كود الباحث (1999):" : "Enter Researcher Code:");
-        if (code === RESEARCHER_CODE) {
-            totalScore = localStorage.getItem('tag_last_score');
-            bioData = JSON.parse(localStorage.getItem('tag_last_bio'));
-            downloadReport();
-        } else {
-            alert("كود خاطئ!");
-        }
-    }
-
-    // إدارة العداد الزمني (Timer)
-    setInterval(() => {
-        const last = localStorage.getItem('tag_last_taken');
-        if (last) {
-            const diff = COOLDOWN_MS - (Date.now() - parseInt(last));
-            if (diff > 0) {
-                const mins = Math.floor(diff / 60000), secs = Math.floor((diff % 60000) / 1000);
-                document.getElementById('big-timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-            } else if (document.getElementById('step-cooldown').classList.contains('active-section')) {
-                location.reload();
-            }
-        }
-    }, 1000);
-
-    // شاشة الدخول
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('custom-splash');
