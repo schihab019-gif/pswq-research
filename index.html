@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAG Research - Constantine 1</title>
+    <title>GAD-7 Clinical Research Tool</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,50 +17,61 @@
             --success: #27ae60; --warning: #f39c12; --danger: #e74c3c;
         }
 
+        /* شاشة الدخول */
         #custom-splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--primary); display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 99999;
             color: white; transition: opacity 0.8s ease, visibility 0.8s;
         }
-        .splash-logo { width: 130px; height: 130px; border-radius: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        .splash-loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; }
+        .splash-logo { width: 140px; height: 140px; border-radius: 30px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .splash-loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); text-align: center; position: relative; overflow-y: auto; max-height: 90vh; }
+        .card { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; position: relative; overflow-y: auto; max-height: 95vh; border: 1px solid #eee; }
         
         .lang-switcher { position: absolute; top: 15px; left: 15px; display: flex; gap: 5px; z-index: 10; }
-        .lang-btn { background: #eee; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
+        .lang-btn { background: #f0f0f0; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
         .lang-btn.active { background: var(--primary); color: white; }
 
         .section-ui { display: none; }
         .active-section { display: block; }
 
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #edf2f7; border-radius: 12px; font-family: inherit; font-size: 1rem; box-sizing: border-box; outline: none; }
-        input:focus, select:focus { border-color: var(--accent); }
+        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #edf2f7; border-radius: 15px; font-family: inherit; font-size: 1rem; box-sizing: border-box; outline: none; transition: 0.3s; background: #fcfdfe; }
+        input:focus, select:focus { border-color: var(--accent); background: white; }
         
-        .opt-btn { background: #fff; border: 2px solid #edf2f7; padding: 14px; border-radius: 15px; cursor: pointer; font-size: 1.05rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 8px; font-weight: 500; display: block; }
-        .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; }
+        .opt-btn { background: #fff; border: 2px solid #edf2f7; padding: 16px; border-radius: 18px; cursor: pointer; font-size: 1.1rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 10px; font-weight: 500; display: block; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; transform: translateY(-2px); }
 
-        .btn-next { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1rem; }
-        .progress-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
-        .fill-inner { height: 100%; background: var(--accent); width: 0%; transition: 0.4s; }
+        .btn-next { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 18px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); }
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-bottom: 25px; overflow: hidden; }
+        .fill-inner { height: 100%; background: var(--accent); width: 0%; transition: 0.5s; }
         
-        .consent-box { text-align: justify; background: #f9f9f9; padding: 15px; border-radius: 12px; border-right: 5px solid var(--accent); margin-bottom: 20px; font-size: 0.9rem; line-height: 1.6; color: #444; }
-        .sub-label { display: block; text-align: right; font-weight: bold; margin-top: 10px; font-size: 0.95rem; color: var(--primary); }
+        .consent-box { text-align: justify; background: #f8f9fb; padding: 20px; border-radius: 20px; border-right: 6px solid var(--accent); margin-bottom: 25px; font-size: 0.95rem; line-height: 1.7; color: #333; }
+        [dir="ltr"] .consent-box { border-right: none; border-left: 6px solid var(--accent); }
+
+        /* صفحة النتائج الاحترافية */
+        .result-dashboard { background: #fcfdfe; border-radius: 25px; padding: 25px; border: 1px solid #edf2f7; margin-bottom: 20px; }
+        .score-circle { width: 140px; height: 140px; border-radius: 50%; border: 10px solid #eee; margin: 0 auto 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .score-val { font-size: 3rem; font-weight: 800; line-height: 1; }
+        .score-label { font-size: 0.9rem; color: #666; font-weight: bold; }
+
+        /* التقرير PDF */
+        #report-template { display:none; padding: 50px; background: white; color: #333; }
+        .pdf-header { text-align: center; border-bottom: 4px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
     </style>
 </head>
 <body>
 
 <div id="custom-splash">
     <img src="icon.png" class="splash-logo">
-    <div style="font-size: 1.3rem; font-weight: bold; text-align: center;">جامعة الإخوة منتوري - قسنطينة 1</div>
-    <div style="opacity: 0.8; margin-top: 5px;">كلية علوم الطبيعة والحياة</div>
-    <div class="splash-loader" style="margin-top: 30px;"></div>
+    <div id="sp-uni" style="font-size: 1.5rem; font-weight: bold;">جامعة الإخوة منتوري - قسنطينة 1</div>
+    <div id="sp-fac" style="opacity: 0.8; margin-top: 5px;">كلية علوم الطبيعة والحياة</div>
+    <div class="splash-loader" style="margin-top: 35px;"></div>
 </div>
 
 <div class="card fade-in">
@@ -69,142 +80,83 @@
         <button class="lang-btn" id="btn-fr" onclick="setLanguage('fr')">FR</button>
     </div>
 
-    <!-- 0. واجهة الموافقة -->
     <div id="step-consent" class="section-ui active-section">
-        <h2 id="txt-consent-title">استمارة جمع البيانات: دراسة وبائية</h2>
-        <p id="txt-consent-sub" style="font-weight: bold; color: var(--accent);">الموضوع: انتشار العوامل المرتبطة باضطراب القلق العام (TAG) لدى البالغين</p>
-        <div class="consent-box" id="txt-consent-body">
-            "سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط."
+        <h2 id="t-consent-head">استمارة جمع البيانات</h2>
+        <p style="font-weight: bold; color: var(--accent);" id="t-consent-sub">دراسة وبائية حول اضطراب القلق العام (TAG)</p>
+        <div class="consent-box" id="t-consent-body">
+            سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على المشاركة؟
         </div>
-        <button class="opt-btn" onclick="goToStep('step-bio')">✅ <span id="txt-consent-yes">نعم، أوافق على المشاركة</span></button>
-        <button class="opt-btn" onclick="location.reload()" style="color: var(--danger);">❌ <span id="txt-consent-no">لا، اعتذار</span></button>
+        <button class="opt-btn" onclick="goToStep('step-bio')">✅ <span id="t-consent-yes">نعم، أوافق على المشاركة</span></button>
+        <button class="opt-btn" onclick="location.reload()" style="color: var(--danger);">❌ <span id="t-consent-no">لا، اعتذار</span></button>
     </div>
 
-    <!-- 1. القسم الأول: الخصائص السوسيوديموغرافية -->
     <div id="step-bio" class="section-ui">
         <div class="progress-bar"><div class="fill-inner" style="width: 20%;"></div></div>
-        <h3 id="txt-sec1-title">القسم الأول: الخصائص السوسيوديموغرافية</h3>
-        <input type="number" id="in-age" placeholder="1. السن (سنة)">
-        <select id="in-gender">
-            <option value="">2. الجنس</option>
-            <option value="ذكر">ذكر</option>
-            <option value="أنثى">أنثى</option>
-        </select>
-        <select id="in-status">
-            <option value="">3. الحالة العائلية</option>
-            <option value="أعزب/عزباء">أعزب/عزباء</option>
-            <option value="متزوج(ة)">متزوج(ة)</option>
-            <option value="مطلق(ة)">مطلق(ة)</option>
-            <option value="أرمل(ة)">أرمل(ة)</option>
-        </select>
-        <select id="in-edu">
-            <option value="">4. المستوى التعليمي</option>
-            <option value="أمي">أمي</option>
-            <option value="ابتدائي/متوسط">ابتدائي/متوسط</option>
-            <option value="ثانوي">ثانوي</option>
-            <option value="جامعي">جامعي</option>
-        </select>
-        <select id="in-job">
-            <option value="">5. الوضعية المهنية</option>
-            <option value="عامل">عامل</option>
-            <option value="بطال">بطال</option>
-            <option value="طالب">طالب</option>
-            <option value="متقاعد">متقاعد</option>
-            <option value="بدون عمل (ماكث بالبيت)">بدون عمل (ماكث بالبيت)</option>
-        </select>
-        <select id="in-eco">
-            <option value="">6. المستوى السوسيو-اقتصادي المدرك</option>
-            <option value="منخفض">منخفض</option>
-            <option value="متوسط">متوسط</option>
-            <option value="مرتفع">مرتفع</option>
-        </select>
-        <button class="btn-next" onclick="goToStep('step-lifestyle')">التالي</button>
+        <h3 id="t-sec1-head">القسم الأول: الخصائص السوسيوديموغرافية</h3>
+        <input type="number" id="in-age" placeholder="السن (سنة)">
+        <select id="in-gender"><option value="" id="o-gender">الجنس</option><option value="ذكر" id="o-m">ذكر</option><option value="أنثى" id="o-f">أنثى</option></select>
+        <select id="in-status"><option value="" id="o-status">الحالة العائلية</option><option value="أعزب/عزباء" id="o-s">أعزب/عزباء</option><option value="متزوج(ة)" id="o-mr">متزوج(ة)</option><option value="مطلق(ة)" id="o-d">مطلق(ة)</option><option value="أرمل(ة)" id="o-w">أرمل(ة)</option></select>
+        <select id="in-edu"><option value="" id="o-edu">المستوى التعليمي</option><option value="أمي" id="o-e1">أمي</option><option value="ابتدائي/متوسط" id="o-e2">ابتدائي/متوسط</option><option value="ثانوي" id="o-e3">ثانوي</option><option value="جامعي" id="o-e4">جامعي</option></select>
+        <select id="in-job"><option value="" id="o-job">الوضعية المهنية</option><option value="عامل" id="o-j1">عامل</option><option value="بطال" id="o-j2">بطال</option><option value="طالب" id="o-j3">طالب</option><option value="متقاعد" id="o-j4">متقاعد</option><option value="بدون عمل" id="o-j5">بدون عمل</option></select>
+        <select id="in-eco"><option value="" id="o-eco">المستوى السوسيو-اقتصادي</option><option value="منخفض" id="o-ec1">منخفض</option><option value="متوسط" id="o-ec2">متوسط</option><option value="مرتفع" id="o-ec3">مرتفع</option></select>
+        <button class="btn-next" onclick="goToStep('step-health')" id="t-next">التالي</button>
     </div>
 
-    <!-- 2. القسم الثاني: نمط الحياة والسوابق الطبية -->
-    <div id="step-lifestyle" class="section-ui">
-        <div class="progress-bar"><div class="fill-inner" style="width: 40%;"></div></div>
-        <h3 id="txt-sec2-title">الالقسم الثاني: نمط الحياة والسوابق الطبية</h3>
-        <label class="sub-label">7. كيف تقيم جودة نومك بشكل عام؟</label>
-        <select id="in-sleep">
-            <option value="جيدة">جيدة</option>
-            <option value="متوسطة">متوسطة</option>
-            <option value="رديئة">رديئة</option>
-        </select>
-        <label class="sub-label">8. استهلاك المواد (منتظم):</label>
-        <select id="in-substance">
-            <option value="لا يوجد">لا يوجد</option>
-            <option value="التبغ/الشيشة">التبغ/الشيشة</option>
-            <option value="إفراط في الكافيين">إفراط في الكافيين</option>
-            <option value="التداوي الذاتي (مهدئات)">التداوي الذاتي (مهدئات)</option>
-        </select>
-        <label class="sub-label">9. هل تعاني من مرض مزمن؟</label>
-        <select id="in-chronic">
-            <option value="لا">لا</option>
-            <option value="نعم (ضغط الدم/القلب)">نعم (ضغط الدم/القلب)</option>
-            <option value="نعم (السكري)">نعم (السكري)</option>
-            <option value="نعم (الربو)">نعم (الربو)</option>
-            <option value="نعم (أخرى)">نعم (أخرى)</option>
-        </select>
-        <button class="btn-next" onclick="goToStep('step-vulnerability')">التالي</button>
+    <div id="step-health" class="section-ui">
+        <div class="progress-bar"><div class="fill-inner" style="width: 50%;"></div></div>
+        <h3 id="t-sec2-head">القسم الثاني: نمط الحياة والسوابق</h3>
+        <select id="in-sleep"><option value="" id="o-sleep">جودة النوم</option><option value="جيدة" id="o-sl1">جيدة</option><option value="متوسطة" id="o-sl2">متوسطة</option><option value="رديئة" id="o-sl3">رديئة</option></select>
+        <select id="in-substance"><option value="" id="o-sub">استهلاك المواد</option><option value="لا يوجد" id="o-sb1">لا يوجد</option><option value="تبغ/شيشة" id="o-sb2">التبغ/الشيشة</option><option value="كافيين مفرط" id="o-sb3">كافيين مفرط</option><option value="مهدئات" id="o-sb4">تداوي ذاتي (مهدئات)</option></select>
+        <select id="in-chronic"><option value="" id="o-chr">مرض مزمن؟</option><option value="لا" id="o-n">لا</option><option value="ضغط/قلب" id="o-y1">نعم (ضغط/قلب)</option><option value="سكري" id="o-y2">نعم (سكري)</option><option value="ربو" id="o-y3">نعم (ربو)</option><option value="أخرى" id="o-y4">نعم (أخرى)</option></select>
+        <button class="btn-next" onclick="goToStep('step-vulnerability')" id="t-next2">التالي</button>
     </div>
 
-    <!-- 3. القسم الثالث: الهشاشة النفسية والاجتماعية والعائلية -->
     <div id="step-vulnerability" class="section-ui">
-        <div class="progress-bar"><div class="fill-inner" style="width: 60%;"></div></div>
-        <h3 id="txt-sec3-title">القسم الثالث: الهشاشة النفسية والاجتماعية والعائلية</h3>
-        <label class="sub-label">10. أحداث ضاغطة (12 شهراً الماضية):</label>
-        <select id="in-stress">
-            <option value="لا توجد">لا توجد</option>
-            <option value="فقدان قريب">فقدان قريب</option>
-            <option value="فقدان العمل">فقدان العمل</option>
-            <option value="نزاعات عائلية">نزاعات عائلية</option>
-            <option value="مشاكل مالية">مشاكل مالية</option>
-        </select>
-        <label class="sub-label">11. السوابق النفسية العائلية:</label>
-        <select id="in-fam-anxiety" style="margin-bottom: 5px;"><option value="اضطراب القلق: لا">اضطراب القلق: لا</option><option value="نعم (درجة أولى)">نعم (درجة أولى)</option><option value="نعم (درجة ثانية)">نعم (درجة ثانية)</option></select>
-        <select id="in-fam-dep" style="margin-bottom: 5px;"><option value="اكتئاب حاد: لا">اكتئاب حاد: لا</option><option value="نعم (درجة أولى)">نعم (درجة أولى)</option><option value="نعم (درجة ثانية)">نعم (درجة ثانية)</option></select>
-        <select id="in-psych-follow"><option value="متابعة في مصلحة الأمراض العقلية: لا">متابعة في مصلحة الأمراض العقلية: لا</option><option value="نعم">نعم</option></select>
-        <button class="btn-next" onclick="goToStep('step-gad')">بدء تقييم GAD-7</button>
+        <div class="progress-bar"><div class="fill-inner" style="width: 70%;"></div></div>
+        <h3 id="t-sec3-head">القسم الثالث: الهشاشة والعائلة</h3>
+        <select id="in-stress"><option value="" id="o-str">أحداث ضاغطة</option><option value="لا توجد" id="o-st1">لا توجد</option><option value="فقدان قريب" id="o-st2">فقدان قريب</option><option value="فقدان عمل" id="o-st3">فقدان عمل</option><option value="نزاعات" id="o-st4">نزاعات عائلية</option><option value="مالية" id="o-st5">مشاكل مالية</option></select>
+        <select id="in-fam-anx"><option value="" id="o-fa">سوابق قلق عائلية</option><option value="لا" id="o-n2">لا</option><option value="درجة 1" id="o-fa1">نعم (درجة أولى)</option><option value="درجة 2" id="o-fa2">نعم (درجة ثانية)</option></select>
+        <select id="in-fam-dep"><option value="" id="o-fd">سوابق اكتئاب عائلية</option><option value="لا" id="o-n3">لا</option><option value="درجة 1" id="o-fd1">نعم (درجة أولى)</option><option value="درجة 2" id="o-fd2">نعم (درجة ثانية)</option></select>
+        <select id="in-psych"><option value="" id="o-ps">متابعة عقلية؟</option><option value="لا" id="o-n4">لا</option><option value="نعم" id="o-y5">نعم</option></select>
+        <button class="btn-next" onclick="goToStep('step-gad')" id="t-start-gad">بدء تقييم GAD-7</button>
     </div>
 
-    <!-- 4. القسم الرابع: GAD-7 -->
     <div id="step-gad" class="section-ui">
         <div class="progress-bar"><div id="gad-fill" class="fill-inner"></div></div>
-        <div id="q-text" style="font-size: 1.15rem; font-weight: bold; margin-bottom: 20px; color: var(--primary); line-height: 1.5;"></div>
+        <div id="q-text" style="font-size: 1.25rem; font-weight: bold; margin-bottom: 25px; line-height: 1.5; color: var(--primary);"></div>
         <div id="options-container"></div>
     </div>
 
-    <!-- 5. النتائج -->
     <div id="step-results" class="section-ui">
-        <h2 id="txt-res-title">نتائج التقييم العيادي</h2>
-        <div style="width: 200px; margin: 0 auto; position: relative;">
-            <canvas id="myChart"></canvas>
-            <div id="score-num" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; font-weight: 800;">0</div>
+        <h2 id="t-res-head">نتائج التقييم العيادي</h2>
+        <div class="result-dashboard">
+            <div class="score-circle" id="circle-box">
+                <span class="score-val" id="score-num">0</span>
+                <span class="score-label" id="t-of-21">من 21</span>
+            </div>
+            <div id="status-text" style="font-weight: 800; font-size: 1.6rem;"></div>
+            <p id="t-status-desc" style="color: #666; margin-top: 10px; font-size: 0.95rem;"></p>
         </div>
-        <div id="status-text" style="font-weight: bold; font-size: 1.3rem; margin: 20px 0;"></div>
-        <button class="btn-next" style="background: var(--success);" onclick="downloadReport()">تحميل الاستمارة الكاملة PDF 📄</button>
+        <button class="btn-next" style="background: var(--success);" onclick="downloadReport()" id="t-pdf">تحميل التقرير الطبي الكامل PDF 📄</button>
     </div>
 </div>
 
-<!-- التقرير للـ PDF -->
-<div id="report-template" style="display:none; padding: 40px; font-family: Arial; direction: rtl; text-align: right;">
-    <div style="text-align: center; border-bottom: 3px solid #1a2a3a; padding-bottom: 10px;">
-        <h2>الجمهورية الجزائرية الديمقراطية الشعبية</h2>
-        <h3>جامعة قسنطينة 1 - كلية علوم الطبيعة والحياة</h3>
-        <img src="icon.png" style="width: 70px; margin: 10px;">
-        <h3 style="text-decoration: underline;">استمارة جمع البيانات: دراسة وبائية حول TAG</h3>
+<div id="report-template">
+    <div class="pdf-header">
+        <h2 id="pdf-uni">جامعة الإخوة منتوري - قسنطينة 1</h2>
+        <h3 id="pdf-fac">كلية علوم الطبيعة والحياة</h3>
+        <img src="icon.png" style="width: 80px; margin-top: 15px; border-radius: 15px;">
+        <h2 style="text-decoration: underline; margin-top: 20px;" id="pdf-title">تقرير دراسة وبائية: اضطراب القلق العام (TAG)</h2>
     </div>
-    <div style="margin-top: 20px; line-height: 1.6;">
-        <p><strong>القسم 1 (سوسيوديموغرافي):</strong> <span id="p-s1"></span></p>
-        <p><strong>القسم 2 (نمط الحياة):</strong> <span id="p-s2"></span></p>
-        <p><strong>القسم 3 (الهشاشة):</strong> <span id="p-s3"></span></p>
+    <div style="line-height: 1.8; font-size: 1.1rem;">
+        <p><strong>بيانات المشارك:</strong> <span id="pdf-bio"></span></p>
+        <p><strong>نمط الحياة:</strong> <span id="pdf-life"></span></p>
+        <p><strong>الهشاشة:</strong> <span id="pdf-vuln"></span></p>
         <hr>
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center;">
-            <h3>النتيجة الكلية لمقياس GAD-7: <span id="p-score"></span> / 21</h3>
-            <h3 id="p-status" style="color: #e74c3c;"></h3>
+        <div style="text-align: center; background: #f8f9fa; padding: 25px; border-radius: 20px;">
+            <h1 style="margin: 0;">GAD-7 Score: <span id="pdf-score"></span> / 21</h1>
+            <h2 id="pdf-status" style="margin: 10px 0;"></h2>
         </div>
-        <p style="font-size: 0.8rem; margin-top: 30px; color: #666;">التاريخ: <span id="p-date"></span> | الوقت: <span id="p-time"></span></p>
     </div>
 </div>
 
@@ -214,148 +166,113 @@
     const i18n = {
         ar: {
             dir: "rtl",
-            gad_questions: [
-                "1. الشعور بالعصبية أو التوتر أو الانفعال الشديد",
-                "2. عدم القدرة على التوقف عن القلق أو السيطرة عليه",
-                "3. القلق المفرط بشأن أشياء مختلفة",
-                "4. صعوبة في الاسترخاء",
-                "5. اضطراب حركي يمنع الهدوء (عدم القدرة على الجلوس ساكناً)",
-                "6. سرعة الغضب أو الانفعال",
-                "7. الشعور بالخوف كأن مكروهاً سيحدث"
-            ],
-            gad_opts: ["أبداً (0)", "عدة أيام (1)", "أكثر من نصف الوقت (2)", "كل يوم تقريباً (3)"],
-            status: ["لا يوجد قلق", "قلق خفيف", "قلق متوسط (حالة محتملة)", "قلق حاد (حالة محتملة)"]
+            questions: ["1. الشعور بالعصبية أو التوتر أو الانفعال الشديد", "2. عدم القدرة على التوقف عن القلق أو السيطرة عليه", "3. القلق المفرط بشأن أشياء مختلفة", "4. صعوبة في الاسترخاء", "5. اضطراب حركي يمنع الهدوء", "6. سرعة الغضب أو الانفعال", "7. الشعور بالخوف كأن مكروهاً سيحدث"],
+            opts: ["أبداً (0)", "عدة أيام (1)", "أكثر من نصف الوقت (2)", "كل يوم تقريباً (3)"],
+            status: ["لا يوجد قلق عيادي", "قلق خفيف", "قلق متوسط (حالة محتملة)", "قلق حاد (حالة محتملة)"],
+            ui: {
+                "t-consent-head": "استمارة جمع البيانات", "t-consent-sub": "دراسة وبائية حول اضطراب القلق العام (TAG)", "t-consent-yes": "نعم، أوافق على المشاركة", "t-consent-no": "لا، اعتذار",
+                "t-sec1-head": "القسم الأول: الخصائص السوسيوديموغرافية", "in-age": "السن (سنة)", "o-gender": "الجنس", "o-m": "ذكر", "o-f": "أنثى", "o-status": "الحالة العائلية", "o-s": "أعزب/عزباء", "o-mr": "متزوج(ة)", "o-d": "مطلق(ة)", "o-w": "أرمل(ة)", "o-edu": "المستوى التعليمي", "o-e1": "أمي", "o-e2": "ابتدائي/متوسط", "o-e3": "ثانوي", "o-e4": "جامعي", "o-job": "الوضعية المهنية", "o-j1": "عامل", "o-j2": "بطال", "o-j3": "طالب", "o-j4": "متقاعد", "o-j5": "بدون عمل", "o-eco": "المستوى الاقتصادي", "o-ec1": "منخفض", "o-ec2": "متوسط", "o-ec3": "مرتفع", "t-next": "التالي",
+                "t-sec2-head": "القسم الثاني: نمط الحياة والسوابق", "o-sleep": "جودة النوم", "o-sl1": "جيدة", "o-sl2": "متوسطة", "o-sl3": "رديئة", "o-sub": "استهلاك المواد", "o-sb1": "لا يوجد", "o-sb2": "تبغ/شيشة", "o-sb3": "كافيين مفرط", "o-sb4": "مهدئات", "o-chr": "مرض مزمن؟", "o-n": "لا", "o-y1": "نعم (ضغط/قلب)", "o-y2": "نعم (سكري)", "o-y3": "نعم (ربو)", "o-y4": "نعم (أخرى)", "t-next2": "التالي",
+                "t-sec3-head": "القسم الثالث: الهشاشة والعائلة", "o-str": "أحداث ضاغطة", "o-st1": "لا توجد", "o-st2": "فقدان قريب", "o-st3": "فقدان عمل", "o-st4": "نزاعات", "o-st5": "مالية", "o-fa": "سوابق قلق", "o-fd": "سوابق اكتئاب", "o-ps": "متابعة عقلية؟", "t-start-gad": "بدء تقييم GAD-7", "t-res-head": "نتائج التقييم العيادي", "t-of-21": "من 21", "t-pdf": "تحميل التقرير المطور PDF 📄"
+            }
         },
         fr: {
             dir: "ltr",
-            gad_questions: [
-                "1. Sentiment de nervosité, d'anxiété ou de tension",
-                "2. Ne pas pouvoir s'empêcher de s'inquiéter",
-                "3. S'inquiéter trop pour différentes choses",
-                "4. Difficulté à se détendre",
-                "5. Être si agité qu'il est difficile de rester en place",
-                "6. Devenir facilement irrité ou agacé",
-                "7. Avoir peur comme si quelque chose de terrible allait arriver"
-            ],
-            gad_opts: ["Jamais (0)", "Plusieurs jours (1)", "Plus de la moitié (2)", "Presque tous les jours (3)"],
-            status: ["Pas d'anxiété", "Anxiété légère", "Anxiété modérée", "Anxiété sévère"]
+            questions: ["1. Sentiment de nervosité ou tension", "2. Ne pas pouvoir s'empêcher de s'inquiéter", "3. S'inquiéter trop pour différentes choses", "4. Difficulté à se détendre", "5. Être si agité qu'il est difficile de rester en place", "6. Devenir facilement irrité ou agacé", "7. Avoir peur comme si quelque chose de terrible allait arriver"],
+            opts: ["Jamais (0)", "Plusieurs jours (1)", "Plus de la moitié (2)", "Presque tous les jours (3)"],
+            status: ["Pas d'anxiété clinique", "Anxiété légère", "Anxiété modérée", "Anxiété sévère"],
+            ui: {
+                "t-consent-head": "Recueil de Données", "t-consent-sub": "Étude épidémiologique sur le TAG", "t-consent-yes": "Oui, j'accepte", "t-consent-no": "Non, merci",
+                "t-sec1-head": "Section 1: Sociodémographique", "in-age": "Âge (ans)", "o-gender": "Sexe", "o-m": "Homme", "o-f": "Femme", "o-status": "État civil", "o-s": "Célibataire", "o-mr": "Marié(e)", "o-d": "Divorcé(e)", "o-w": "Veuf/Veuve", "o-edu": "Éducation", "o-e1": "Analphabète", "o-e2": "Primaire/Moyen", "o-e3": "Secondaire", "o-e4": "Universitaire", "o-job": "Profession", "o-j1": "Employé", "o-j2": "Chômeur", "o-j3": "Étudiant", "o-j4": "Retraité", "o-j5": "Sans emploi", "o-eco": "Niveau économique", "o-ec1": "Bas", "o-ec2": "Moyen", "o-ec3": "Élevé", "t-next": "Suivant",
+                "t-sec2-head": "Section 2: Mode de vie", "o-sleep": "Qualité sommeil", "o-sl1": "Bonne", "o-sl2": "Moyenne", "o-sl3": "Mauvaise", "o-sub": "Substances", "o-sb1": "Aucun", "o-sb2": "Tabac/Chicha", "o-sb3": "Caféine", "o-sb4": "Sédatifs", "o-chr": "Maladie ?", "o-n": "Non", "o-y1": "Oui (HTA/Cœur)", "o-y2": "Oui (Diabète)", "o-y3": "Oui (Asthme)", "o-y4": "Oui (Autre)", "t-next2": "Suivant",
+                "t-sec3-head": "Section 3: Fragilité & Famille", "o-str": "Événements stressants", "o-st1": "Aucun", "o-st2": "Perte proche", "o-st3": "Perte travail", "o-st4": "Conflits", "o-st5": "Financier", "o-fa": "Antécédents Anxiété", "o-fd": "Antécédents Dépression", "o-ps": "Suivi Psy ?", "t-start-gad": "Démarrer GAD-7", "t-res-head": "Résultats Cliniques", "t-of-21": "sur 21", "t-pdf": "Télécharger le PDF 📄"
+            }
         }
     };
 
-    let currentLang = 'ar', currentQ = 0, totalScore = 0, bioData = {}, answers = [];
+    let curLang = 'ar', curQ = 0, total = 0, bio = {}, ans = [];
 
     function setLanguage(lang) {
-        currentLang = lang;
-        document.getElementById('html-tag').dir = i18n[lang].dir;
+        curLang = lang;
+        const d = i18n[lang];
+        document.getElementById('html-tag').dir = d.dir;
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.id === 'btn-' + lang));
+        for (const id in d.ui) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el.tagName === "INPUT") el.placeholder = d.ui[id];
+                else el.innerText = d.ui[id];
+            }
+        }
         if (document.getElementById('step-gad').classList.contains('active-section')) renderQuestion();
     }
 
-    function goToStep(stepId) {
+    function goToStep(id) {
         document.querySelectorAll('.section-ui').forEach(s => s.classList.remove('active-section'));
-        document.getElementById(stepId).classList.add('active-section');
-        if(stepId === 'step-gad') renderQuestion();
+        document.getElementById(id).classList.add('active-section');
+        if(id === 'step-gad') renderQuestion();
     }
 
     function renderQuestion() {
-        const d = i18n[currentLang];
-        document.getElementById('q-text').innerText = d.gad_questions[currentQ];
-        document.getElementById('gad-fill').style.width = `${((currentQ + 1) / 7) * 100}%`;
+        const d = i18n[curLang];
+        document.getElementById('q-text').innerText = d.questions[curQ];
+        document.getElementById('gad-fill').style.width = `${((curQ + 1) / 7) * 100}%`;
         const container = document.getElementById('options-container');
         container.innerHTML = '';
-        d.gad_opts.forEach((txt, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'opt-btn';
-            btn.innerText = txt;
-            btn.onclick = () => handleAnswer(i);
+        d.opts.forEach((txt, i) => {
+            const btn = document.createElement('button'); btn.className = 'opt-btn'; btn.innerText = txt;
+            btn.onclick = () => { ans.push(i); total += i; if(++curQ < 7) renderQuestion(); else finish(); };
             container.appendChild(btn);
         });
     }
 
-    function handleAnswer(val) {
-        answers.push(val);
-        totalScore += val;
-        if(++currentQ < 7) renderQuestion(); 
-        else finishSurvey();
-    }
-
-    function finishSurvey() {
-        bioData = {
-            age: document.getElementById('in-age').value,
-            gender: document.getElementById('in-gender').value,
-            status: document.getElementById('in-status').value,
-            edu: document.getElementById('in-edu').value,
-            job: document.getElementById('in-job').value,
-            eco: document.getElementById('in-eco').value,
-            sleep: document.getElementById('in-sleep').value,
-            substance: document.getElementById('in-substance').value,
-            chronic: document.getElementById('in-chronic').value,
-            stress: document.getElementById('in-stress').value,
-            fam_anx: document.getElementById('in-fam-anxiety').value,
-            fam_dep: document.getElementById('in-fam-dep').value,
-            psych: document.getElementById('in-psych-follow').value
+    function finish() {
+        bio = {
+            age: document.getElementById('in-age').value, gender: document.getElementById('in-gender').value,
+            status: document.getElementById('in-status').value, edu: document.getElementById('in-edu').value,
+            job: document.getElementById('in-job').value, eco: document.getElementById('in-eco').value,
+            sleep: document.getElementById('in-sleep').value, sub: document.getElementById('in-substance').value,
+            chr: document.getElementById('in-chronic').value, str: document.getElementById('in-stress').value,
+            fa: document.getElementById('in-fam-anx').value, fd: document.getElementById('in-fam-dep').value, ps: document.getElementById('in-psych').value
         };
-        goToStep('step-results');
-        showResults();
-        syncWithSheets();
+        goToStep('step-results'); showResults(); sync();
     }
 
     function showResults() {
-        const d = i18n[currentLang];
-        document.getElementById('score-num').innerText = totalScore;
-        let status = d.status[0], col = "var(--success)";
-        if(totalScore >= 5) { status = d.status[1]; col = "#f39c12"; }
-        if(totalScore >= 10) { status = d.status[2]; col = "#e67e22"; }
-        if(totalScore >= 15) { status = d.status[3]; col = "var(--danger)"; }
-        document.getElementById('status-text').innerText = status;
+        const d = i18n[curLang]; document.getElementById('score-num').innerText = total;
+        let st = d.status[0], col = "var(--success)";
+        if(total >= 5) { st = d.status[1]; col = "#f39c12"; }
+        if(total >= 10) { st = d.status[2]; col = "#e67e22"; }
+        if(total >= 15) { st = d.status[3]; col = "var(--danger)"; }
+        document.getElementById('status-text').innerText = st;
         document.getElementById('status-text').style.color = col;
-        drawChart(col);
+        document.getElementById('circle-box').style.borderColor = col;
+        document.getElementById('score-num').style.color = col;
     }
 
-    function drawChart(col) {
-        new Chart(document.getElementById('myChart'), {
-            type: 'doughnut', data: { datasets: [{ data: [totalScore, 21-totalScore], backgroundColor: [col, '#eee'], circumference: 180, rotation: 270, borderWidth: 0 }] },
-            options: { cutout: '75%', plugins: { tooltip: {enabled: false} } }
-        });
-    }
-
-    function syncWithSheets() {
-        const now = new Date();
+    function sync() {
         const payload = { 
-            date: now.toLocaleDateString(), time: now.toLocaleTimeString(),
-            age: bioData.age, gender: bioData.gender, status_family: bioData.status,
-            edu: bioData.edu, job: bioData.job, eco: bioData.eco,
-            sleep: bioData.sleep, substance: bioData.substance, chronic: bioData.chronic,
-            stress: bioData.stress, fam_anx: bioData.fam_anx, fam_dep: bioData.fam_dep,
-            psych: bioData.psych, score: totalScore,
-            status_severity: document.getElementById('status-text').innerText,
-            answers: JSON.stringify(answers)
+            date: new Date().toLocaleDateString(), time: new Date().toLocaleTimeString(),
+            age: bio.age, gender: bio.gender, status: bio.status, edu: bio.edu, job: bio.job, eco: bio.eco,
+            sleep: bio.sleep, substance: bio.sub, chronic: bio.chr, stress: bio.str, fam_anx: bio.fa, fam_dep: bio.fd, psych: bio.ps,
+            score: total, severity: document.getElementById('status-text').innerText, answers: JSON.stringify(ans)
         };
         fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
     }
 
     function downloadReport() {
-        const now = new Date();
-        document.getElementById('p-s1').innerText = `${bioData.age} سنة | ${bioData.gender} | ${bioData.status} | تعليم: ${bioData.edu} | عمل: ${bioData.job} | اقتصادياً: ${bioData.eco}`;
-        document.getElementById('p-s2').innerText = `نوم: ${bioData.sleep} | مواد: ${bioData.substance} | مرض: ${bioData.chronic}`;
-        document.getElementById('p-s3').innerText = `ضغط: ${bioData.stress} | عائلية: ${bioData.fam_anx}, ${bioData.fam_dep} | متابعة: ${bioData.psych}`;
-        document.getElementById('p-score').innerText = totalScore;
-        document.getElementById('p-status').innerText = document.getElementById('status-text').innerText;
-        document.getElementById('p-date').innerText = now.toLocaleDateString();
-        document.getElementById('p-time').innerText = now.toLocaleTimeString();
-        
+        document.getElementById('pdf-bio').innerText = `${bio.age} ans | ${bio.gender} | ${bio.status} | Job: ${bio.job}`;
+        document.getElementById('pdf-life').innerText = `Niveau Eco: ${bio.eco} | Sommeil: ${bio.sleep} | Maladie: ${bio.chr}`;
+        document.getElementById('pdf-vuln').innerText = `Stress: ${bio.str} | Antécédents: ${bio.fa}, ${bio.fd} | Suivi: ${bio.ps}`;
+        document.getElementById('pdf-score').innerText = total;
+        document.getElementById('pdf-status').innerText = document.getElementById('status-text').innerText;
+        document.getElementById('pdf-status').style.color = document.getElementById('status-text').style.color;
         const report = document.getElementById('report-template');
         report.style.display = 'block';
-        html2pdf().from(report).save('TAG_Full_Report_Constantine.pdf').then(() => report.style.display = 'none');
+        html2pdf().from(report).save('Rapport_Clinical_GAD7.pdf').then(() => report.style.display = 'none');
     }
 
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const s = document.getElementById('custom-splash');
-            s.style.opacity = '0';
-            setTimeout(() => s.style.visibility = 'hidden', 800);
-        }, 2500);
-    });
+    window.addEventListener('load', () => { setTimeout(() => { const s = document.getElementById('custom-splash'); s.style.opacity = '0'; setTimeout(() => s.style.visibility = 'hidden', 800); }, 2500); });
 </script>
 </body>
 </html>
