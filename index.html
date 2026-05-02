@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAD-7 Research Tool - Constantine 1</title>
+    <title>GAD-7 Research - Constantine 1</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,7 +24,7 @@
             justify-content: center; align-items: center; z-index: 99999;
             color: white; transition: opacity 0.8s ease, visibility 0.8s;
         }
-        .splash-logo { width: 150px; height: 150px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .splash-logo { width: 140px; height: 140px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
         .splash-loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -36,45 +36,43 @@
         .card { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); text-align: center; position: relative; overflow: hidden; }
         
         .lang-switcher { position: absolute; top: 15px; left: 15px; display: flex; gap: 5px; z-index: 10; }
-        .lang-btn { background: #eee; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
+        .lang-btn { background: #eee; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
         .lang-btn.active { background: var(--primary); color: white; }
 
         .section-ui { display: none; }
         .active-section { display: block; }
 
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #edf2f7; border-radius: 12px; font-family: inherit; font-size: 1rem; box-sizing: border-box; }
-        .opt-btn { background: #fff; border: 2px solid #edf2f7; padding: 15px; border-radius: 15px; cursor: pointer; font-size: 1.1rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 10px; font-weight: 500; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #edf2f7; border-radius: 12px; font-family: inherit; font-size: 1rem; box-sizing: border-box; outline: none; transition: 0.2s; }
+        input:focus, select:focus { border-color: var(--accent); }
+        .opt-btn { background: #fff; border: 2px solid #edf2f7; padding: 15px; border-radius: 15px; cursor: pointer; font-size: 1.1rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 10px; font-weight: 500; display: block; }
         .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; transform: translateY(-2px); }
 
-        .btn-next { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1rem; }
+        .btn-next { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 15px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); }
         
-        .progress-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; margin-bottom: 25px; overflow: hidden; }
         .fill-inner { height: 100%; background: var(--accent); width: 0%; transition: 0.4s; }
         
-        .consent-box { text-align: justify; background: #f9f9f9; padding: 20px; border-radius: 15px; border-right: 5px solid var(--accent); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6; }
+        .consent-box { text-align: justify; background: #f9f9f9; padding: 20px; border-radius: 15px; border-right: 5px solid var(--accent); margin-bottom: 25px; font-size: 0.95rem; line-height: 1.7; color: #444; }
+        [dir="ltr"] .consent-box { border-right: none; border-left: 5px solid var(--accent); }
 
-        /* تنسيق قالب الـ PDF المطور */
+        /* تنسيق الـ PDF المطور */
         #report-template { 
             display: none; width: 800px; padding: 50px; background: white; color: #333; 
-            border: 10px solid #f8f9fa; box-sizing: border-box;
+            border: 15px solid #f8f9fa; box-sizing: border-box;
         }
-        .pdf-row { display: flex; justify-content: space-between; margin-bottom: 15px; }
         .pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .pdf-table th, .pdf-table td { border: 1px solid #dee2e6; padding: 10px; text-align: right; }
-        .pdf-table th { background-color: #f1f4f6; color: var(--primary); }
-        .pdf-section-title { 
-            background: var(--primary); color: white; padding: 8px 15px; 
-            border-radius: 5px; margin-top: 25px; font-size: 1.1rem; font-weight: bold;
-        }
+        .pdf-table th, .pdf-table td { border: 1px solid #dee2e6; padding: 12px; text-align: inherit; }
+        .pdf-table th { background-color: #f1f4f6; color: var(--primary); font-weight: bold; }
+        .pdf-section-title { background: var(--primary); color: white; padding: 10px 15px; border-radius: 6px; margin-top: 25px; font-size: 1.1rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="custom-splash">
     <img src="icon.png" class="splash-logo">
-    <div style="font-size: 1.4rem; font-weight: bold; text-align: center;">جامعة الإخوة منتوري - قسنطينة 1</div>
-    <div style="opacity: 0.8; margin-top: 5px;">كلية علوم الطبيعة والحياة</div>
-    <div class="splash-loader" style="margin-top: 30px;"></div>
+    <div id="splash-uni" style="font-size: 1.4rem; font-weight: bold; text-align: center;">جامعة الإخوة منتوري - قسنطينة 1</div>
+    <div id="splash-fac" style="opacity: 0.8; margin-top: 5px;">كلية علوم الطبيعة والحياة</div>
+    <div class="splash-loader" style="margin-top: 35px;"></div>
 </div>
 
 <div class="card fade-in">
@@ -84,9 +82,10 @@
         <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
 
+    <!-- 0. واجهة الموافقة -->
     <div id="step-consent" class="section-ui active-section">
-        <h2 id="txt-consent-title">استمارة جمع البيانات</h2>
-        <p style="font-weight: bold; color: var(--accent);">دراسة وبائية حول اضطراب القلق العام (TAG)</p>
+        <h2 id="txt-consent-title" style="color: var(--primary);">استمارة جمع البيانات</h2>
+        <p id="txt-consent-sub" style="font-weight: bold; color: var(--accent);">دراسة وبائية حول اضطراب القلق العام (TAG)</p>
         <div class="consent-box" id="txt-consent-body">
             سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على الإجابة على أسئلتنا؟
         </div>
@@ -94,9 +93,10 @@
         <button class="opt-btn" onclick="location.reload()" style="color: var(--danger);">❌ <span id="txt-consent-no">لا، اعتذار</span></button>
     </div>
 
+    <!-- 1. البيانات الشخصية -->
     <div id="step-bio" class="section-ui">
         <div class="progress-bar"><div class="fill-inner" style="width: 25%;"></div></div>
-        <h3 id="txt-sec1-title">القسم الأول: الخصائص السوسيوديموغرافية</h3>
+        <h3 id="txt-sec1-title" style="color: var(--primary);">القسم الأول: الخصائص السوسيوديموغرافية</h3>
         <input type="number" id="in-age" placeholder="السن (سنة)">
         <select id="in-gender">
             <option value="" id="opt-gender-label">الجنس</option>
@@ -120,9 +120,10 @@
         <button class="btn-next" onclick="goToStep('step-health')" id="btn-next1">التالي</button>
     </div>
 
+    <!-- 2. نمط الحياة -->
     <div id="step-health" class="section-ui">
         <div class="progress-bar"><div class="fill-inner" style="width: 50%;"></div></div>
-        <h3 id="txt-sec2-title">القسم الثاني: نمط الحياة والهشاشة</h3>
+        <h3 id="txt-sec2-title" style="color: var(--primary);">القسم الثاني: نمط الحياة والهشاشة</h3>
         <select id="in-sleep">
             <option value="" id="opt-sleep-label">تقييم جودة النوم</option>
             <option value="جيدة" id="opt-s1">جيدة</option>
@@ -143,14 +144,16 @@
         <button class="btn-next" onclick="goToStep('step-gad')" id="btn-start-gad">بدء تقييم GAD-7</button>
     </div>
 
+    <!-- 3. الأسئلة -->
     <div id="step-gad" class="section-ui">
         <div class="progress-bar"><div id="gad-fill" class="fill-inner"></div></div>
-        <div id="q-text" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 25px; color: var(--primary); line-height: 1.5;"></div>
+        <div id="q-text" style="font-size: 1.25rem; font-weight: bold; margin-bottom: 25px; color: var(--primary); line-height: 1.5;"></div>
         <div id="options-container"></div>
     </div>
 
+    <!-- 4. النتائج -->
     <div id="step-results" class="section-ui">
-        <h2 id="txt-res-title">نتائج الفحص</h2>
+        <h2 id="txt-res-title">نتائج الفحص السيكومتري</h2>
         <div style="width: 220px; margin: 0 auto; position: relative;">
             <canvas id="myChart"></canvas>
             <div id="score-num" style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 800;">0</div>
@@ -160,63 +163,43 @@
     </div>
 </div>
 
+<!-- قالب الـ PDF -->
 <div id="report-template">
     <div style="text-align: center; border-bottom: 4px solid #1a2a3a; padding-bottom: 15px;">
-        <h2 style="margin: 0;">الجمهورية الجزائرية الديمقراطية الشعبية</h2>
-        <h3 style="margin: 5px 0;">وزارة التعليم العالي والبحث العلمي</h3>
-        <h3 style="margin: 0;">جامعة الإخوة منتوري - قسنطينة 1</h3>
-        <div style="margin-top: 15px;">
-            <img src="icon.png" style="width: 80px; height: 80px; border-radius: 15px;">
-        </div>
-        <h2 style="color: #1a2a3a; margin-top: 15px; text-decoration: underline;">تقرير التحليل السيكومتري للدراسة الوبائية (TAG)</h2>
+        <h2 id="pdf-repub" style="margin: 0;">الجمهورية الجزائرية الديمقراطية الشعبية</h2>
+        <h3 id="pdf-uni" style="margin: 5px 0;">جامعة الإخوة منتوري - قسنطينة 1</h3>
+        <div style="margin-top: 15px;"><img src="icon.png" style="width: 80px; height: 80px; border-radius: 15px;"></div>
+        <h2 id="pdf-title" style="color: #1a2a3a; margin-top: 15px; text-decoration: underline;">تقرير التحليل السيكومتري للدراسة الوبائية (TAG)</h2>
     </div>
-
-    <div class="pdf-section-title">أولاً: المعلومات السوسيوديموغرافية</div>
+    <div class="pdf-section-title" id="pdf-sec-bio">أولاً: المعلومات السوسيوديموغرافية</div>
     <table class="pdf-table">
-        <tr><th>السن</th><td id="pdf-age"></td><th>الجنس</th><td id="pdf-gender"></td></tr>
-        <tr><th>الحالة العائلية</th><td id="pdf-status-fam"></td><th>المستوى التعليمي</th><td id="pdf-edu"></td></tr>
+        <tr><th id="pdf-th-age">السن</th><td id="pdf-age"></td><th id="pdf-th-gender">الجنس</th><td id="pdf-gender"></td></tr>
+        <tr><th id="pdf-th-status">الحالة العائلية</th><td id="pdf-status-fam"></td><th id="pdf-th-edu">المستوى التعليمي</th><td id="pdf-edu"></td></tr>
     </table>
-
-    <div class="pdf-section-title">ثانياً: نمط الحياة والهشاشة المرضية</div>
+    <div class="pdf-section-title" id="pdf-sec-health">ثانياً: نمط الحياة والهشاشة المرضية</div>
     <table class="pdf-table">
-        <tr><th>جودة النوم</th><td id="pdf-sleep"></td><th>مرض مزمن</th><td id="pdf-chronic"></td></tr>
-        <tr><th>سوابق عائلية للقلق</th><td colspan="3" id="pdf-family"></td></tr>
+        <tr><th id="pdf-th-sleep">جودة النوم</th><td id="pdf-sleep"></td><th id="pdf-th-chronic">مرض مزمن</th><td id="pdf-chronic"></td></tr>
+        <tr><th id="pdf-th-family">سوابق عائلية للقلق</th><td colspan="3" id="pdf-family"></td></tr>
     </table>
-
-    <div class="pdf-section-title">ثالثاً: التقييم العيادي بمقياس GAD-7</div>
-    <div style="display: flex; align-items: center; justify-content: space-around; padding: 20px; background: #f8f9fa; border-radius: 10px; margin-top: 15px;">
+    <div class="pdf-section-title" id="pdf-sec-gad">ثالثاً: التقييم العيادي بمقياس GAD-7</div>
+    <div style="display: flex; align-items: center; justify-content: space-around; padding: 25px; background: #f8f9fa; border-radius: 12px; margin-top: 15px;">
         <div style="text-align: center;">
-            <div style="font-size: 0.9rem; color: #666;">الدرجة الكلية</div>
-            <div style="font-size: 3rem; font-weight: 800; color: #1a2a3a;" id="pdf-score-val">0</div>
-            <div style="font-size: 1.1rem;">من أصل 21</div>
+            <div style="font-size: 0.9rem; color: #666;" id="pdf-th-score">الدرجة الكلية</div>
+            <div style="font-size: 3.5rem; font-weight: 800; color: #1a2a3a;" id="pdf-score-val">0</div>
         </div>
         <div style="text-align: center; border-right: 2px solid #dee2e6; padding-right: 40px;">
-            <div style="font-size: 0.9rem; color: #666;">التصنيف العيادي</div>
-            <div style="font-size: 1.5rem; font-weight: bold;" id="pdf-status-val"></div>
+            <div style="font-size: 0.9rem; color: #666;" id="pdf-th-status-val">التصنيف العيادي</div>
+            <div style="font-size: 1.6rem; font-weight: bold;" id="pdf-status-val"></div>
         </div>
     </div>
-
-    <div class="pdf-section-title">رابعاً: سلم التفسير الأكاديمي</div>
-    <table class="pdf-table" style="font-size: 0.9rem;">
-        <tr style="background: #eee;"><th>نطاق الدرجات</th><th>التفسير العيادي</th></tr>
-        <tr><td>0 - 4 نقاط</td><td>لا يوجد قلق (Normal)</td></tr>
-        <tr><td>5 - 9 نقاط</td><td>قلق خفيف (Mild)</td></tr>
-        <tr><td>10 - 14 نقطة</td><td>قلق متوسط - حالة محتملة (Moderate)</td></tr>
-        <tr><td>15 - 21 نقطة</td><td>قلق حاد - حالة محتملة (Severe)</td></tr>
-    </table>
-
     <div style="margin-top: 50px; display: flex; justify-content: space-between; font-size: 0.85rem;">
-        <div><strong>تاريخ الاستخراج:</strong> <span id="pdf-date-now"></span></div>
-        <div style="text-align: center; border-top: 1px solid #333; padding-top: 5px; width: 150px;">خاتم/توقيع الباحث</div>
-    </div>
-    
-    <div style="text-align: center; font-size: 0.75rem; color: #999; margin-top: 30px;">
-        تم تطوير هذه الأداة الرقمية لدعم مشروع التخرج - ماستر 2 علم الوراثة الطبية - جامعة قسنطينة 1.
+        <div><strong id="pdf-th-date">تاريخ الاستخراج:</strong> <span id="pdf-date-now"></span></div>
+        <div style="text-align: center; border-top: 1px solid #333; padding-top: 5px; width: 150px;" id="pdf-th-sign">خاتم/توقيع الباحث</div>
     </div>
 </div>
 
 <script>
-    const scriptURL = 'رابط_السكريبت_الخاص_بك_هنا';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxnhz3rMA_1uo4DuPcaZbcdn9WfHD5I730CDhT0kbX2_UUlJgoPxnuZ48AMqg3S67fDvA/exec';
     
     const i18n = {
         ar: {
@@ -225,16 +208,15 @@
             gad_opts: ["أبداً", "عدة أيام", "أكثر من نصف الوقت", "كل يوم تقريباً"],
             status: ["لا يوجد قلق", "قلق خفيف", "قلق متوسط (حالة محتملة)", "قلق حاد (حالة محتملة)"],
             ui: {
-                "txt-consent-title": "استمارة جمع البيانات", "txt-consent-body": "سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط. هل توافقون على الإجابة على أسئلتنا؟",
-                "txt-consent-yes": "نعم، أوافق على المشاركة", "txt-consent-no": "لا، اعتذار", "txt-sec1-title": "القسم الأول: الخصائص السوسيوديموغرافية",
-                "in-age": "السن (سنة)", "opt-gender-label": "الجنس", "opt-m": "ذكر", "opt-f": "أنثى",
-                "opt-status-label": "الحالة العائلية", "opt-single": "أعزب/عزباء", "opt-married": "متزوج(ة)", "opt-divorced": "مطلق(ة)", "opt-widowed": "أرمل(ة)",
-                "opt-edu-label": "المستوى التعليمي", "opt-edu1": "أمي", "opt-edu2": "ابتدائي/متوسط", "opt-edu3": "ثانوي", "opt-edu4": "جامعي",
-                "btn-next1": "التالي", "txt-sec2-title": "القسم الثاني: نمط الحياة والهشاشة",
-                "opt-sleep-label": "تقييم جودة النوم", "opt-s1": "جيدة", "opt-s2": "متوسطة", "opt-s3": "رديئة",
-                "opt-chronic-label": "هل تعاني من مرض مزمن؟", "opt-n1": "لا", "opt-y1": "نعم",
+                "txt-consent-title": "استمارة جمع البيانات", "txt-consent-yes": "نعم، أوافق على المشاركة", "txt-consent-no": "لا، اعتذار",
+                "txt-sec1-title": "القسم الأول: الخصائص السوسيوديموغرافية", "in-age": "السن (سنة)", "opt-gender-label": "الجنس",
+                "opt-m": "ذكر", "opt-f": "أنثى", "opt-status-label": "الحالة العائلية", "opt-single": "أعزب/عزباء",
+                "opt-married": "متزوج(ة)", "opt-divorced": "مطلق(ة)", "opt-widowed": "أرمل(ة)", "opt-edu-label": "المستوى التعليمي",
+                "opt-edu1": "أمي", "opt-edu2": "ابتدائي/متوسط", "opt-edu3": "ثانوي", "opt-edu4": "جامعي", "btn-next1": "التالي",
+                "txt-sec2-title": "القسم الثاني: نمط الحياة والهشاشة", "opt-sleep-label": "تقييم جودة النوم", "opt-s1": "جيدة",
+                "opt-s2": "متوسطة", "opt-s3": "رديئة", "opt-chronic-label": "هل تعاني من مرض مزمن؟", "opt-n1": "لا", "opt-y1": "نعم",
                 "opt-family-label": "سوابق عائلية لاضطراب القلق؟", "opt-n2": "لا", "opt-y2": "نعم (درجة أولى)", "opt-y3": "نعم (درجة ثانية)",
-                "btn-start-gad": "بدء تقييم GAD-7", "txt-res-title": "نتائج الفحص", "btn-pdf": "تحميل التقرير المطور PDF 📄"
+                "btn-start-gad": "بدء تقييم GAD-7", "txt-res-title": "نتائج الفحص السيكومتري", "btn-pdf": "تحميل التقرير المطور PDF 📄"
             }
         },
         fr: {
@@ -243,14 +225,13 @@
             gad_opts: ["Jamais", "Plusieurs jours", "Plus de la moitié du temps", "Presque tous les jours"],
             status: ["Pas d'anxiété", "Anxiété légère", "Anxiété modérée", "Anxiété sévère"],
             ui: {
-                "txt-consent-title": "Recueil de Données", "txt-consent-body": "Madame/Monsieur, ce questionnaire s'inscrit dans le cadre d'une recherche universitaire sur la santé. Vos réponses resteront confidentielles. Acceptez-vous de participer ?",
-                "txt-consent-yes": "Oui, j'accepte", "txt-consent-no": "Non, merci", "txt-sec1-title": "Section 1: Données Sociodémographiques",
-                "in-age": "Âge (ans)", "opt-gender-label": "Sexe", "opt-m": "Homme", "opt-f": "Femme",
-                "opt-status-label": "État Civil", "opt-single": "Célibataire", "opt-married": "Marié(e)", "opt-divorced": "Divorcé(e)", "opt-widowed": "Veuf/Veuve",
-                "opt-edu-label": "Niveau d'instruction", "opt-edu1": "Analphabète", "opt-edu2": "Primaire/Moyen", "opt-edu3": "Secondaire", "opt-edu4": "Universitaire",
-                "btn-next1": "Suivant", "txt-sec2-title": "Section 2: Mode de vie",
-                "opt-sleep-label": "Qualité du sommeil", "opt-s1": "Bonne", "opt-s2": "Moyenne", "opt-s3": "Mauvaise",
-                "opt-chronic-label": "Maladie chronique ?", "opt-n1": "Non", "opt-y1": "Oui",
+                "txt-consent-title": "Recueil de Données", "txt-consent-yes": "Oui, j'accepte", "txt-consent-no": "Non, merci",
+                "txt-sec1-title": "Section 1: Données Sociodémographiques", "in-age": "Âge (ans)", "opt-gender-label": "Sexe",
+                "opt-m": "Homme", "opt-f": "Femme", "opt-status-label": "État Civil", "opt-single": "Célibataire",
+                "opt-married": "Marié(e)", "opt-divorced": "Divorcé(e)", "opt-widowed": "Veuf/Veuve", "opt-edu-label": "Niveau d'instruction",
+                "opt-edu1": "Analphabète", "opt-edu2": "Primaire/Moyen", "opt-edu3": "Secondaire", "opt-edu4": "Universitaire", "btn-next1": "Suivant",
+                "txt-sec2-title": "Section 2: Mode de vie", "opt-sleep-label": "Qualité du sommeil", "opt-s1": "Bonne",
+                "opt-s2": "Moyenne", "opt-s3": "Mauvaise", "opt-chronic-label": "Maladie chronique ?", "opt-n1": "Non", "opt-y1": "Oui",
                 "opt-family-label": "Antécédents familiaux ?", "opt-n2": "Non", "opt-y2": "Oui (1er degré)", "opt-y3": "Oui (2ème degré)",
                 "btn-start-gad": "Démarrer GAD-7", "txt-res-title": "Résultats", "btn-pdf": "Télécharger le PDF 📄"
             }
@@ -261,14 +242,13 @@
             gad_opts: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
             status: ["No anxiety", "Mild anxiety", "Moderate anxiety", "Severe anxiety"],
             ui: {
-                "txt-consent-title": "Data Collection Form", "txt-consent-body": "This questionnaire is part of a university research. Your answers will remain strictly confidential. Do you agree to participate?",
-                "txt-consent-yes": "Yes, I agree", "txt-consent-no": "No, thanks", "txt-sec1-title": "Section 1: Sociodemographic Data",
-                "in-age": "Age (years)", "opt-gender-label": "Gender", "opt-m": "Male", "opt-f": "Female",
-                "opt-status-label": "Marital Status", "opt-single": "Single", "opt-married": "Married", "opt-divorced": "Divorced", "opt-widowed": "Widowed",
-                "opt-edu-label": "Education Level", "opt-edu1": "Illiterate", "opt-edu2": "Primary/Middle", "opt-edu3": "High School", "opt-edu4": "University",
-                "btn-next1": "Next", "txt-sec2-title": "Section 2: Lifestyle",
-                "opt-sleep-label": "Sleep Quality", "opt-s1": "Good", "opt-s2": "Average", "opt-s3": "Poor",
-                "opt-chronic-label": "Chronic Disease?", "opt-n1": "No", "opt-y1": "Yes",
+                "txt-consent-title": "Data Collection Form", "txt-consent-yes": "Yes, I agree", "txt-consent-no": "No, thanks",
+                "txt-sec1-title": "Section 1: Sociodemographic Data", "in-age": "Age (years)", "opt-gender-label": "Gender",
+                "opt-m": "Male", "opt-f": "Female", "opt-status-label": "Marital Status", "opt-single": "Single",
+                "opt-married": "Married", "opt-divorced": "Divorced", "opt-widowed": "Widowed", "opt-edu-label": "Education Level",
+                "opt-edu1": "Illiterate", "opt-edu2": "Primary/Middle", "opt-edu3": "High School", "opt-edu4": "University", "btn-next1": "Next",
+                "txt-sec2-title": "Section 2: Lifestyle", "opt-sleep-label": "Sleep Quality", "opt-s1": "Good",
+                "opt-s2": "Average", "opt-s3": "Poor", "opt-chronic-label": "Chronic Disease?", "opt-n1": "No", "opt-y1": "Yes",
                 "opt-family-label": "Family History?", "opt-n2": "No", "opt-y2": "Yes (1st degree)", "opt-y3": "Yes (2nd degree)",
                 "btn-start-gad": "Start GAD-7", "txt-res-title": "Results", "btn-pdf": "Download PDF 📄"
             }
@@ -342,7 +322,6 @@
         if(totalScore >= 5) { status = d.status[1]; col = "#f39c12"; }
         if(totalScore >= 10) { status = d.status[2]; col = "#e67e22"; }
         if(totalScore >= 15) { status = d.status[3]; col = "var(--danger)"; }
-        
         const el = document.getElementById('status-text');
         el.innerText = status; el.style.color = col;
         document.getElementById('score-num').style.color = col;
@@ -371,7 +350,6 @@
 
     function downloadReport() {
         const now = new Date();
-        // ملء بيانات القالب
         document.getElementById('pdf-age').innerText = bioData.age;
         document.getElementById('pdf-gender').innerText = bioData.gender;
         document.getElementById('pdf-status-fam').innerText = bioData.status;
@@ -382,31 +360,13 @@
         document.getElementById('pdf-score-val').innerText = totalScore;
         document.getElementById('pdf-status-val').innerText = document.getElementById('status-text').innerText;
         document.getElementById('pdf-status-val').style.color = document.getElementById('status-text').style.color;
-        document.getElementById('pdf-date-now').innerText = now.toLocaleString('ar-DZ');
-
+        document.getElementById('pdf-date-now').innerText = now.toLocaleString();
         const report = document.getElementById('report-template');
         report.style.display = 'block';
-        
-        const opt = {
-            margin: 0,
-            filename: 'Rapport_GAD7_Constantine1.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().from(report).set(opt).save().then(() => {
-            report.style.display = 'none';
-        });
+        html2pdf().from(report).set({ margin: 0, filename: 'GAD7_Constantine.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).save().then(() => { report.style.display = 'none'; });
     }
 
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const splash = document.getElementById('custom-splash');
-            splash.style.opacity = '0';
-            setTimeout(() => splash.style.visibility = 'hidden', 800);
-        }, 2500);
-    });
+    window.addEventListener('load', () => { setTimeout(() => { const s = document.getElementById('custom-splash'); s.style.opacity = '0'; setTimeout(() => s.style.visibility = 'hidden', 800); }, 2500); });
 </script>
 </body>
 </html>
