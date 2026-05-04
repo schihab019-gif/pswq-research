@@ -41,13 +41,17 @@
         .section-ui { display: none; }
         .active-section { display: block; }
 
-        .form-group { text-align: right; margin-bottom: 15px; }
+        .form-group { text-align: right; margin-bottom: 20px; }
         [dir="ltr"] .form-group { text-align: left; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.9rem; }
+        label { display: block; font-weight: bold; margin-bottom: 10px; color: var(--primary); font-size: 0.95rem; border-bottom: 2px solid var(--bg); padding-bottom: 5px; }
 
         input, select { width: 100%; padding: 12px; border: 2px solid #edf2f7; border-radius: 12px; font-family: inherit; font-size: 1rem; box-sizing: border-box; outline: none; transition: 0.3s; background: #fcfdfe; }
-        input:focus, select:focus { border-color: var(--accent); background: white; }
         
+        /* تصميم أزرار الاختيار المتعدد */
+        .multi-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+        .chip { background: var(--white); border: 2px solid #edf2f7; padding: 10px 15px; border-radius: 12px; cursor: pointer; font-size: 0.9rem; transition: 0.3s; font-weight: 500; flex-grow: 1; text-align: center; }
+        .chip.selected { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); }
+
         .opt-btn { background: var(--white); border: 2px solid #edf2f7; padding: 16px; border-radius: 18px; cursor: pointer; font-size: 1.05rem; transition: 0.2s; text-align: inherit; width: 100%; margin-bottom: 10px; font-weight: 500; display: block; }
         .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; transform: translateY(-2px); }
 
@@ -55,12 +59,11 @@
         .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; margin-bottom: 25px; overflow: hidden; }
         .fill-inner { height: 100%; background: var(--accent); width: 0%; transition: 0.5s; }
 
-        .score-circle { width: 150px; height: 150px; border-radius: 50%; border: 12px solid #eee; margin: 0 auto 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; transition: 0.5s; }
-        .score-val { font-size: 3.5rem; font-weight: 800; line-height: 1; }
         .result-dashboard { background: #fcfdfe; border-radius: 25px; padding: 25px; border: 1px solid #edf2f7; margin-bottom: 20px; }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; border: 12px solid #eee; margin: 0 auto 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; }
+        .score-val { font-size: 3.5rem; font-weight: 800; line-height: 1; }
 
         #report-template { display:none; padding: 40px; background: white; direction: rtl; text-align: right; width: 800px; box-sizing: border-box; }
-        .pdf-header { text-align: center; border-bottom: 4px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
         .pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .pdf-table th, .pdf-table td { border: 1px solid #dee2e6; padding: 12px; text-align: right; }
         .pdf-table th { background: #f8f9fa; color: var(--primary); font-weight: bold; }
@@ -98,7 +101,7 @@
         <div class="form-group"><label id="l-gender">2. الجنس:</label><select id="in-gender"><option value="ذكر" id="o-m">ذكر</option><option value="أنثى" id="o-f">أنثى</option></select></div>
         <div class="form-group"><label id="l-status">3. الحالة العائلية:</label><select id="in-status"><option value="أعزب/عزباء" id="o-s">أعزب/عزباء</option><option value="متزوج(ة)" id="o-mr">متزوج(ة)</option><option value="مطلق(ة)" id="o-d">مطلق(ة)</option><option value="أرمل(ة)" id="o-w">أرمل(ة)</option></select></div>
         <div class="form-group"><label id="l-edu">4. المستوى التعليمي:</label><select id="in-edu"><option value="أمي" id="o-e1">أمي</option><option value="ابتدائي/متوسط" id="o-e2">ابتدائي/متوسط</option><option value="ثانوي" id="o-e3">ثانوي</option><option value="جامعي" id="o-e4">جامعي</option></select></div>
-        <div class="form-group"><label id="l-job">5. الوضعية المهنية:</label><select id="in-job"><option value="عامل" id="o-j1">عامل</option><option value="بطال" id="o-j2">بطال</option><option value="طالب" id="o-j3">طالب</option><option value="متقاعد" id="o-j4">متقاعد</option><option value="بدون عمل" id="o-j5">بدون عمل (ماكث بالبيت)</option></select></div>
+        <div class="form-group"><label id="l-job">5. الوضعية المهنية:</label><select id="in-job"><option value="عامل" id="o-j1">عامل</option><option value="بطال" id="o-j2">بطال</option><option value="طالب" id="o-j3">طالب</option><option value="متقاعد" id="o-j4">متقاعد</option><option value="بدون عمل" id="o-j5">بدون عمل</option></select></div>
         <div class="form-group"><label id="l-eco">6. المستوى السوسيو-اقتصادي:</label><select id="in-eco"><option value="منخفض" id="o-ec1">منخفض</option><option value="متوسط" id="o-ec2">متوسط</option><option value="مرتفع" id="o-ec3">مرتفع</option></select></div>
         <button class="btn-next" onclick="goToStep('step-lifestyle')" id="t-next">التالي</button>
     </div>
@@ -107,15 +110,46 @@
         <div class="progress-bar"><div class="fill-inner" style="width: 50%;"></div></div>
         <h3 id="t-sec2-head">القسم الثاني: نمط الحياة والسوابق</h3>
         <div class="form-group"><label id="l-sleep">7. جودة النوم:</label><select id="in-sleep"><option value="جيدة" id="o-sl1">جيدة</option><option value="متوسطة" id="o-sl2">متوسطة</option><option value="رديئة" id="o-sl3">رديئة</option></select></div>
-        <div class="form-group"><label id="l-sub">8. استهلاك المواد:</label><select id="in-sub"><option value="لا يوجد" id="o-sb1">لا يوجد</option><option value="التبغ/الشيشة" id="o-sb2">التبغ/الشيشة</option><option value="إفراط في الكافيين" id="o-sb3">إفراط في الكافيين</option><option value="التداوي الذاتي" id="o-sb4">التداوي الذاتي (مهدئات)</option></select></div>
-        <div class="form-group"><label id="l-chr">9. هل تعاني من مرض مزمن؟</label><select id="in-chr"><option value="لا" id="o-n1">لا</option><option value="نعم" id="o-y1">نعم</option></select></div>
-        <div class="form-group"><label id="l-str">10. أحداث ضاغطة (12 شهراً):</label><select id="in-str"><option value="لا توجد" id="o-st1">لا توجد</option><option value="فقدان قريب" id="o-st2">فقدان قريب</option><option value="فقدان عمل" id="o-st3">فقدان عمل</option><option value="نزاعات عائلية" id="o-st4">نزاعات عائلية</option><option value="مشاكل مالية" id="o-st5">مشاكل مالية</option></select></div>
+        
+        <div class="form-group">
+            <label id="l-sub">8. استهلاك المواد (يمكن اختيار أكثر من خيار):</label>
+            <div class="multi-group" id="group-sub">
+                <div class="chip" data-val="لا يوجد" onclick="toggleChip(this)" id="o-sb1">لا يوجد</div>
+                <div class="chip" data-val="التبغ/الشيشة" onclick="toggleChip(this)" id="o-sb2">التبغ/الشيشة</div>
+                <div class="chip" data-val="إفراط في الكافيين" onclick="toggleChip(this)" id="o-sb3">إفراط في الكافيين</div>
+                <div class="chip" data-val="التداوي الذاتي" onclick="toggleChip(this)" id="o-sb4">تداوي ذاتي</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="l-chr">9. هل تعاني من مرض مزمن؟ (يمكن اختيار أكثر من خيار):</label>
+            <div class="multi-group" id="group-chr">
+                <div class="chip" data-val="لا" onclick="toggleChip(this)" id="o-n1">لا</div>
+                <div class="chip" data-val="ضغط الدم/القلب" onclick="toggleChip(this)" id="o-y1">ضغط الدم/القلب</div>
+                <div class="chip" data-val="السكري" onclick="toggleChip(this)" id="o-y2">السكري</div>
+                <div class="chip" data-val="الربو" onclick="toggleChip(this)" id="o-y3">الربو</div>
+                <div class="chip" data-val="أخرى" onclick="toggleChip(this)" id="o-y4">أخرى</div>
+            </div>
+        </div>
+
         <button class="btn-next" onclick="goToStep('step-family')" id="t-next2">التالي</button>
     </div>
 
     <div id="step-family" class="section-ui">
         <div class="progress-bar"><div class="fill-inner" style="width: 75%;"></div></div>
-        <h3 id="t-sec3-head">القسم الثالث: السوابق العائلية والهشاشة</h3>
+        <h3 id="t-sec3-head">القسم الثالث: السوابق والهشاشة</h3>
+        
+        <div class="form-group">
+            <label id="l-str">10. أحداث ضاغطة (12 شهراً):</label>
+            <div class="multi-group" id="group-str">
+                <div class="chip" data-val="لا توجد" onclick="toggleChip(this)" id="o-st1">لا توجد</div>
+                <div class="chip" data-val="فقدان قريب" onclick="toggleChip(this)" id="o-st2">فقدان قريب</div>
+                <div class="chip" data-val="فقدان عمل" onclick="toggleChip(this)" id="o-st3">فقدان عمل</div>
+                <div class="chip" data-val="نزاعات عائلية" onclick="toggleChip(this)" id="o-st4">نزاعات عائلية</div>
+                <div class="chip" data-val="مشاكل مالية" onclick="toggleChip(this)" id="o-st5">مشاكل مالية</div>
+            </div>
+        </div>
+
         <div class="form-group"><label id="l-fa">11. سوابق قلق عائلية:</label><select id="in-fa"><option value="لا" id="o-fa0">لا</option><option value="نعم (درجة أولى)" id="o-fa1">نعم (درجة أولى)</option><option value="نعم (درجة ثانية)" id="o-fa2">نعم (درجة ثانية)</option></select></div>
         <div class="form-group"><label id="l-fd">12. سوابق اكتئاب عائلية:</label><select id="in-fd"><option value="لا" id="o-fd0">لا</option><option value="نعم (درجة أولى)" id="o-fd1">نعم (درجة أولى)</option><option value="نعم (درجة ثانية)" id="o-fd2">نعم (درجة ثانية)</option></select></div>
         <div class="form-group"><label id="l-ps">13. متابعة عقلية؟</label><select id="in-ps"><option value="لا" id="o-ps0">لا</option><option value="نعم" id="o-ps1">نعم</option></select></div>
@@ -133,7 +167,7 @@
         <div class="result-dashboard">
             <div class="score-circle" id="circle-box">
                 <span class="score-val" id="score-num">0</span>
-                <span id="t-of-21" class="score-label">من 21</span>
+                <span id="t-of-21" style="font-size: 0.9rem; font-weight: bold; color: #666;">من 21</span>
             </div>
             <div id="status-text" style="font-weight: 800; font-size: 1.6rem; margin-bottom: 5px;"></div>
             <p id="t-status-desc" style="color: #666; font-size: 0.95rem;"></p>
@@ -144,7 +178,7 @@
 
 <div id="report-template">
     <div class="pdf-header">
-        <h2 id="pdf-uni">جامعة الإخوة منتوري - قسنطينة 1[cite: 1]</h2>
+        <h2 id="pdf-uni">جامعة الإخوة منتوري - قسنطينة 1</h2>
         <h3 id="pdf-fac">كلية علوم الطبيعة والحياة</h3>
         <img src="icon.png" style="width: 80px; margin-top: 15px; border-radius: 15px;">
         <h2 style="text-decoration: underline; margin-top: 25px;" id="pdf-title">تقرير التحليل السيكومتري: اضطراب القلق العام (TAG)</h2>
@@ -154,6 +188,7 @@
         <tr><th>الحالة</th><td id="p-status"></td><th>العمل</th><td id="p-job"></td></tr>
         <tr><th>النوم</th><td id="p-sleep"></td><th>مرض مزمن</th><td id="p-chr"></td></tr>
         <tr><th>أحداث ضاغطة</th><td colspan="3" id="p-stress"></td></tr>
+        <tr><th>استهلاك المواد</th><td colspan="3" id="p-sub"></td></tr>
     </table>
     <div style="text-align: center; background: #f8f9fa; padding: 30px; border-radius: 20px; margin-top: 30px;">
         <h1 style="margin: 0; color: #1a2a3a;">GAD-7 Score: <span id="p-score"></span> / 21</h1>
@@ -175,9 +210,9 @@
             status: ["لا يوجد قلق عيادي", "قلق خفيف", "قلق متوسط (حالة محتملة)", "قلق حاد (حالة محتملة)"],
             ui: {
                 "t-consent-head": "استمارة جمع البيانات", "t-consent-sub": "دراسة وبائية حول اضطراب القلق العام (TAG)", "t-consent-yes": "نعم، أوافق على المشاركة", "t-consent-no": "لا، اعتذار", "t-consent-body": "سيدتي/سيدي، يندرج هذا الاستبيان في إطار بحث جامعي حول الصحة والرفاه النفسي. نؤكد لكم أن إجاباتكم ستبقى سرية تماماً ولأغراض البحث العلمي فقط.",
-                "t-sec1-head": "القسم الأول: الخصائص السوسيوديموغرافية", "l-age": "1. السن:", "l-gender": "2. الجنس:", "o-m": "ذكر", "o-f": "أنثى", "l-status": "3. الحالة العائلية:", "o-s": "أعزب/عزباء", "o-mr": "متزوج(ة)", "o-d": "مطلق(ة)", "o-w": "أرمل(ة)", "l-edu": "4. المستوى التعليمي:", "o-e1": "أمي", "o-e2": "ابتدائي/متوسط", "o-e3": "ثانوي", "o-e4": "جامعي", "l-job": "5. الوضعية المهنية:", "o-j1": "عامل", "o-j2": "بطال", "o-j3": "طالب", "o-j4": "متقاعد", "o-j5": "بدون عمل", "l-eco": "6. المستوى السوسيو-اقتصادي:", "o-ec1": "منخفض", "o-ec2": "متوسط", "o-ec3": "مرتفع", "t-next": "التالي",
-                "t-sec2-head": "القسم الثاني: نمط الحياة والسوابق", "l-sleep": "7. جودة النوم:", "o-sl1": "جيدة", "o-sl2": "متوسطة", "o-sl3": "رديئة", "l-sub": "8. استهلاك المواد:", "o-sb1": "لا يوجد", "o-sb2": "التبغ/الشيشة", "o-sb3": "كافيين مفرط", "o-sb4": "تداوي ذاتي", "l-chr": "9. مرض مزمن؟", "o-n1": "لا", "o-y1": "نعم", "l-str": "10. أحداث ضاغطة:", "o-st1": "لا توجد", "o-st2": "فقدان قريب", "o-st3": "فقدان عمل", "o-st4": "نزاعات عائلية", "o-st5": "مشاكل مالية", "t-next2": "التالي",
-                "t-sec3-head": "القسم الثالث: السوابق والهشاشة", "l-fa": "11. سوابق قلق عائلية:", "o-fa0": "لا", "o-fa1": "نعم (درجة أولى)", "o-fa2": "نعم (درجة ثانية)", "l-fd": "12. سوابق اكتئاب عائلية:", "o-fd0": "لا", "o-fd1": "نعم (درجة أولى)", "o-fd2": "نعم (درجة ثانية)", "l-ps": "13. متابعة عقلية؟", "o-ps0": "لا", "o-ps1": "نعم", "t-start-gad": "بدء تقييم GAD-7", "t-res-head": "نتائج التقييم العيادي", "t-of-21": "من 21", "t-pdf": "تحميل التقرير الطبي المطور PDF 📄", "sp-uni": "جامعة الإخوة منتوري - قسنطينة 1[cite: 1]", "sp-fac": "كلية علوم الطبيعة والحياة"
+                "t-sec1-head": "القسم الأول: الخصائص السوسيوديموغرافية", "l-age": "1. السن:", "l-gender": "2. الجنس:", "o-m": "ذكر", "o-f": "أنثى", "l-status": "3. الحالة العائلية:", "o-s": "أعزب/عزباء", "o-mr": "متزوج(ة)", "o-d": "مطلق(ة)", "o-w": "أرمل(ة)", "l-edu": "4. المستوى التعليمي:", "o-e1": "أمي", "o-e2": "ابتدائي/متوسط", "o-e3": "ثانوي", "o-e4": "جامعي", "l-job": "5. الوضعية المهنية:", "o-j1": "عامل", "o-j2": "بطال", "o-j3": "طالب", "o-j4": "متقاعد", "o-j5": "بدون عمل", "l-eco": "6. المستوى الاقتصادي:", "o-ec1": "منخفض", "o-ec2": "متوسط", "o-ec3": "مرتفع", "t-next": "التالي",
+                "t-sec2-head": "القسم الثاني: نمط الحياة والسوابق", "l-sleep": "7. جودة النوم:", "o-sl1": "جيدة", "o-sl2": "متوسطة", "o-sl3": "رديئة", "l-sub": "8. استهلاك المواد (يمكن اختيار أكثر من خيار):", "o-sb1": "لا يوجد", "o-sb2": "التبغ/الشيشة", "o-sb3": "إفراط في الكافيين", "o-sb4": "تداوي ذاتي", "l-chr": "9. هل تعاني من مرض مزمن؟", "o-n1": "لا", "o-y1": "ضغط الدم/القلب", "o-y2": "السكري", "o-y3": "الربو", "o-y4": "أخرى", "t-next2": "التالي",
+                "t-sec3-head": "القسم الثالث: السوابق والهشاشة", "l-str": "10. أحداث ضاغطة (12 شهراً):", "o-st1": "لا توجد", "o-st2": "فقدان قريب", "o-st3": "فقدان عمل", "o-st4": "نزاعات عائلية", "o-st5": "مشاكل مالية", "l-fa": "11. سوابق قلق عائلية:", "o-fa0": "لا", "o-fa1": "نعم (درجة أولى)", "o-fa2": "نعم (درجة ثانية)", "l-fd": "12. سوابق اكتئاب عائلية:", "o-fd0": "لا", "o-fd1": "نعم (درجة أولى)", "o-fd2": "نعم (درجة ثانية)", "l-ps": "13. متابعة عقلية؟", "o-ps0": "لا", "o-ps1": "نعم", "t-start-gad": "بدء تقييم GAD-7", "t-res-head": "نتائج التقييم العيادي", "t-of-21": "من 21", "t-pdf": "تحميل التقرير الطبي الكامل PDF 📄", "sp-uni": "جامعة الإخوة منتوري - قسنطينة 1", "sp-fac": "كلية علوم الطبيعة والحياة"
             }
         },
         fr: {
@@ -186,10 +221,10 @@
             opts: ["Jamais (0)", "Plusieurs jours (1)", "Plus de la moitié (2)", "Presque tous les jours (3)"],
             status: ["Pas d'anxiété clinique", "Anxiété légère", "Anxiété modérée", "Anxiété sévère"],
             ui: {
-                "t-consent-head": "Formulaire de Recherche", "t-consent-sub": "Étude sur le TAG", "t-consent-yes": "Oui, j'accepte", "t-consent-no": "Non, merci", "t-consent-body": "Madame/Monsieur, ce questionnaire s'inscrit dans le cadre d'une recherche universitaire sur la santé.",
+                "t-consent-head": "Recueil de Données", "t-consent-sub": "Étude épidémiologique sur le TAG", "t-consent-yes": "Oui, j'accepte", "t-consent-no": "Non, merci", "t-consent-body": "Madame/Monsieur, ce questionnaire s'inscrit dans le cadre d'une recherche universitaire sur la santé.",
                 "t-sec1-head": "Section 1: Données Sociodémographiques", "l-age": "1. Âge:", "l-gender": "2. Sexe:", "o-m": "Homme", "o-f": "Femme", "l-status": "3. État civil:", "o-s": "Célibataire", "o-mr": "Marié(e)", "o-d": "Divorcé(e)", "o-w": "Veuf/Veuve", "l-edu": "4. Éducation:", "o-e1": "Analphabète", "o-e2": "Primaire/Moyen", "o-e3": "Secondaire", "o-e4": "Universitaire", "l-job": "5. Profession:", "o-j1": "Employé", "o-j2": "Chômeur", "o-j3": "Étudiant", "o-j4": "Retraité", "o-j5": "Sans emploi", "l-eco": "6. Niveau Eco:", "o-ec1": "Bas", "o-ec2": "Moyen", "o-ec3": "Élevé", "t-next": "Suivant",
-                "t-sec2-head": "Section 2: Mode de vie", "l-sleep": "7. Sommeil:", "o-sl1": "Bon", "o-sl2": "Moyen", "o-sl3": "Mauvais", "l-sub": "8. Substances:", "o-sb1": "Aucun", "o-sb2": "Tabac", "o-sb3": "Caféine", "o-sb4": "Sédatifs", "l-chr": "9. Maladie chronique?", "o-n1": "Non", "o-y1": "Oui", "l-str": "10. Stress:", "o-st1": "Aucun", "o-st2": "Perte proche", "o-st3": "Perte travail", "o-st4": "Conflits", "o-st5": "Financier", "t-next2": "Suivant",
-                "t-sec3-head": "Section 3: Antécédents", "l-fa": "11. Anxiété Famille:", "o-fa0": "Non", "o-fa1": "1er degré", "o-fa2": "2ème degré", "l-fd": "12. Dépression Famille:", "o-fd0": "Non", "o-fd1": "1er degré", "o-fd2": "2ème degré", "l-ps": "13. Suivi Psy?", "o-ps0": "Non", "o-ps1": "Oui", "t-start-gad": "Démarrer GAD-7", "t-res-head": "Résultats Cliniques", "t-of-21": "sur 21", "t-pdf": "Télécharger le PDF 📄", "sp-uni": "Université Constantine 1[cite: 1]", "sp-fac": "Faculté SNV"
+                "t-sec2-head": "Section 2: Mode de vie", "l-sleep": "7. Sommeil:", "o-sl1": "Bon", "o-sl2": "Moyen", "o-sl3": "Mauvais", "l-sub": "8. Substances (Plusieurs choix possibles):", "o-sb1": "Aucun", "o-sb2": "Tabac/Chicha", "o-sb3": "Caféine", "o-sb4": "Autre", "l-chr": "9. Maladie chronique?", "o-n1": "Non", "o-y1": "HTA/Cœur", "o-y2": "Diabète", "o-y3": "Asthme", "o-y4": "Autre", "t-next2": "Suivant",
+                "t-sec3-head": "Section 3: Antécédents", "l-str": "10. Stress (12 mois):", "o-st1": "Aucun", "o-st2": "Perte proche", "o-st3": "Perte travail", "o-st4": "Conflits", "o-st5": "Financier", "l-fa": "11. Anxiété Famille:", "o-fa0": "Non", "o-fa1": "1er degré", "o-fa2": "2ème degré", "l-fd": "12. Dépression Famille:", "o-fd0": "Non", "o-fd1": "1er degré", "o-fd2": "2ème degré", "l-ps": "13. Suivi Psy?", "o-ps0": "Non", "o-ps1": "Oui", "t-start-gad": "Démarrer GAD-7", "t-res-head": "Résultats Cliniques", "t-of-21": "sur 21", "t-pdf": "Télécharger le PDF 📄", "sp-uni": "Université Constantine 1", "sp-fac": "Faculté SNV"
             }
         }
     };
@@ -204,6 +239,33 @@
             const el = document.getElementById(id); if (el) el.innerText = d.ui[id];
         }
         if (document.getElementById('step-gad').classList.contains('active-section')) renderQuestion();
+    }
+
+    // دالة للتحكم في الأزرار المتعددة
+    function toggleChip(el) {
+        el.classList.toggle('selected');
+        // إذا كان الخيار المختار هو "لا" أو "لا يوجد"، قم بإلغاء البقية
+        const parentId = el.parentElement.id;
+        if(el.dataset.val === "لا" || el.dataset.val === "لا يوجد" || el.dataset.val === "لا توجد" || el.dataset.val === "Aucun" || el.dataset.val === "Non") {
+            if(el.classList.contains('selected')) {
+                Array.from(el.parentElement.children).forEach(child => {
+                    if(child !== el) child.classList.remove('selected');
+                });
+            }
+        } else {
+            // إذا اخترت شيئاً آخر، قم بإلغاء خيار "لا"
+            Array.from(el.parentElement.children).forEach(child => {
+                const val = child.dataset.val;
+                if(val === "لا" || val === "لا يوجد" || val === "لا توجد" || val === "Aucun" || val === "Non") {
+                    child.classList.remove('selected');
+                }
+            });
+        }
+    }
+
+    function getMultiValues(id) {
+        const selected = Array.from(document.getElementById(id).querySelectorAll('.selected'));
+        return selected.map(s => s.dataset.val).join(', ') || "N/A";
     }
 
     function goToStep(id) {
@@ -228,8 +290,10 @@
             a: document.getElementById('in-age').value, g: document.getElementById('in-gender').value,
             s: document.getElementById('in-status').value, e: document.getElementById('in-edu').value,
             j: document.getElementById('in-job').value, ec: document.getElementById('in-eco').value,
-            sl: document.getElementById('in-sleep').value, sub: document.getElementById('in-sub').value,
-            chr: document.getElementById('in-chr').value, str: document.getElementById('in-str').value,
+            sl: document.getElementById('in-sleep').value, 
+            sub: getMultiValues('group-sub'), 
+            chr: getMultiValues('group-chr'), 
+            str: getMultiValues('group-str'),
             fa: document.getElementById('in-fa').value, fd: document.getElementById('in-fd').value, ps: document.getElementById('in-ps').value
         };
         goToStep('step-results'); showRes(); sync();
@@ -264,6 +328,7 @@
         document.getElementById('p-sleep').innerText = bio.sl;
         document.getElementById('p-chr').innerText = bio.chr;
         document.getElementById('p-stress').innerText = bio.str;
+        document.getElementById('p-sub').innerText = bio.sub;
         document.getElementById('p-score').innerText = tot;
         document.getElementById('p-status-txt').innerText = document.getElementById('status-text').innerText;
         document.getElementById('p-status-txt').style.color = document.getElementById('status-text').style.color;
